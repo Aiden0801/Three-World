@@ -90,16 +90,6 @@ const useStyles = createStyles((theme, _params, getRef) => {
     };
 });
 
-const data = [
-    { link: './dashboard', label: 'Dashboard', icon: IconDashboard },
-    { link: './sessions', label: 'Sessions', icon: IconDatabaseImport },
-    { link: '', label: 'User Manage', icon: IconUserPlus },
-    { link: '', label: 'Browsers', icon: IconScreenShare },
-    // { link: '', label: 'Sessions', icon: IconDatabaseImport },
-    // { link: '', label: 'Authentication', icon: Icon2fa },
-    // { link: '', label: 'Other Settings', icon: IconSettings },
-];
-
 export default function UserMenu({ initialState }) {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const theme = useMantineTheme();
