@@ -1,0 +1,39 @@
+<div style="font-family: Arial">
+  <button id="reload">Reload</button>
+  <button id="back">Go Back</button>
+  <button id="forward">Go Forward</button>
+  <button id="youtube">Open Youtube.com</button>
+  Volume: <input type="range" min="0" max="100" value="100" id="range">
+  <p>User ID: <span id="userId"></span></p>
+  <p>Current website: <span id="currentSite"></p>
+</div>
+<iframe id="container" style="height:720px;width:1280px"></iframe>
+<script type="module">
+  import Hyperbeam from "https://unpkg.com/@hyperbeam/web@latest/dist/index.js"
+  // TODO: Set the embedURL variable
+  const embedURL = "<your-embed-url>"
+  const hb = await Hyperbeam(container, "https://1aa2bnwfuuv7hod22dmbiqxql.hyperbeam.com/VWFwSa4-TwqVfjA0wGMA-w?token=ESkMBBnifmUhmcBVLO_kI4qyrJmrzWH1nyv9Zcm8QcY")
+  userId.innerText = hb.userId
+  reload.addEventListener("click", () => {
+    hb.tabs.reload()
+  })
+  back.addEventListener("click", () => {
+    hb.tabs.goBack()
+  })
+  forward.addEventListener("click", () => {
+    hb.tabs.goForward()
+  })
+  youtube.addEventListener("click", () => {
+    hb.tabs.update({ url: "https://youtube.com" })
+  })
+  range.addEventListener("change", (e) => {
+    hb.volume = e.target.value / 100
+  })
+  hb.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
+    if (changeInfo.title) {
+	console.log(changeInfo);
+      const tabs =await hb.tabs.query({active:true});
+      currentSite.innerText = tabs[0].url;
+    }
+  })
+</script>
