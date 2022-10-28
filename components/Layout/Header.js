@@ -1,21 +1,10 @@
 import {
   createStyles,
   Header,
-  HoverCard,
   Group,
   Button,
-  UnstyledButton,
-  Text,
-  SimpleGrid,
-  ThemeIcon,
-  Anchor,
-  Divider,
-  Center,
   Box,
   Burger,
-  Drawer,
-  Collapse,
-  ScrollArea,
   Avatar,
   Image,
 } from '@mantine/core';
@@ -23,15 +12,6 @@ import {
 import { MantineLogo } from '@mantine/ds';
 import { useDisclosure } from '@mantine/hooks';
 
-import {
-  IconNotification,
-  IconCode,
-  IconBook,
-  IconChartPie3,
-  IconFingerprint,
-  IconCoin,
-  IconChevronDown,
-} from '@tabler/icons';
 
 import { signIn, signOut, useSession } from 'next-auth/react'
 const useStyles = createStyles((theme) => ({

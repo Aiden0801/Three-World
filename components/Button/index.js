@@ -1,7 +1,6 @@
-import { Button, ButtonProps, Group } from '@mantine/core';
-import { GithubIcon, DiscordIcon, TwitterIcon } from '@mantine/ds';
+import { Button, } from '@mantine/core';
+import { GithubIcon, DiscordIcon, } from '@mantine/ds';
 import Image from 'next/image'
-// import { FacebookIcon } from './FacebookIcon';
 
 export function GoogleButton(props) {
     return <Button leftIcon={<Image src="/GoogleIcon.svg" alt="" width={36} height={36} />} variant="outline" color="black" {...props} />;
