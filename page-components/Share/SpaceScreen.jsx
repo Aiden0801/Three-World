@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { lazy, Suspense } from 'react';
 import { CameraPosition } from '../../components/ThreeJS'
 import { useState, useEffect } from 'react';
+import { PerspectiveCamera } from '@react-three/drei';
 const SkyComponent = lazy(() => import("../../components/ThreeJS/sky"));
 export default function SpaceScreen() {
     const [isBrowser, setIsBrowser] = useState(false);
@@ -23,13 +24,18 @@ export default function SpaceScreen() {
                     fov: 50,
                 }}
             >
-                <Suspense fallback={null}>
-                    <SkyComponent />
 
-                    <group >
-                        <CameraPosition />
-                    </group>
-                    <Light />
+                <Suspense fallback={null}>
+                    <PerspectiveCamera >
+                        <SkyComponent />
+
+                        <group >
+                            <CameraPosition />
+                        </group>
+                        <Light />
+
+                    </PerspectiveCamera>
+
                 </Suspense>
 
             </Canvas >

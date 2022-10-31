@@ -100,6 +100,7 @@ export default function CameraPosition() {
     }
     useFrame(() => {
         camera.position.set(0, 0, 0);
+        camera.lookAt(new THREE.Vector3(0, 0, -5));
         if (animate === true) {
             fromVec.lerp(toVec, 0.1);
             let euler = getEuler(fromVec, dvec);
