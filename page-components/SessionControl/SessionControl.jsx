@@ -4,6 +4,7 @@ import { IconPlus, IconListDetails, IconActivity } from '@tabler/icons';
 import { useSession } from 'next-auth/react';
 import { useForm } from '@mantine/form';
 import { fetcher } from '../../lib/fetcher';
+import { imageConfigDefault } from 'next/dist/shared/lib/image-config';
 const useStyles = createStyles((theme) => ({
     container: {
         position: 'absoulte',
@@ -12,20 +13,13 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 const SessionControl = () => {
+
     const { data: session, status } = useSession();
     const [email, setEmail] = useState("");
     const [opened, setOpened] = useState(false);
     const [isHandling, setIsHandling] = useState(false);
     const { classes, theme } = useStyles();
     const [data, setData] = useState([]);
-
-    // const [selection, setSelection] = useState(['1']);
-    // const toggleRow = (_id) =>
-    //     setSelection((current) =>
-    //         current.includes(_id) ? current.filter((item) => item !== _id) : [...current, _id]
-    //     );
-    // const toggleAll = () =>
-    //     setSelection((current) => (current.length === data.length ? [] : data.map((item) => item._id)));
     const form = useForm({
         initialValues: {
             name: '',
@@ -47,12 +41,11 @@ const SessionControl = () => {
             }),
         });
         setData(session_data ? session_data.user : []);
-    }, [email]);
+    }, [email])
     const init = useCallback(async () => {
         setIsHandling(true);
         await loadSessions();
         setIsHandling(false);
-
     }, [loadSessions]);
     useEffect(() => {
 
@@ -62,7 +55,9 @@ const SessionControl = () => {
         }
         console.log(status);
     }, [status, init]);
-
+    /*
+    * hello
+    * */
     const handleCreateNewSession = async (values) => {
         const { name, description } = values;
         console.log(session.user.email, name);
@@ -80,6 +75,7 @@ const SessionControl = () => {
         await loadSessions();
         setIsHandling(false);
     }
+
     const handleActivateSession = async (_id) => {
         console.log(_id);
         setIsHandling(true);
