@@ -56,7 +56,7 @@ const SessionControl = () => {
         console.log(status);
     }, [status, init]);
     /*
-    * hello
+    * hello world
     * */
     const handleCreateNewSession = async (values) => {
         const { name, description } = values;
