@@ -12,7 +12,6 @@ const Item = styled.tr;
 
 const useStyles = createStyles((theme) => ({
     container: {
-        position: 'absolute',
         left: '200px',
         margin: '10px,10px,10px,10px',
         marginTop: '20px',

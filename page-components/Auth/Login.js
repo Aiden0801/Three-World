@@ -6,7 +6,7 @@ import { useEffect } from 'react';
 
 import { DiscordButton, GithubButton, GoogleButton } from "../../components/Button"
 
-export default function Login({ providers }) {
+export default function Login() {
     const router = useRouter()
 
     const { data: session, status } = useSession()

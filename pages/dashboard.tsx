@@ -2,7 +2,7 @@ import React from 'react'
 import { Dashboard } from '../page-components/Dashboard'
 import { Layout, Navbar } from '../components/Layout'
 import { Grid, SimpleGrid } from '@mantine/core';
-const DashboardPage = () => {
+const DashboardPage: React.FC = () => {
     return (
         <>
             <Grid>
@@ -11,9 +11,7 @@ const DashboardPage = () => {
                 <Grid.Col xs={10}> <Dashboard /></Grid.Col>
 
             </Grid>
-
         </>
-
     )
 }
 

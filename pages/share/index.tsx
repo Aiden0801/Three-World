@@ -2,7 +2,7 @@ import React from 'react'
 import { Share } from '../../page-components/Share/index'
 import { Navbar } from '../../components/Layout'
 import { Grid } from '@mantine/core';
-const SharePage = () => {
+const SharePage: React.FC = () => {
     return (
         <>
             <Grid>
