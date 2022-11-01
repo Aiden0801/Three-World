@@ -4,7 +4,7 @@ import { useSpring, animated, config } from "@react-spring/three";
 
 import React, { lazy, useEffect, useCallback } from 'react'
 import { useState, useRef, Suspense, useMemo } from 'react'
-import { Canvas, useThree, useFrame, useLoader, useUpdate } from '@react-three/fiber'
+import { Canvas, useThree, useFrame, useLoader } from '@react-three/fiber'
 import { useTexture, Html } from "@react-three/drei"
 import { useDispatch, useSelector } from "react-redux";
 import { setURL, getDataByIndex, getCurrentBrowser, getCurrentBrowserData } from '../../store/browserSlice';
@@ -82,7 +82,7 @@ export default function Browser(props) {
                         texture.image = frame
                         texture.needsUpdate = true
                     } else {
-                        gl.copyTextureToTexture(new THREE.Vector2(0, 0), new THREE.Texture(frame), texture)
+                        gl.copyTextureToTexture(new THREE.Vector2(0, 0), new THREE.Texture(frame as HTMLVideoElement), texture)
                     }
                 },
             })
@@ -122,14 +122,17 @@ export default function Browser(props) {
                 eventtype = "";
                 break;
         }
-        meshobject.current.worldToLocal(point);
-        if (hb && e.eventtype != "") {
-            hb.sendEvent({
-                type: eventtype,
-                x: point.x / width + 0.5,
-                y: point.y / height + 0.5,
-                button: e.button
-            })
+        if (meshobject && meshobject.current) {
+            (meshobject.current as any).worldToLocal(point);
+            if (hb && e.eventtype != "") {
+                hb.sendEvent({
+                    type: eventtype,
+                    x: point.x / width + 0.5,
+                    y: point.y / height + 0.5,
+                    button: e.button
+                })
+            }
+
         }
     }, []);
     useFrame(() => {
@@ -156,11 +159,4 @@ export default function Browser(props) {
         </animated.group>
 
     )
-}
-function Monitor(props) {
-    const { scene } = useLoader(GLTFLoader, display)
-    const copiedScene = useMemo(() => scene.clone(), [scene])
-    return (
-        <primitive {...props} object={copiedScene} />
-    );
 }

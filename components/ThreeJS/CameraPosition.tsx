@@ -104,13 +104,13 @@ export default function CameraPosition() {
         if (animate === true) {
             fromVec.lerp(toVec, 0.1);
             let euler = getEuler(fromVec, dvec);
-            camera.rotation.set(euler._x, euler._y, euler._z);
+            camera.rotation.set(euler.x, euler.y, euler.z);
 
             if (fromVec.distanceTo(toVec) < 0.01) {
                 posVec = newposVec;
                 angVec = newangVec;
                 let euler = getEuler(toVec, dvec);
-                camera.rotation.set(euler._x, euler._y, euler._z);
+                camera.rotation.set(euler.x, euler.y, euler.z);
 
                 animate = false;
                 if (type === 1)

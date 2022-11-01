@@ -115,17 +115,17 @@ export default function UserMenu({ initialState }) {
                 size="xs"
                 icon={<IconSearch size={12} stroke={1.5} />}
                 rightSectionWidth={70}
-                rightSection={<Code className={classes.searchCode}>Ctrl + K</Code>}
+                rightSection={<Code >Ctrl + K</Code>}
                 styles={{ rightSection: { pointerEvents: 'none' } }}
                 mb="sm"
             />
-            <Navbar.Section grow calssame={classes.section}>
+            <Navbar.Section grow className={classes.section}>
                 <NavLink
 
                     label="Community"
                     className={classes.link}
                     icon={
-                        <IconBuildingCommunity size="20" variant="filled" color="green">
+                        <IconBuildingCommunity size="20" color="green">
                         </IconBuildingCommunity>
                     }
                 />
@@ -134,7 +134,7 @@ export default function UserMenu({ initialState }) {
                     label="Hacker House"
                     className={classes.link}
                     icon={
-                        <IconBuildingLighthouse size="20" variant="filled" color="blue">
+                        <IconBuildingLighthouse size="20" color="blue">
                         </IconBuildingLighthouse>
                     }
                 />
@@ -146,7 +146,7 @@ export default function UserMenu({ initialState }) {
                     href='/dashboard'
                     active={active == 'dashboard' ? true : false}
                     icon={
-                        <IconDashboard size="20" variant="filled" color="royalblue">
+                        <IconDashboard size="20" color="royalblue">
                         </IconDashboard>
                     }
                 />
@@ -155,7 +155,7 @@ export default function UserMenu({ initialState }) {
                     className={classes.link}
                     label="Bot Settings"
                     icon={
-                        <IconSettingsAutomation size="20" variant="filled" color="indigo ">
+                        <IconSettingsAutomation size="20" color="indigo ">
                         </IconSettingsAutomation>
                     }
                 />
@@ -167,7 +167,7 @@ export default function UserMenu({ initialState }) {
                     href='/sessions'
                     active={active == 'sessions' ? true : false}
                     icon={
-                        <IconDatabaseImport size="20" variant="filled" color="red">
+                        <IconDatabaseImport size="20" color="red">
                         </IconDatabaseImport>
                     }
                 />
@@ -179,7 +179,7 @@ export default function UserMenu({ initialState }) {
                     href='/browsers'
                     active={active == 'browsers' ? true : false}
                     icon={
-                        <IconScreenShare size="20" variant="filled" color="red">
+                        <IconScreenShare size="20" color="red">
                         </IconScreenShare>
                     }
                 />
@@ -191,7 +191,7 @@ export default function UserMenu({ initialState }) {
                     href='/share'
                     active={active == 'share' ? true : false}
                     icon={
-                        <IconShare size="20" variant="filled" color="red">
+                        <IconShare size="20" color="red">
                         </IconShare>
                     }
                 />
@@ -200,7 +200,7 @@ export default function UserMenu({ initialState }) {
                     className={classes.link}
                     label="Messages"
                     icon={
-                        <IconMessage2 size="20" variant="filled" color="blue">
+                        <IconMessage2 size="20" color="blue">
                         </IconMessage2>
                     }
                 />
@@ -212,7 +212,7 @@ export default function UserMenu({ initialState }) {
                     href='/user'
                     active={active == 'user' ? true : false}
                     icon={
-                        <IconUserPlus size="20" variant="filled" color="blue">
+                        <IconUserPlus size="20" color="blue">
                         </IconUserPlus>
                     }
                 />
@@ -220,7 +220,7 @@ export default function UserMenu({ initialState }) {
 
                     label="Security"
                     icon={
-                        <IconKey size="20" variant="filled" color="black">
+                        <IconKey size="20" color="black">
                         </IconKey>
                     }
                 />
