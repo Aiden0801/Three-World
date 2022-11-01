@@ -55,6 +55,7 @@ const SessionControl = () => {
         }
         console.log(status);
     }, [status, init]);
+
     /*
     * hello world
     * */
@@ -143,6 +144,8 @@ const SessionControl = () => {
             <Container style={{
                 textAlign: "center",
             }}>
+
+                </Text>
                 <Text
                     component="span"
                     align="center"
