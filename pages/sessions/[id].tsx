@@ -1,22 +1,26 @@
+
+import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
+
 import { Layout, Navbar } from '../../components/Layout'
 import { Grid } from '@mantine/core';
 import React, { useEffect, useState } from 'react'
 import { useSession } from 'next-auth/react';
-import { ScrollArea, Table, LoadingOverlay, createStyles, Container, Group, ActionIcon, Footer, Button, Modal, Text, TextInput, SimpleGrid, Textarea } from '@mantine/core';
+import { ScrollArea, Table, LoadingOverlay, createStyles, Selectors, MantineTheme } from '@mantine/core';
 
 import { useRouter } from 'next/router'
 import { useForm } from '@mantine/form';
 import { fetcher } from '../../lib/fetcher';
 import connectMongo from '../../api-lib/mongodb';
 import { SessionDetail } from '../../page-components/SessionControl'
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
     container: {
-        position: 'absoulte',
+        position: 'absolute',
         left: '200px',
         margin: '10px,10px,10px,10px',
     },
 }));
-export async function getServerSideProps(context) {
+type ComponentStylesNames = Selectors<typeof useStyles>;
+export const getServerSideProps: GetServerSideProps = async (context) => {
     console.log(context.params.id);
     const db = await connectMongo();
     const sessionData = await fetcher('http://localhost:3000/api/session/getSessionByID', {
