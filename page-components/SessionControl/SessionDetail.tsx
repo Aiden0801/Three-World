@@ -118,7 +118,6 @@ const SessionDetail = ({ sessionData }) => {
 
             </Modal >
             <Container style={{
-                align: "center",
             }}
 
                 size="xl" px="xs"
@@ -166,9 +165,9 @@ const SessionDetail = ({ sessionData }) => {
                     </Grid.Col>
                     <Grid.Col span={6}>
                         {detailData.isActive ?
-                            <Button leftIcon={<IconActivity />} onClick={() => handleKillSession(session._id)} color="red"> Stop</Button>
+                            <Button leftIcon={<IconActivity />} onClick={() => handleKillSession(detailData._id)} color="red"> Stop</Button>
                             :
-                            <Button leftIcon={<IconActivity />} onClick={() => handleActivateSession(session._id)}> Activate</Button>
+                            <Button leftIcon={<IconActivity />} onClick={() => handleActivateSession(detailData._id)}> Activate</Button>
                         }
                     </Grid.Col>
                     <Grid.Col span={3}>
@@ -176,9 +175,6 @@ const SessionDetail = ({ sessionData }) => {
                         <Text size="xl">Session Users</Text>
                     </Grid.Col>
                     <Grid.Col span={6} >
-                        {
-                            console.log(detailData.users.length)
-                        }
                         {detailData.users.length === 0 ?
                             <Text size="xl">No Users Available</Text> :
                             <></>

@@ -24,7 +24,7 @@
     "types/**/*.ts",
     "**/*.ts",
     "**/*.tsx"
-, "pages/_app.ts", "pages/_app.ts", "pages/_app.ts", "pages/_app.ts", "store/store.js", "store/store.js", "store/browserSlice.js"  ],
+, "pages/_app.ts", "pages/_app.ts", "pages/_app.ts", "pages/_app.ts", "pages/api/auth/[...nextauth].js", "store/store.js", "store/store.js", "store/browserSlice.js"  ],
   "exclude": [
     "node_modules"
   ]

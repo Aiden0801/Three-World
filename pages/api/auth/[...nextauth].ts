@@ -1,14 +1,19 @@
-import NextAuth from "next-auth"
+import NextAuth, { Awaitable, CallbacksOptions, Session, User, Profile, Account } from "next-auth"
+import { AdapterUser } from "next-auth/adapters";
 // import Providers from "next-auth/providers"
 import GithubProvider from "next-auth/providers/github"
 import GoogleProvider from "next-auth/providers/google"
-import { getMongoDb } from "../../../api-lib/mongodb"
 
 import { fetcher } from '../../../lib/fetcher';
 //import clientPromise from '../../../lib/mongodb'
 
 // For more information on each option (and a full list of options) go to
 // https://next-auth.js.org/configuration/options
+interface IProps {
+    user: User | AdapterUser,
+    account: Account,
+    profile: Profile,
+}
 export default NextAuth({
     // https://next-auth.js.org/configuration/providers
 
@@ -30,7 +35,7 @@ export default NextAuth({
     // Notes:
     // * You must install an appropriate node_module for your database
     // * The Email provider requires a database (OAuth providers do not)
-    database: process.env.DATABASE_URL,
+    // database: process.env.DATABASE_URL,
 
     // The secret should be set to a reasonably long random string.
     // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
@@ -41,7 +46,7 @@ export default NextAuth({
         // Use JSON Web Tokens for session instead of database sessions.
         // This option can be used with or without a database for users/accounts.
         // Note: `jwt` is automatically set to `true` if no database is specified.
-        jwt: true,
+        // jwt: true,
 
         // Seconds - How long until an idle session expires and is no longer valid.
         // maxAge: 30 * 24 * 60 * 60, // 30 days
@@ -83,16 +88,15 @@ export default NextAuth({
     // when an action is performed.
     // https://next-auth.js.org/configuration/callbacks
     callbacks: {
-        async signIn(user, account, profile) {
+        async signIn({ user, account, profile }: IProps): Promise<string | boolean> {
             if (user) {
-
                 console.log("next_auth", user);
                 const response = await fetcher('http://localhost:3000/api/users', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        email: user.user.email,
-                        name: user.user.name,
+                        email: user.email,
+                        name: user.name,
                     }),
                 });
                 console.log(response)

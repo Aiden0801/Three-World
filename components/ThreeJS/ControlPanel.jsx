@@ -83,7 +83,7 @@ function Card({ image, title, category }) {
         </Paper>
     );
 }
-export default function ControlPanel({ handleLeftClickEvent, handleRightClickEvent }) {
+export default function ControlPanel() {
     const dispatch = useDispatch();
     const curBrowser = useSelector(getCurrentBrowserData);
     const curURL = useSelector(getCurrentURL);

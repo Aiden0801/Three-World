@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useCallback} from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import {
     ScrollArea,
     Table,
@@ -15,26 +15,26 @@ import {
     SimpleGrid,
     Textarea
 } from '@mantine/core';
-import {IconPlus, IconListDetails, IconActivity} from '@tabler/icons';
-import {useSession} from 'next-auth/react';
-import {useForm} from '@mantine/form';
-import {fetcher} from '../../lib/fetcher';
-import {imageConfigDefault} from 'next/dist/shared/lib/image-config';
+import { IconPlus, IconListDetails, IconActivity } from '@tabler/icons';
+import { useSession } from 'next-auth/react';
+import { useForm } from '@mantine/form';
+import { fetcher } from '../../lib/fetcher';
+import { imageConfigDefault } from 'next/dist/shared/lib/image-config';
 
 const useStyles = createStyles((theme) => ({
     container: {
-        position: 'absoulte',
+        position: 'absolute',
         left: '200px',
         margin: '10px,10px,10px,10px',
     },
 }));
 const SessionControl = () => {
 
-    const {data: session, status} = useSession();
+    const { data: session, status } = useSession();
     const [email, setEmail] = useState("");
     const [opened, setOpened] = useState(false);
     const [isHandling, setIsHandling] = useState(false);
-    const {classes, theme} = useStyles();
+    const { classes, theme } = useStyles();
     const [data, setData] = useState([]);
     const form = useForm({
         initialValues: {
@@ -51,7 +51,7 @@ const SessionControl = () => {
         console.log("Session Control LoadSessions");
         const session_data = await fetcher('http://localhost:3000/api/session/getControlSession', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 creator: email,
             }),
@@ -76,12 +76,12 @@ const SessionControl = () => {
     * hello world
     * */
     const handleCreateNewSession = async (values) => {
-        const {name, description} = values;
+        const { name, description } = values;
         console.log(session.user.email, name);
         setIsHandling(true);
         const response = await fetcher('/api/session/createSession', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 sessionName: name,
                 creator: session.user.email,
@@ -98,7 +98,7 @@ const SessionControl = () => {
         setIsHandling(true);
         const response = await fetcher('/api/session/activateSessionByID', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 creator: session.user.email,
                 _id: _id,
@@ -113,7 +113,7 @@ const SessionControl = () => {
         setIsHandling(true);
         const response = await fetcher('/api/session/killSessionByID', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 _id: _id,
             }),
@@ -160,13 +160,13 @@ const SessionControl = () => {
             <Container style={{
                 textAlign: "center",
             }}>
-                
+
                 <Text
                     component="span"
                     align="center"
 
                     variant="gradient"
-                    gradient={{from: 'indigo', to: 'cyan', deg: 45}}
+                    gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
                     weight={700}
                     style={{
                         fontFamily: 'Greycliff CF, sans-serif',
@@ -176,10 +176,10 @@ const SessionControl = () => {
                     Sessions
                 </Text>
                 <ScrollArea>
-                    <Table striped withColumnBorders sx={{minWidth: 800}} verticalSpacing="xs">
+                    <Table striped withColumnBorders sx={{ minWidth: 800 }} verticalSpacing="xs">
                         <thead>
-                        <tr>
-                            {/* <th style={{ width: 40 }}>
+                            <tr>
+                                {/* <th style={{ width: 40 }}>
                                     <Checkbox
                                         onChange={toggleAll}
                                         checked={selection.length === data.length}
@@ -187,19 +187,19 @@ const SessionControl = () => {
                                         transitionDuration={0}
                                     />
                                 </th> */}
-                            <th>Name</th>
-                            <th>Users</th>
-                            <th>Active</th>
-                            <th>Actions</th>
-                            <th>Details</th>
-                        </tr>
+                                <th>Name</th>
+                                <th>Users</th>
+                                <th>Active</th>
+                                <th>Actions</th>
+                                <th>Details</th>
+                            </tr>
                         </thead>
                         <tbody>
-                        {data && data.map((session, index) => {
-                            // const selected = selection.includes(session._id);
-                            return (
-                                <tr key={index}>
-                                    {/* <td>
+                            {data && data.map((session, index) => {
+                                // const selected = selection.includes(session._id);
+                                return (
+                                    <tr key={index}>
+                                        {/* <td>
                                             <td>
                                                 <Checkbox
                                                     checked={selection.includes(session._id)}
@@ -208,40 +208,40 @@ const SessionControl = () => {
                                                 />
                                             </td>
                                         </td> */}
-                                    <td>
-                                        {session.name}
-                                    </td>
-                                    <td>
-                                        {session.users.length == 0 ? "No Available Users" : session.users.length + ' Users'}
-                                    </td>
-                                    <td>
-                                        {session.isActive == true ? "Active" : "Dead"}
-                                    </td>
-                                    <td>
-                                        {session.isActive ?
-                                            <Button leftIcon={<IconActivity/>}
+                                        <td>
+                                            {session.name}
+                                        </td>
+                                        <td>
+                                            {session.users.length == 0 ? "No Available Users" : session.users.length + ' Users'}
+                                        </td>
+                                        <td>
+                                            {session.isActive == true ? "Active" : "Dead"}
+                                        </td>
+                                        <td>
+                                            {session.isActive ?
+                                                <Button leftIcon={<IconActivity />}
                                                     onClick={() => handleKillSession(session._id)}
                                                     color="red"> Stop</Button>
-                                            :
-                                            <Button leftIcon={<IconActivity/>}
+                                                :
+                                                <Button leftIcon={<IconActivity />}
                                                     onClick={() => handleActivateSession(session._id)}> Activate</Button>
-                                        }
-                                    </td>
-                                    <td>
-                                        <Button leftIcon={<IconListDetails/>} color="green" component='a'
+                                            }
+                                        </td>
+                                        <td>
+                                            <Button leftIcon={<IconListDetails />} color="green" component='a'
                                                 href={`./sessions/${session._id}`}>Details</Button>
-                                    </td>
+                                        </td>
 
 
-                                </tr>
-                            )
-                        })}
+                                    </tr>
+                                )
+                            })}
                         </tbody>
 
                     </Table>
-                    <Button style={{marginTop: '20px'}} onClick={() => {
+                    <Button style={{ marginTop: '20px' }} onClick={() => {
                         setOpened(true);
-                    }} rightIcon={<IconPlus size={18} stroke={1.5}/>} color="green" pr={12}>
+                    }} rightIcon={<IconPlus size={18} stroke={1.5} />} color="green" pr={12}>
                         Create New
                     </Button>
                 </ScrollArea>
