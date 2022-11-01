@@ -1,6 +1,9 @@
 import connectMongo from '../../../api-lib/mongodb';
 const User = require('../../../api-lib/models/users');
-async function handler(req, res) {
+
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // res.status(200).json({ name: req.body, name: req.name });
     await connectMongo();

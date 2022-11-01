@@ -2,9 +2,10 @@ import connectMongo from '../../../api-lib/mongodb';
 import axios from 'axios';
 const User = require('../../../api-lib/models/users');
 const Session = require('../../../api-lib/models/session')
-// ./api/session/getControlSession
-// Get Sessions created by me
-async function handler(req, res) {
+
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // res.status(200).json({ name: req.body, name: req.name });
     const { _id } = req.body;

@@ -4,12 +4,13 @@ const User = require('../../../api-lib/models/users');
 const Session = require('../../../api-lib/models/session')
 // ./api/session/getControlSession
 // Get Sessions created by me
-async function handler(req, res) {
+
+import type { NextApiRequest, NextApiResponse } from 'next'
+async function handler(req: NextApiRequest, res: NextApiResponse) {
 
     // res.status(200).json({ name: req.body, name: req.name });
     await connectMongo();
     let { _id, email, bIndex } = req.body;
-    // bIndex refer to browsers index(0-3)
 
     console.log("SetSessionToBrowsers", _id);
     try {
