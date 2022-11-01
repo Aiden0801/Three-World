@@ -7,5 +7,7 @@ dist
 .idea
 
 
-
+yarn-error.log
+example.html
+.eslintrc.json
 *.d.ts

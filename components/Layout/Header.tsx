@@ -37,7 +37,9 @@ const useStyles = createStyles((theme) => ({
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
     }),
   },
+  button: {
 
+  },
   subLink: {
     width: '100%',
     padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
@@ -81,7 +83,7 @@ export default function HeaderMenu() {
 
   const { data: session, status } = useSession()
   return (
-    <Box pb={20} height={60}
+    <Box pb={20}
       style={{
         backgroundColor: 'rgba(0, 0, 0, 0)',
       }}>
@@ -113,54 +115,13 @@ export default function HeaderMenu() {
           </Group></>}
 
           {session && <><Group className={classes.hiddenMobile}>
-            <Avatar onClick={() => { console.log('AAa'); }} src={session.user.image} alt={session.user.email} width={50} height={50} />
-
+            <Avatar src={session.user.image} alt={session.user.email} />
             <Button onClick={() => { signOut(); }} className={classes.button} >Log out</Button>
           </Group></>}
 
           <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />
         </Group>
       </Header>
-      {/* 
-      <Drawer
-        opened={drawerOpened}
-        onClose={closeDrawer}
-        size="100%"
-        padding="md"
-        title="Navigation"
-        className={classes.hiddenDesktop}
-        zIndex={1000000}
-      >
-        <ScrollArea sx={{ height: 'calc(100vh - 60px)' }} mx="-md">
-          <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
-
-          <a href="#" className={classes.link}>
-            Home
-          </a>
-          <UnstyledButton className={classes.link} onClick={toggleLinks}>
-            <Center inline>
-              <Box component="span" mr={5}>
-                Features
-              </Box>
-              <IconChevronDown size={16} color={theme.fn.primaryColor()} />
-            </Center>
-          </UnstyledButton>
-          <Collapse in={linksOpened}>{ }</Collapse>
-          <a href="#" className={classes.link}>
-            Learn
-          </a>
-          <a href="#" className={classes.link}>
-            Academy
-          </a>
-
-          <Divider my="sm" color={theme.colorScheme === 'dark' ? 'dark.5' : 'gray.1'} />
-
-          <Group position="center" grow pb="xl" px="md">
-            <Button variant="default" className={classes.button}>Log in</Button>
-            <Button>Sign up</Button>
-          </Group>
-        </ScrollArea>
-      </Drawer> */}
     </Box >
   );
 }
