@@ -5,6 +5,7 @@ import { IconPlus } from '@tabler/icons';
 import { useSession } from 'next-auth/react';
 import { useForm } from '@mantine/form';
 import { fetcher } from '../../lib/fetcher';
+import { IPropsSessionData, ISessionData } from '../../types';
 // Users with a higher priority will preempt the control of lower priority users.
 import { useWindowEvent } from '@mantine/hooks';
 const useStyles = createStyles((theme) => ({
@@ -14,7 +15,8 @@ const useStyles = createStyles((theme) => ({
         margin: '10px,10px,10px,10px',
     },
 }));
-const SessionDetail = ({ sessionData }) => {
+const SessionDetail = ({ sessionData }: IPropsSessionData) => {
+    console.log("SessionDetail", sessionData);
     const { data: session, status } = useSession();
     const [opened, setOpened] = useState(false);
     const [isHandling, setIsHandling] = useState(false);

@@ -1,6 +1,7 @@
 
 import { GetStaticProps, GetStaticPaths, GetServerSideProps } from 'next'
-
+import { IPropsSessionData, ISessionData } from '../../types';
+import { InferGetServerSidePropsType } from 'next'
 import { Layout, Navbar } from '../../components/Layout'
 import { Grid } from '@mantine/core';
 import React, { useEffect, useState } from 'react'
@@ -21,7 +22,6 @@ const useStyles = createStyles(() => ({
 }));
 type ComponentStylesNames = Selectors<typeof useStyles>;
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    console.log(context.params.id);
     const db = await connectMongo();
     const sessionData = await fetcher('http://localhost:3000/api/session/getSessionByID', {
         method: 'POST',
@@ -30,13 +30,14 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
             _id: context.params.id,
         }),
     });
+    // console.log("SessionData", res);
     return {
         props: { sessionData }
     };
 }
 
 
-const SessionDetailPage = ({ sessionData }) => {
+const SessionDetailPage: React.FC<IPropsSessionData> = ({ sessionData }: IPropsSessionData) => {
     const { classes, theme } = useStyles();
     return (
         <>

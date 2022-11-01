@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-import Hyperbeam from "@hyperbeam/web"
+import Hyperbeam, { HyperbeamEmbed } from "@hyperbeam/web"
 import { useSpring, animated, config } from "@react-spring/three";
 
 import React, { lazy, useEffect, useCallback } from 'react'
@@ -10,9 +10,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { setURL, getDataByIndex, getCurrentBrowser, getCurrentBrowserData } from '../../store/browserSlice';
 
 import { useWindowEvent } from '@mantine/hooks';
+import { Object3D } from 'three';
 const TvComponent = lazy(() => import("./TvModel"));
 // import display from './assets/tv_screen.glb';
-let hb;
+let hb: HyperbeamEmbed | undefined;
 /***
  * 
  * 
@@ -48,12 +49,22 @@ export default function Browser(props) {
     }, []);
     useWindowEvent('keydown', (event) => {
         if (curBrowser.index == props.bid && hb && hb.tabs) {
-            hb.sendEvent(event);
+            hb.sendEvent({
+                type: "keydown" as any,
+                key: event.key,
+                ctrlKey: event.ctrlKey,
+                metaKey: event.metaKey,
+            });
         }
     });
     useWindowEvent('keyup', (event) => {
         if (curBrowser.index == props.bid && hb && hb.tabs) {
-            hb.sendEvent(event);
+            hb.sendEvent({
+                type: "keyup" as any,
+                key: event.key,
+                ctrlKey: event.ctrlKey,
+                metaKey: event.metaKey,
+            });
         }
     });
     useWindowEvent('contextmenu', (event) => {
@@ -123,7 +134,7 @@ export default function Browser(props) {
                 break;
         }
         if (meshobject && meshobject.current) {
-            (meshobject.current as any).worldToLocal(point);
+            (meshobject.current as Object3D).worldToLocal(point);
             if (hb && e.eventtype != "") {
                 hb.sendEvent({
                     type: eventtype,

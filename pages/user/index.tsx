@@ -2,7 +2,7 @@ import React from 'react'
 import { User } from '../../page-components/User'
 import { Layout, Navbar } from '../../components/Layout'
 import { Grid, SimpleGrid } from '@mantine/core';
-const UserPage = () => {
+const UserPage: React.FC = () => {
     return (
         <>
             <Grid>
