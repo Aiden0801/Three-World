@@ -35,22 +35,6 @@ async function handler(req, res) {
         console.error(err.message);
         res.status(500).send('Server error');
     }
-    // const user = await findUserByEmail(db, email);
-    // console.log(user);
-    // if (user) {
-    //     res.status(200).json({ name: 'Account Exists' })
-    // }
-    // else {
-    //     insertUser(db, {
-    //         email: Math.random().toString(36).slice(2) + email,
-    //         bio: '',
-    //         name: Math.random().toString(36).slice(2) + email,
-    //         profilePicture: '',
-    //         username: Math.random().toString(36).slice(2) + email,
-    //     })
-    //     console.log('insert user called');
-    //     res.status(200).json({ name: 'Register Account' })
-    // }
 }
 
 export default handler;

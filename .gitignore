@@ -1,2 +1,11 @@
 node_modules
 .next
+out/
+build
+dist
+.vscode
+.idea
+
+
+
+*.d.ts
