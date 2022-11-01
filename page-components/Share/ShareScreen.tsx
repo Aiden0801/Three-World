@@ -4,7 +4,7 @@ import { getSession } from 'next-auth/react'
 import { fetcher } from '../../lib/fetcher';
 import { LoadingOverlay, Alert, Button } from '@mantine/core';
 import { IconAlertCircle } from '@tabler/icons';
-import { Space } from './';
+import { Space } from './index';
 import { ControlPanel, BrowserStatus } from '../../components/ThreeJS'
 import { setDataByIndex } from '../../store/browserSlice';
 import { useDispatch } from 'react-redux';

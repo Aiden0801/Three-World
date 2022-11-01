@@ -1,10 +1,6 @@
 import React from 'react'
 import { Button, Text } from '@mantine/core'
 import { IconPlus } from '@tabler/icons'
-
-
-
-
 const UserManagement = () => {
     return (
         <div style={{

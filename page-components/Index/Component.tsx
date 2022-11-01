@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect } from 'react';
 import { createStyles, Container, Text, Button, Group } from '@mantine/core';
 import { GithubIcon } from '@mantine/ds';
+import React from 'react';
 
 const BREAKPOINT = '@media (max-width: 755px)';
 
@@ -71,7 +72,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-export function Index() {
+const Index = () => {
     const { classes } = useStyles();
 
 
@@ -86,7 +87,7 @@ export function Index() {
         }
     }, [status]);
     return (
-        <div >
+        <div>
             <Container size={700} className={classes.inner}>
                 <h1 className={classes.title}>
                     A{' '}
@@ -127,3 +128,4 @@ export function Index() {
         </div>
     );
 }
+export default Index;
