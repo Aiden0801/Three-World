@@ -4,6 +4,10 @@ export interface ISessionData {
     session_id?: string,
     embed_url?: string,
     creator?: string,
-    users?: object,
+    users?: IAllowedUser[],
     isActive?: Boolean,
+}
+
+export interface IAllowedUser {
+    email?: string,
 }
