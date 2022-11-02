@@ -192,7 +192,6 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
                                     </ThemeIcon>
                                 }
                             >
-
                                 {detailData.users.map((user, index) => {
                                     // console.log(index, user.email)
                                     // <div key={index}>AAAA</div>
