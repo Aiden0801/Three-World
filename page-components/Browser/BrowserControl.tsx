@@ -27,7 +27,7 @@ export default function BrowserControl() {
     const [isHandling, setIsHandling] = useState(false);
     const loadSessions = async () => {
         console.log("loadSessions", session.user.email);
-        const data = await fetcher('http://localhost:3000/api/session/getAvailableSessions', {
+        const data = await fetcher('api/session/getAvailableSessions', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -39,7 +39,7 @@ export default function BrowserControl() {
     }
     const loadBrowsers = async () => {
         console.log("loaBrowsers", session.user.email);
-        const data = await fetcher('http://localhost:3000/api/users/getBrowsersByEmail', {
+        const data = await fetcher('api/users/getBrowsersByEmail', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -62,7 +62,7 @@ export default function BrowserControl() {
     });
     const handleSetSessionToBrowser = async (session_id, browser_id) => {
         setIsHandling(true);
-        const data = await fetcher('http://localhost:3000/api/session/setSessiontoBrowser', {
+        const data = await fetcher('api/session/setSessiontoBrowser', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
