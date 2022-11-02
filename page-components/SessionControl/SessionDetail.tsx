@@ -65,7 +65,7 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
     });
     const loadSessionDetail = async () => {
         console.log("loadSessionDetail", detailData);
-        const response = await fetcher('http://localhost:3000/api/session/getSessionByID', {
+        const response = await fetcher('api/session/getSessionByID', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

@@ -19,7 +19,7 @@ export default function ShareScreen() {
 
             let session = await getSession();
             console.log("session", session);
-            const userData = await fetcher('http://localhost:3000/api/users/getBrowsersByEmail', {
+            const userData = await fetcher('api/users/getBrowsersByEmail', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -30,7 +30,7 @@ export default function ShareScreen() {
                 for (const browser of userData.browsers) {
                     let embed_URL = "";
                     if (browser.id) {
-                        const result = await fetcher('http://localhost:3000/api/session/getSessionByID', {
+                        const result = await fetcher('api/session/getSessionByID', {
                             method: 'POST',
                             headers: { 'Content-Type': 'application/json' },
                             body: JSON.stringify({
