@@ -23,13 +23,13 @@ const useStyles = createStyles(() => ({
 type ComponentStylesNames = Selectors<typeof useStyles>;
 export const getServerSideProps: GetServerSideProps = async (context) => {
     const db = await connectMongo();
-    const sessionData = await fetcher('http://localhost:3000/api/session/getSessionByID', {
+    const sessionData = await fetcher('api/session/getSessionByID', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
             _id: context.params.id,
         }),
-    });
+    }) as ISessionData;
     // console.log("SessionData", res);
     return {
         props: { sessionData }
