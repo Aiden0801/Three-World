@@ -48,7 +48,7 @@ const SessionControl = () => {
 
     const loadSessions = useCallback(async () => {
         console.log("Session Control LoadSessions");
-        const session_data = await fetcher('http://localhost:3000/api/session/getControlSession', {
+        const session_data = await fetcher('api/session/getControlSession', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({

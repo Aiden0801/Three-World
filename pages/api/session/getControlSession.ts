@@ -23,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
 
             for (const session of user) {
                 console.log('getControlSession Sessions', session);
-                const resp = await fetcher('http://localhost:3000/api/session/updateSessionStateByID', {
+                const resp = await fetcher('api/session/updateSessionStateByID', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

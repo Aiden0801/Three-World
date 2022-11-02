@@ -13,13 +13,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     let { email } = req.body;
     console.log("getAvailableSessions", email);
     try {
-        // const resp = await fetcher('http://localhost:3000/api/session/updateSessionStateByID', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         creator: session.user.email,
-        //     }),
-        // });
         let mySessions = await Session.find({
             creator: email
         }).select("-session_id");
@@ -30,7 +23,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
         // let user = await Session.find().select("users");
         for (const session of user) {
             console.log('getAvailable Sessions', session);
-            const resp = await fetcher('http://localhost:3000/api/session/updateSessionStateByID', {
+            const resp = await fetcher('api/session/updateSessionStateByID', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
