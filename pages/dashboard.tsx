@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dashboard } from '../page-components/Dashboard'
-import { Layout, Navbar } from '../components/Layout'
-import { Grid, SimpleGrid } from '@mantine/core';
+import { Navbar } from '../components/Layout'
+import { Grid } from '@mantine/core';
 const DashboardPage: React.FC = () => {
     return (
         <>

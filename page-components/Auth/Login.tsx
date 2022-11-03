@@ -18,12 +18,10 @@ export default function Login() {
             router.push('./')
         }
     }, [status]);
-    const handleLogIn = async (providerName) => {
-        console.log(providerName);
+    const handleLogIn = async (providerName: string) => {
 
         await signIn(providerName.toLowerCase(), { callbackUrl: 'http://localhost:3000/dashboard' });
     }
-
     return (
         <>
             <div style={{ width: '100%', height: '100vh', display: 'flex' }}>
@@ -35,13 +33,6 @@ export default function Login() {
                 </Stack>
 
             </div>
-            {/* Object.values(providers).map((provider) => (
-            <div key={provider.name}>
-                <button onClick={() => { handleLogIn(provider.name) }}>
-                    Sign in with {provider.name}
-                </button>
-            </div>
-            )) */}
 
         </>
     )

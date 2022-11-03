@@ -5,7 +5,7 @@ import { IconPlus } from '@tabler/icons'
 
 
 
-const Dashboard = () => {
+const Dashboard :React.FC= () => {
     return (
         <div style={{
             height: '100vh',

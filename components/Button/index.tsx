@@ -1,11 +1,13 @@
-import { Button, } from '@mantine/core';
+import { Button, ButtonProps, } from '@mantine/core';
 import { GithubIcon, DiscordIcon, } from '@mantine/ds';
 import Image from 'next/image'
-
-export function GoogleButton(props) {
+interface IButtonProps extends ButtonProps {
+    onClick?: () => void;
+}
+export function GoogleButton(props: IButtonProps) {
     return <Button leftIcon={<Image src="/GoogleIcon.svg" alt="" width={36} height={36} />} variant="outline" color="black" {...props} />;
 }
-export function DiscordButton(props) {
+export function DiscordButton(props: IButtonProps) {
     return (
         <Button
             leftIcon={<DiscordIcon size={36} />}
@@ -23,7 +25,7 @@ export function DiscordButton(props) {
     );
 }
 
-export function GithubButton(props) {
+export function GithubButton(props: IButtonProps) {
     return (
         <Button
             {...props}
