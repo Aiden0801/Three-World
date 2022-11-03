@@ -1,4 +1,7 @@
-export const fetcher = (...args) => {
+/***
+ * ! You must change the args to : ...args: Parameters<typeof fetch>
+ */
+export const fetcher = async (...args: Parameters<typeof fetch>) => {
     return fetch(...args).then(async (res) => {
         let payload;
         try {
