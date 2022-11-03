@@ -72,7 +72,7 @@ const useStyles = createStyles((theme) => ({
     },
 }));
 
-const Index = () => {
+const Index: React.FC = () => {
     const { classes } = useStyles();
 
 

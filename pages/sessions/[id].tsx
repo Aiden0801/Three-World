@@ -49,7 +49,6 @@ const SessionDetailPage: React.FC<IPropsSessionData> = ({ sessionData }: IPropsS
                 </Grid.Col>
             </Grid>
         </>
-
     )
 }
 

@@ -89,8 +89,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
         },
     };
 });
-
-export default function UserMenu({ initialState }) {
+interface INavbarProps extends React.PropsWithChildren {
+    initialState?: string;
+}
+const UserMenu: React.FC<INavbarProps> = ({ initialState }) => {
     const { colorScheme, toggleColorScheme } = useMantineColorScheme();
     const theme = useMantineTheme();
     const { classes, cx } = useStyles();
@@ -240,3 +242,4 @@ export default function UserMenu({ initialState }) {
         </Navbar >
     );
 }
+export default UserMenu;
