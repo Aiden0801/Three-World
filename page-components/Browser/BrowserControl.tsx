@@ -83,13 +83,6 @@ export default function BrowserControl() {
             openModal(result.draggableId, result.destination.droppableId);
         console.log(result);
     }
-    const init = async () => {
-
-        setIsHandling(true);
-        await loadSessions();
-        await loadBrowsers();
-        setIsHandling(false);
-    }
     useEffect(() => {
         if (typeof window !== "undefined") {
             {
@@ -99,6 +92,14 @@ export default function BrowserControl() {
         }
     }, []);
     useEffect(() => {
+
+        const init = async () => {
+
+            setIsHandling(true);
+            await loadSessions();
+            await loadBrowsers();
+            setIsHandling(false);
+        }
         if (status == "authenticated") {
             init();
         }
