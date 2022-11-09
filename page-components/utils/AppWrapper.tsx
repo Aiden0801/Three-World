@@ -77,7 +77,7 @@ const PageWrapper = ({ children, currentPage }) => {
                            }
                         />
                      </Group>
-                     {session && (
+                     {/* {session && (
                         <div
                            style={{
                               position: 'absolute',
@@ -96,7 +96,7 @@ const PageWrapper = ({ children, currentPage }) => {
                               Logout
                            </Button>
                         </div>
-                     )}
+                     )} */}
                   </div>
                </Header>
             }>
