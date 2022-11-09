@@ -2,21 +2,16 @@ import React from 'react'
 import { Button, Text } from '@mantine/core'
 import { IconPlus } from '@tabler/icons'
 
-
-
-
-const Dashboard :React.FC= () => {
+const Dashboard: React.FC = () => {
     return (
-        <div style={{
-            height: '100vh',
-            display: 'flex'
-        }}>
+        <div style={{ height: '100vh', display: 'flex' }}>
             <Text
-                style={{
-                    margin: 'auto',
-                    fontSize: '100px',
-                }}
-                component="span" variant="gradient" gradient={{ from: 'blue', to: 'cyan' }} inherit>
+                style={{ margin: 'auto', fontSize: '100px' }}
+                component="span"
+                variant="gradient"
+                gradient={{ from: 'blue', to: 'cyan' }}
+                inherit
+            >
                 Coming Soon
             </Text>
         </div>
