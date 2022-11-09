@@ -1,245 +1,280 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
-import { useEffect } from 'react';
+import { useEffect } from 'react'
 import { useRouter } from 'next/router'
-import { useState } from 'react';
-import { createStyles, Navbar, Group, Code, Image, Button, NavLink, Avatar, TextInput, ActionIcon, Switch, useMantineColorScheme, useMantineTheme } from '@mantine/core';
+import { useState } from 'react'
 import {
-    IconDatabaseImport,
-    IconSun,
-    IconMoonStars,
-    IconLogout,
-    IconUserPlus,
-    IconScreenShare,
-    IconDashboard,
-    IconShare,
-    IconMessage2,
-    IconBuildingCommunity,
-    IconBuildingLighthouse,
-    IconSettingsAutomation,
-    IconKey,
-    IconSearch,
-} from '@tabler/icons';
-import { MantineLogo } from '@mantine/ds';
+   createStyles,
+   Navbar,
+   Group,
+   Code,
+   Image,
+   Button,
+   NavLink,
+   Avatar,
+   TextInput,
+   ActionIcon,
+   Switch,
+   useMantineColorScheme,
+   useMantineTheme,
+} from '@mantine/core'
+import {
+   IconDatabaseImport,
+   IconLogout,
+   IconUserPlus,
+   IconScreenShare,
+   IconDashboard,
+   IconShare,
+   IconMessage2,
+   IconBuildingCommunity,
+   IconBuildingLighthouse,
+   IconSettingsAutomation,
+   IconKey,
+   IconSearch,
+} from '@tabler/icons'
+import { MantineLogo } from '@mantine/ds'
 
 const useStyles = createStyles((theme, _params, getRef) => {
-    const icon = getRef('icon');
-    return {
-        container: {
-            backgroundColor: theme.colors.gray[1],
-        },
-        header: {
-            paddingBottom: theme.spacing.md,
-            marginBottom: theme.spacing.md * 1.5,
-            borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-                }`,
-        },
-        section: {
-            marginLeft: -theme.spacing.md,
-            marginRight: -theme.spacing.md,
-            marginBottom: theme.spacing.md,
+   const icon = getRef('icon')
+   return {
+      container: {
+         backgroundColor: theme.colors.gray[1],
+      },
+      header: {
+         paddingBottom: theme.spacing.md,
+         marginBottom: theme.spacing.md * 1.5,
+         borderBottom: `1px solid ${
+            theme.colorScheme === 'dark'
+               ? theme.colors.dark[4]
+               : theme.colors.gray[2]
+         }`,
+      },
+      section: {
+         marginLeft: -theme.spacing.md,
+         marginRight: -theme.spacing.md,
+         marginBottom: theme.spacing.md,
 
-            '&:not(:last-of-type)': {
-                borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]
-                    }`,
+         '&:not(:last-of-type)': {
+            borderBottom: `1px solid ${
+               theme.colorScheme === 'dark'
+                  ? theme.colors.dark[4]
+                  : theme.colors.gray[3]
+            }`,
+         },
+      },
+      footer: {
+         paddingTop: theme.spacing.md,
+         marginTop: theme.spacing.md,
+         borderTop: `1px solid ${
+            theme.colorScheme === 'dark'
+               ? theme.colors.dark[4]
+               : theme.colors.gray[2]
+         }`,
+      },
+
+      link: {
+         ...theme.fn.focusStyles(),
+         display: 'flex',
+         alignItems: 'center',
+         textDecoration: 'none',
+         fontSize: theme.fontSizes.sm,
+         color:
+            theme.colorScheme === 'dark'
+               ? theme.colors.dark[1]
+               : theme.colors.gray[7],
+         padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
+         borderRadius: theme.radius.sm,
+         fontWeight: 500,
+
+         '&:hover': {
+            backgroundColor:
+               theme.colorScheme === 'dark'
+                  ? theme.colors.dark[6]
+                  : theme.colors.gray[0],
+            color: theme.colorScheme === 'dark' ? theme.white : theme.black,
+
+            [`& .${icon}`]: {
+               color: theme.colorScheme === 'dark' ? theme.white : theme.black,
             },
-        },
-        footer: {
-            paddingTop: theme.spacing.md,
-            marginTop: theme.spacing.md,
-            borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
-                }`,
-        },
+         },
+      },
 
-        link: {
-            ...theme.fn.focusStyles(),
-            display: 'flex',
-            alignItems: 'center',
-            textDecoration: 'none',
-            fontSize: theme.fontSizes.sm,
-            color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
-            padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
-            borderRadius: theme.radius.sm,
-            fontWeight: 500,
+      linkIcon: {
+         ref: icon,
+         color:
+            theme.colorScheme === 'dark'
+               ? theme.colors.dark[2]
+               : theme.colors.gray[6],
+         marginRight: theme.spacing.sm,
+      },
 
-            '&:hover': {
-                backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
-                color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-
-                [`& .${icon}`]: {
-                    color: theme.colorScheme === 'dark' ? theme.white : theme.black,
-                },
+      linkActive: {
+         '&, &:hover': {
+            backgroundColor: theme.fn.variant({
+               variant: 'light',
+               color: theme.primaryColor,
+            }).background,
+            color: theme.fn.variant({
+               variant: 'light',
+               color: theme.primaryColor,
+            }).color,
+            [`& .${icon}`]: {
+               color: theme.fn.variant({
+                  variant: 'light',
+                  color: theme.primaryColor,
+               }).color,
             },
-        },
-
-        linkIcon: {
-            ref: icon,
-            color: theme.colorScheme === 'dark' ? theme.colors.dark[2] : theme.colors.gray[6],
-            marginRight: theme.spacing.sm,
-        },
-
-        linkActive: {
-            '&, &:hover': {
-                backgroundColor: theme.fn.variant({ variant: 'light', color: theme.primaryColor })
-                    .background,
-                color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
-                [`& .${icon}`]: {
-                    color: theme.fn.variant({ variant: 'light', color: theme.primaryColor }).color,
-                },
-            },
-        },
-    };
-});
+         },
+      },
+   }
+})
 interface INavbarProps extends React.PropsWithChildren {
-    initialState?: string;
+   initialState?: string
+   hidden?: any
+   hiddenBreakpoint?: any
+   width?: any
 }
-const UserMenu: React.FC<INavbarProps> = ({ initialState }) => {
-    const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-    const theme = useMantineTheme();
-    const { classes, cx } = useStyles();
-    const [active, setActive] = useState(initialState);
-    const { data: session, status } = useSession()
+const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
+   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+   const theme = useMantineTheme()
+   const { classes, cx } = useStyles()
+   const [active, setActive] = useState(initialState)
+   const { data: session, status } = useSession()
 
-    const router = useRouter();
-    useEffect(() => {
-        if (status === "unauthenticated") {
-            router.push('./')
-        }
-    }, [status]);
-    return (
-        <Navbar height={'100vh'} p="md" className={classes.container}>
-
-            <Group className={classes.header} position="apart">
-                <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
-                <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
-            </Group>
-            <TextInput
-                placeholder="Search"
-                size="xs"
-                icon={<IconSearch size={12} stroke={1.5} />}
-                rightSectionWidth={70}
-                rightSection={<Code >Ctrl + K</Code>}
-                styles={{ rightSection: { pointerEvents: 'none' } }}
-                mb="sm"
+   const router = useRouter()
+   useEffect(() => {
+      if (status === 'unauthenticated') {
+         router.push('./')
+      }
+   }, [status])
+   return (
+      <Navbar p="md" className={classes.container} {...props}>
+         <Group className={classes.header} position="apart">
+            <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
+            <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
+         </Group>
+         <TextInput
+            placeholder="Search"
+            size="xs"
+            icon={<IconSearch size={12} stroke={1.5} />}
+            rightSectionWidth={70}
+            rightSection={<Code>Ctrl + K</Code>}
+            styles={{ rightSection: { pointerEvents: 'none' } }}
+            mb="sm"
+         />
+         <Navbar.Section grow className={classes.section}>
+            <NavLink
+               label="Community"
+               className={classes.link}
+               icon={
+                  <IconBuildingCommunity
+                     size="20"
+                     color="green"></IconBuildingCommunity>
+               }
             />
-            <Navbar.Section grow className={classes.section}>
-                <NavLink
+            <NavLink
+               label="Hacker House"
+               className={classes.link}
+               icon={
+                  <IconBuildingLighthouse
+                     size="20"
+                     color="blue"></IconBuildingLighthouse>
+               }
+            />
+            <NavLink
+               component="a"
+               label="Landing Page"
+               className={classes.link}
+               description="Additional information"
+               href="/dashboard"
+               active={active == 'dashboard' ? true : false}
+               icon={
+                  <IconDashboard size="20" color="royalblue"></IconDashboard>
+               }
+            />
+            <NavLink
+               className={classes.link}
+               label="Bot Settings"
+               icon={
+                  <IconSettingsAutomation
+                     size="20"
+                     color="indigo "></IconSettingsAutomation>
+               }
+            />
+            <NavLink
+               component="a"
+               label="Session"
+               className={classes.link}
+               description="Additional information"
+               href="/sessions"
+               active={active == 'sessions' ? true : false}
+               icon={
+                  <IconDatabaseImport
+                     size="20"
+                     color="red"></IconDatabaseImport>
+               }
+            />
+            <NavLink
+               component="a"
+               label="Browser"
+               className={classes.link}
+               description="Additional information"
+               href="/browsers"
+               active={active == 'browsers' ? true : false}
+               icon={<IconScreenShare size="20" color="red"></IconScreenShare>}
+            />
+            <NavLink
+               component="a"
+               label="Launch"
+               className={classes.link}
+               description="Additional information"
+               href="/share"
+               active={active == 'share' ? true : false}
+               icon={<IconShare size="20" color="red"></IconShare>}
+            />
+            <NavLink
+               className={classes.link}
+               label="Messages"
+               icon={<IconMessage2 size="20" color="blue"></IconMessage2>}
+            />
+            <NavLink
+               className={classes.link}
+               component="a"
+               label="UserManagement"
+               description="Additional information"
+               href="/user"
+               active={active == 'user' ? true : false}
+               icon={<IconUserPlus size="20" color="blue"></IconUserPlus>}
+            />
+            <NavLink
+               label="Security"
+               icon={<IconKey size="20" color="black"></IconKey>}
+            />
+         </Navbar.Section>
 
-                    label="Community"
-                    className={classes.link}
-                    icon={
-                        <IconBuildingCommunity size="20" color="green">
-                        </IconBuildingCommunity>
-                    }
-                />
-                <NavLink
-
-                    label="Hacker House"
-                    className={classes.link}
-                    icon={
-                        <IconBuildingLighthouse size="20" color="blue">
-                        </IconBuildingLighthouse>
-                    }
-                />
-                <NavLink
-                    component='a'
-                    label="Landing Page"
-                    className={classes.link}
-                    description="Additional information"
-                    href='/dashboard'
-                    active={active == 'dashboard' ? true : false}
-                    icon={
-                        <IconDashboard size="20" color="royalblue">
-                        </IconDashboard>
-                    }
-                />
-                <NavLink
-
-                    className={classes.link}
-                    label="Bot Settings"
-                    icon={
-                        <IconSettingsAutomation size="20" color="indigo ">
-                        </IconSettingsAutomation>
-                    }
-                />
-                <NavLink
-                    component='a'
-                    label="Session"
-                    className={classes.link}
-                    description="Additional information"
-                    href='/sessions'
-                    active={active == 'sessions' ? true : false}
-                    icon={
-                        <IconDatabaseImport size="20" color="red">
-                        </IconDatabaseImport>
-                    }
-                />
-                <NavLink
-                    component='a'
-                    label="Browser"
-                    className={classes.link}
-                    description="Additional information"
-                    href='/browsers'
-                    active={active == 'browsers' ? true : false}
-                    icon={
-                        <IconScreenShare size="20" color="red">
-                        </IconScreenShare>
-                    }
-                />
-                <NavLink
-                    component='a'
-                    label="Launch"
-                    className={classes.link}
-                    description="Additional information"
-                    href='/share'
-                    active={active == 'share' ? true : false}
-                    icon={
-                        <IconShare size="20" color="red">
-                        </IconShare>
-                    }
-                />
-                <NavLink
-
-                    className={classes.link}
-                    label="Messages"
-                    icon={
-                        <IconMessage2 size="20" color="blue">
-                        </IconMessage2>
-                    }
-                />
-                <NavLink
-                    className={classes.link}
-                    component='a'
-                    label="UserManagement"
-                    description="Additional information"
-                    href='/user'
-                    active={active == 'user' ? true : false}
-                    icon={
-                        <IconUserPlus size="20" color="blue">
-                        </IconUserPlus>
-                    }
-                />
-                <NavLink
-
-                    label="Security"
-                    icon={
-                        <IconKey size="20" color="black">
-                        </IconKey>
-                    }
-                />
-            </Navbar.Section>
-
-            <Navbar.Section className={classes.footer}>
-                {/* <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
+         <Navbar.Section className={classes.footer}>
+            {/* <a href="#" className={classes.link} onClick={(event) => event.preventDefault()}>
                     <IconSwitchHorizontal className={classes.linkIcon} stroke={1.5} />
                     <span>Change account</span>
                 </a> */}
-                <a href="#" className={classes.link} onClick={(event) => { event.preventDefault(); signOut({ callbackUrl: 'http://localhost:3000/' }); }}>
-                    {session && <Avatar src={session.user.image} alt={session.user.name} style={{ marginRight: "10px" }} />}
-                    <IconLogout className={classes.linkIcon} stroke={1.5} />
-                    <span>Logout</span>
-                </a>
-            </Navbar.Section>
-        </Navbar >
-    );
+            <a
+               href="#"
+               className={classes.link}
+               onClick={(event) => {
+                  event.preventDefault()
+                  signOut({ callbackUrl: 'http://localhost:3000/' })
+               }}>
+               {session && (
+                  <Avatar
+                     src={session.user.image}
+                     alt={session.user.name}
+                     style={{ marginRight: '10px' }}
+                  />
+               )}
+               <IconLogout className={classes.linkIcon} stroke={1.5} />
+               <span>Logout</span>
+            </a>
+         </Navbar.Section>
+      </Navbar>
+   )
 }
-export default UserMenu;
+export default UserMenu
