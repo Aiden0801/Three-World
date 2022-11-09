@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { SessionControl } from '../../page-components/SessionControl'
 import { Layout, Navbar } from '../../components/Layout'
 import { Grid, AppShell, MediaQuery, Burger, Text, Header } from '@mantine/core'
-const PageWrapper = ({ children }) => {
+const PageWrapper = ({ children, currentPage }) => {
    const [opened, setOpened] = useState(false)
 
    return (
@@ -14,7 +14,7 @@ const PageWrapper = ({ children }) => {
                   hidden={!opened}
                   hiddenBreakpoint="sm"
                   width={{ sm: 300, lg: 400 }}
-                  initialState={'sessions'}
+                  initialState={currentPage}
                />
             }
             header={

@@ -6,7 +6,7 @@ import PageWrapper from '../../page-components/utils/AppWrapper'
 const SessionPage = () => {
    return (
       <>
-         <PageWrapper>
+         <PageWrapper currentPage="sessions">
             <SessionControl />
          </PageWrapper>
       </>

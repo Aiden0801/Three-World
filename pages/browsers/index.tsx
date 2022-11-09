@@ -6,7 +6,7 @@ import PageWrapper from '../../page-components/utils/AppWrapper'
 const BrowserPage: React.FC = () => {
    return (
       <>
-         <PageWrapper>
+         <PageWrapper currentPage="browsers">
             <BrowserControl />
          </PageWrapper>
       </>
