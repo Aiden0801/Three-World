@@ -2,21 +2,25 @@ import React, { useState } from 'react'
 import { SessionControl } from '../../page-components/SessionControl'
 import { Layout, Navbar } from '../../components/Layout'
 import {
-   Grid,
    AppShell,
    MediaQuery,
    Burger,
-   Text,
    Header,
    Group,
-   Center,
-   Box,
-   SegmentedControl,
    Switch,
+   Avatar,
+   Menu,
+   Button,
 } from '@mantine/core'
-import { IconSun, IconMoon } from '@tabler/icons'
+import { IconSun, IconMoon, IconLogout } from '@tabler/icons'
+/**
+ * Next-Auth
+ */
+import { signIn, signOut, useSession } from 'next-auth/react'
 const PageWrapper = ({ children, currentPage }) => {
    const [opened, setOpened] = useState(false)
+
+   const { data: session, status } = useSession()
 
    return (
       <>
@@ -46,14 +50,12 @@ const PageWrapper = ({ children, currentPage }) => {
                            mr="xl"
                         />
                      </MediaQuery>
-                     <Text>Application header</Text>
 
                      <Group
                         position="center"
                         my={30}
                         style={{
                            position: 'absolute',
-                           right: 2,
                         }}>
                         <Switch
                            // checked={colorScheme === 'dark'}
@@ -75,6 +77,26 @@ const PageWrapper = ({ children, currentPage }) => {
                            }
                         />
                      </Group>
+                     {/* {session && (
+                        <div
+                           style={{
+                              position: 'absolute',
+                              right: 5,
+                           }}>
+                           <Button
+                              variant="outline"
+                              radius="xl"
+                              onClick={(event) => {
+                                 event.preventDefault()
+                                 signOut({
+                                    callbackUrl: 'http://localhost:3000/',
+                                 })
+                              }}
+                              leftIcon={<IconLogout size={15} />}>
+                              Logout
+                           </Button>
+                        </div>
+                     )} */}
                   </div>
                </Header>
             }>
@@ -85,3 +107,19 @@ const PageWrapper = ({ children, currentPage }) => {
 }
 
 export default PageWrapper
+/**
+ *                            <Menu>
+                              <Menu.Target>
+                                 <Avatar
+                                    src={session.user.image}
+                                    alt={session.user.name}
+                                 />
+                              </Menu.Target>
+                              <Menu.Dropdown>
+                                 <Menu.Item icon={<IconLogout size={14} />}>
+                                    Logout
+                                 </Menu.Item>
+                              </Menu.Dropdown>
+                           </Menu>
+
+ */
