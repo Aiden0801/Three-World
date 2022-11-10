@@ -11,6 +11,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { _id } = req.body
+   console.log('deleteSession', _id)
    try {
       let session = await Session.findOne({
          _id: _id,
@@ -40,7 +41,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                }
             )
          } else {
-            console.log('Session is still running')
+            console.log('Session is dead')
          }
 
          await Session.findOneAndDelete({ _id: _id }).clone()
