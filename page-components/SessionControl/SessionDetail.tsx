@@ -12,6 +12,7 @@ import {
    Modal,
    ScrollArea,
    SimpleGrid,
+   Table,
    Text,
    TextInput,
    ThemeIcon,
@@ -210,6 +211,7 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
                      <></>
                   )}
                   <ScrollArea style={{ height: 450 }}>
+                     <Table></Table>
                      <List
                         spacing="xs"
                         size="sm"
