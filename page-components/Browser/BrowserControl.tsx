@@ -1,31 +1,22 @@
-import React, { useState, useEffect } from 'react'
 import {
-   ScrollArea,
-   Table,
-   LoadingOverlay,
-   createStyles,
    Container,
-   Group,
-   ActionIcon,
-   Footer,
-   Button,
-   Modal,
-   Text,
-   TextInput,
-   SimpleGrid,
-   Textarea,
+   createStyles,
    Divider,
+   ScrollArea,
    Skeleton,
+   Table,
+   Text,
 } from '@mantine/core'
-import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { ModalsProvider } from '@mantine/modals'
+import { ModalsProvider } from '@mantine/modals/lib/ModalsProvider'
 import { openConfirmModal } from '@mantine/modals'
-import { useSession } from 'next-auth/react'
-import { fetcher } from '../../lib/fetcher'
 import { IconGripVertical } from '@tabler/icons'
+import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
+import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { fetcher } from '../../lib/fetcher'
 
-import useSWR from 'swr'
 import styled from 'styled-components'
+import useSWR from 'swr'
 const Item = styled.tr
 
 const useStyles = createStyles((theme) => ({
