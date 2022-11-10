@@ -222,14 +222,14 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                   <Grid.Col span={3}>
                      <Text size="xl">Status</Text>
                   </Grid.Col>
-                  <Grid.Col span={3}>
+                  <Grid.Col span={7}>
                      {detailData.isActive ? (
                         <Text size="xl">Active</Text>
                      ) : (
                         <Text size="xl">Dead</Text>
                      )}
                   </Grid.Col>
-                  <Grid.Col span={6}>
+                  <Grid.Col span={2}>
                      {detailData.isActive ? (
                         <Button
                            leftIcon={<IconActivity />}

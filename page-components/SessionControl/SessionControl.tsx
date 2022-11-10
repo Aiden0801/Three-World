@@ -107,6 +107,7 @@ const SessionControl = () => {
             body: JSON.stringify({
                sessionName: name,
                creator: email,
+               sessionDescription: description,
             }),
          })
          mutate()
