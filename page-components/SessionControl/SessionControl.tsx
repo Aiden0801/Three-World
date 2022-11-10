@@ -29,6 +29,7 @@ import { fetcher } from '../../lib/fetcher'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
+      top: '50px',
       margin: '10px,10px,10px,10px',
    },
 }))
@@ -204,10 +205,7 @@ const SessionControl = () => {
                </SimpleGrid>
             </form>
          </Modal>
-         <Container
-            style={{
-               textAlign: 'center',
-            }}>
+         <Container>
             <Text
                component="span"
                align="center"
@@ -222,6 +220,7 @@ const SessionControl = () => {
             </Text>
             <ScrollArea>
                <Table
+                  withBorder
                   striped
                   withColumnBorders
                   sx={{ minWidth: 800 }}
@@ -309,7 +308,7 @@ const SessionControl = () => {
                                           onClick={() =>
                                              handleDeleteSession(session._id)
                                           }
-                                          color="orange"
+                                          color="dark"
                                           variant="subtle">
                                           <XOctagonFill />
                                        </Button>
