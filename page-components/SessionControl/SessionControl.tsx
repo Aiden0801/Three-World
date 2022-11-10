@@ -134,6 +134,22 @@ const SessionControl = () => {
       },
       [mutate, email]
    )
+   const handleDeleteSession = useCallback(
+      async (_id) => {
+         console.log(_id)
+         setIsHandling(true)
+         const response = await fetcher('/api/session/deleteSessionByID', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               _id: _id,
+            }),
+         })
+         mutate()
+         setIsHandling(false)
+      },
+      [mutate]
+   )
    const handleKillSession = useCallback(
       async (_id) => {
          console.log(_id)
@@ -267,9 +283,13 @@ const SessionControl = () => {
                                           justifyContent: 'center',
                                        }}>
                                        <Button
-                                          onClick={() =>
-                                             handleKillSession(session._id)
-                                          }
+                                          onClick={() => {
+                                             session.isActive
+                                                ? handleKillSession(session._id)
+                                                : handleActivateSession(
+                                                     session._id
+                                                  )
+                                          }}
                                           color={
                                              session.isActive ? 'red' : 'green'
                                           }
@@ -286,7 +306,7 @@ const SessionControl = () => {
 
                                        <Button
                                           onClick={() =>
-                                             handleKillSession(session._id)
+                                             handleDeleteSession(session._id)
                                           }
                                           color="orange"
                                           variant="subtle">
