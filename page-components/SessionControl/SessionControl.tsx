@@ -247,6 +247,7 @@ const SessionControl = () => {
 
             <ScrollArea>
                <Table
+                  withBorder
                   striped
                   withColumnBorders
                   sx={{ minWidth: 800 }}
