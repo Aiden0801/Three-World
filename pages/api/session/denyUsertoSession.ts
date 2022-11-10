@@ -8,22 +8,23 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { creator, email, _id } = req.body
+   console.log('Api part', creator, email, _id)
    try {
       let user = await Session.findOne({ _id })
       if (!user) {
          res.status(200).send('No Session')
       } else {
-         console.log(user.creator)
+         console.log('API part', user)
          if (user.creator !== creator) res.status(200).send('Access is denied')
          else {
-            var newAllowedUser = {
+            var newDenyUser = {
                email: email,
             }
             await Session.findOneAndUpdate(
                { _id },
                {
-                  $push: {
-                     users: newAllowedUser,
+                  $pull: {
+                     users: newDenyUser,
                   },
                }
             ).clone()
