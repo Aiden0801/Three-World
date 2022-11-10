@@ -1,6 +1,6 @@
 import React from 'react'
 import { Dashboard } from '../page-components/Dashboard'
-import PageWrapper from '../page-components/utils/AppWrapper'
+import { PageWrapper } from '../components/MainPage'
 const DashboardPage: React.FC = () => {
    return (
       <>

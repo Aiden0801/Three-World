@@ -1,4 +1,4 @@
-import { Stack, Text } from '@mantine/core'
+import { Stack, Text, Paper, Box } from '@mantine/core'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
@@ -28,50 +28,52 @@ export default function Login() {
    }
    return (
       <>
-         <div style={{ width: '100%', height: '100vh', display: 'flex' }}>
-            <Stack
+         <Box
+            sx={(theme) => ({
+               backgroundColor: theme.colors.gray[1],
+            })}
+            style={{
+               height: '100vh',
+               display: 'flex',
+            }}>
+            <Paper
+               shadow="xl"
                style={{
                   width: 300,
                   height: 220,
                   margin: 'auto',
                   padding: '10px 10px 10px 10px',
-               }}
-               align="center"
-               sx={(theme) => ({
-                  backgroundColor:
-                     theme.colorScheme === 'dark'
-                        ? theme.colors.dark[8]
-                        : theme.colors.gray[4],
-                  height: 300,
-               })}>
-               <Text
-                  weight="bold"
-                  variant="gradient"
-                  gradient={{ from: 'indigo', to: 'cyan' }}
-                  size="xl">
-                  {' '}
-                  Login Method
-               </Text>
-               <GoogleButton
-                  onClick={() => {
-                     handleLogIn('google')
-                  }}>
-                  With Google
-               </GoogleButton>
-               <GithubButton
-                  onClick={() => {
-                     handleLogIn('github')
-                  }}>
-                  Login with GitHub
-               </GithubButton>
-               <DiscordButton
-                  onClick={() => {
-                     handleLogIn('discord')
-                  }}>
-                  Join with Discord
-               </DiscordButton>
-            </Stack>
-         </div>
+               }}>
+               <Stack align="center">
+                  <Text
+                     weight="bold"
+                     variant="gradient"
+                     gradient={{ from: 'indigo', to: 'cyan' }}
+                     size="xl">
+                     {' '}
+                     Login Method
+                  </Text>
+                  <GoogleButton
+                     onClick={() => {
+                        handleLogIn('google')
+                     }}>
+                     With Google
+                  </GoogleButton>
+                  <GithubButton
+                     onClick={() => {
+                        handleLogIn('github')
+                     }}>
+                     Login with GitHub
+                  </GithubButton>
+                  <DiscordButton
+                     onClick={() => {
+                        handleLogIn('discord')
+                     }}>
+                     Join with Discord
+                  </DiscordButton>
+               </Stack>
+            </Paper>
+         </Box>
       </>
    )
 }

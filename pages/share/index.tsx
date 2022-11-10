@@ -1,6 +1,6 @@
 import React from 'react'
 import { Share } from '../../page-components/Share/index'
-import PageWrapper from '../../page-components/utils/AppWrapper'
+import PageWrapper from '../../components/MainPage/PageWrapper'
 const SharePage: React.FC = () => {
    return (
       <>
