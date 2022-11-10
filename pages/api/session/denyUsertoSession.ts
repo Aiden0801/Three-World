@@ -1,5 +1,4 @@
 import connectMongo from '../../../api-lib/mongodb'
-import axios from 'axios'
 const User = require('../../../api-lib/models/users')
 const Session = require('../../../api-lib/models/session')
 
@@ -16,14 +15,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          console.log(user.creator)
          if (user.creator !== creator) res.status(200).send('Access is denied')
          else {
-            var newAllowedUser = {
+            var newDenyedUser = {
                email: email,
             }
             Session.findOneAndUpdate(
                { _id },
                {
-                  $push: {
-                     users: newAllowedUser,
+                  $pop: {
+                     users: newDenyedUser,
                   },
                },
                function (error, success) {
