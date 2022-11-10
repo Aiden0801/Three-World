@@ -19,22 +19,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             var newAllowedUser = {
                email: email,
             }
-            Session.findOneAndUpdate(
+            await Session.findOneAndUpdate(
                { _id },
                {
                   $push: {
                      users: newAllowedUser,
                   },
-               },
-               function (error, success) {
-                  if (error) {
-                     res.status(200).send(error)
-                  } else {
-                     console.log(success)
-                  }
                }
-            )
-            res.status(200).send('Scuess')
+            ).clone()
+            console.log('update success')
+            res.status(200).send('success')
          }
       }
    } catch (err) {

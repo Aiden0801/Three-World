@@ -20,7 +20,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          'users.email': `${email}`,
       }).select('-session_id')
       let user = [...mySessions, ...availableSessions]
-      // let user = await Session.find().select("users");
       // for (const session of user) {
       //     console.log('getAvailable Sessions', session)
       //     const resp = await fetcher(
