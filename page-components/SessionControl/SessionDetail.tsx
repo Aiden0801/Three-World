@@ -1,6 +1,8 @@
 import { useState } from 'react'
 
 import { useSession } from 'next-auth/react'
+import { XOctagonFill } from 'react-bootstrap-icons'
+import useSWR from 'swr'
 
 import {
    Button,
@@ -15,6 +17,7 @@ import {
    Text,
    TextInput,
    ThemeIcon,
+   Table,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 // Users with a higher priority will preempt the control of lower priority users.
@@ -36,14 +39,52 @@ const useStyles = createStyles((theme) => ({
       margin: '10px,10px,10px,10px',
    },
 }))
-const SessionDetail = ({ sessionData }: IPropsSessionData) => {
-   console.log('SessionDetail', sessionData)
+
+const fetchSessionData = async (url: string, _id: string) => {
+   console.log('fetchSessionData', _id)
+   const session_data = await fetcher(
+      'http://localhost:3000/api/session/getSessionByID',
+      {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            _id: _id,
+         }),
+      }
+   )
+   console.log('session_data', session_data)
+   return session_data ? session_data : []
+}
+/***
+ * * Custom Hook for useSWR
+ * ? There mighe be more easier wway?
+ */
+const useSessionData = (_id: string) => {
+   const { data, mutate, error, isValidating } = useSWR(
+      ['api/session/getSessionByID', _id],
+      fetchSessionData,
+      { revalidateOnFocus: false }
+   )
+   return {
+      data: data,
+      isLoading: (!error && !data) || isValidating,
+      isError: error,
+      mutate: mutate,
+   }
+}
+
+const SessionDetail = ({ sessionID }: IPropsSessionData) => {
    const { data: session, status } = useSession()
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
    const { classes, theme } = useStyles()
    const [users, setUser] = useState([])
-   const [detailData, setDetailData] = useState(sessionData)
+   const {
+      data: detailData,
+      isLoading,
+      isError,
+      mutate,
+   } = useSessionData(sessionID)
 
    const handleActivateSession = async (_id) => {
       console.log(_id)
@@ -56,7 +97,7 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
             _id: _id,
          }),
       })
-      loadSessionDetail()
+      mutate()
       setIsHandling(false)
    }
    const handleKillSession = async (_id) => {
@@ -69,7 +110,7 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
             _id: _id,
          }),
       })
-      loadSessionDetail()
+      mutate()
       setIsHandling(false)
    }
    const form = useForm({
@@ -80,21 +121,6 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
          email: (value) => (value.length < 1 ? 'Name Field Required' : null),
       },
    })
-   useWindowEvent('keydown', (event) => {
-      console.log(event)
-   })
-   const loadSessionDetail = async () => {
-      console.log('loadSessionDetail', detailData)
-      const response = await fetcher('api/session/getSessionByID', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            _id: detailData._id,
-         }),
-      })
-      console.log('response', response)
-      setDetailData(response ? response : null)
-   }
    const handleAllowUser = async (values) => {
       const { email } = values
       setIsHandling(true)
@@ -109,13 +135,33 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
          }),
       })
       console.log('handleAllowUser', response)
-      await loadSessionDetail()
+      mutate()
+      setOpened(false)
+      setIsHandling(false)
+   }
+   const handleDenyAllowedUser = async (values) => {
+      const email = values
+      setIsHandling(true)
+      console.log('handleDenyUser', detailData.creator, detailData._id, email)
+      const response = await fetcher('/api/session/denyUsertoSession', {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            creator: detailData.creator,
+            _id: detailData._id,
+            email: email,
+         }),
+      })
+      console.log('handleDenyUser', response)
+      mutate()
       setOpened(false)
       setIsHandling(false)
    }
    return (
       <div className={classes.container}>
-         <LoadingOverlay visible={isHandling} overlayBlur={2}></LoadingOverlay>
+         <LoadingOverlay
+            visible={isHandling || isLoading}
+            overlayBlur={2}></LoadingOverlay>
          <Modal
             title="Allow User"
             opened={opened}
@@ -156,94 +202,117 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
                }}>
                Session Detail
             </Text>
-            <Grid columns={12}>
-               <Grid.Col span={3}>
-                  <Text size="xl">Name</Text>
-               </Grid.Col>
+            {detailData && (
+               <Grid columns={12}>
+                  <Grid.Col span={3}>
+                     <Text size="xl">Name</Text>
+                  </Grid.Col>
 
-               <Grid.Col span={9}>
-                  <Text size="xl">{detailData.name}</Text>
-               </Grid.Col>
-               <Grid.Col span={3}>
-                  <Text size="xl">Description</Text>
-               </Grid.Col>
+                  <Grid.Col span={9}>
+                     <Text size="xl">{detailData.name}</Text>
+                  </Grid.Col>
+                  <Grid.Col span={3}>
+                     <Text size="xl">Description</Text>
+                  </Grid.Col>
 
-               <Grid.Col span={9}>
-                  <Text size="xl"></Text>
-               </Grid.Col>
+                  <Grid.Col span={9}>
+                     <Text size="xl"></Text>
+                  </Grid.Col>
 
-               <Grid.Col span={3}>
-                  <Text size="xl">Status</Text>
-               </Grid.Col>
-               <Grid.Col span={3}>
-                  {detailData.isActive ? (
-                     <Text size="xl">Active</Text>
-                  ) : (
-                     <Text size="xl">Dead</Text>
-                  )}
-               </Grid.Col>
-               <Grid.Col span={6}>
-                  {detailData.isActive ? (
-                     <Button
-                        leftIcon={<IconActivity />}
-                        onClick={() => handleKillSession(detailData._id)}
-                        color="red">
-                        {' '}
-                        Stop
-                     </Button>
-                  ) : (
-                     <Button
-                        leftIcon={<IconActivity />}
-                        onClick={() => handleActivateSession(detailData._id)}>
-                        {' '}
-                        Activate
-                     </Button>
-                  )}
-               </Grid.Col>
-               <Grid.Col span={3}>
-                  <Text size="xl">Session Users</Text>
-               </Grid.Col>
-               <Grid.Col span={6}>
+                  <Grid.Col span={3}>
+                     <Text size="xl">Status</Text>
+                  </Grid.Col>
+                  <Grid.Col span={3}>
+                     {detailData.isActive ? (
+                        <Text size="xl">Active</Text>
+                     ) : (
+                        <Text size="xl">Dead</Text>
+                     )}
+                  </Grid.Col>
+                  <Grid.Col span={6}>
+                     {detailData.isActive ? (
+                        <Button
+                           leftIcon={<IconActivity />}
+                           onClick={() => handleKillSession(detailData._id)}
+                           color="red">
+                           {' '}
+                           Stop
+                        </Button>
+                     ) : (
+                        <Button
+                           leftIcon={<IconActivity />}
+                           onClick={() =>
+                              handleActivateSession(detailData._id)
+                           }>
+                           {' '}
+                           Activate
+                        </Button>
+                     )}
+                  </Grid.Col>
                   {detailData.users.length === 0 ? (
                      <Text size="xl">No Users Available</Text>
                   ) : (
-                     <></>
+                     <>
+                        <Grid.Col span={10}>
+                           <Text size="xl">Session Users</Text>
+                        </Grid.Col>
+                        <Grid.Col
+                           span={2}
+                           style={{
+                              display: 'flex',
+                              justifyContent: 'flex-end',
+                           }}>
+                           <Button
+                              onClick={() => {
+                                 setOpened(true)
+                              }}
+                              color="green">
+                              <IconPlus size={18} stroke={1.5} />
+                           </Button>
+                        </Grid.Col>
+                        <Grid.Col span={12} style={{}}>
+                           <ScrollArea style={{ height: 450 }}>
+                              <Table>
+                                 <thead>
+                                    <tr>
+                                       <th> Name</th>
+                                       <th> Actions</th>
+                                    </tr>
+                                 </thead>
+                                 <tbody>
+                                    {detailData.users.map((user, index) => {
+                                       // console.log(index, user.email)
+                                       // <div key={index}>AAAA</div>
+                                       return (
+                                          <tr key={index}>
+                                             <td>
+                                                <Text size="xl">
+                                                   {user.email}
+                                                </Text>
+                                             </td>
+                                             <td>
+                                                <Button
+                                                   onClick={() =>
+                                                      handleDenyAllowedUser(
+                                                         user.email
+                                                      )
+                                                   }
+                                                   color="orange"
+                                                   variant="subtle">
+                                                   <XOctagonFill />
+                                                </Button>
+                                             </td>
+                                          </tr>
+                                       )
+                                    })}
+                                 </tbody>
+                              </Table>
+                           </ScrollArea>
+                        </Grid.Col>
+                     </>
                   )}
-                  <ScrollArea style={{ height: 450 }}>
-                     <List
-                        spacing="xs"
-                        size="sm"
-                        center
-                        icon={
-                           <ThemeIcon color="teal" size={24} radius="xl">
-                              <IconCircleCheck size={16} />
-                           </ThemeIcon>
-                        }>
-                        {detailData.users.map((user, index) => {
-                           // console.log(index, user.email)
-                           // <div key={index}>AAAA</div>
-                           return (
-                              <List.Item key={index}>
-                                 <Text size="xl">{user.email}</Text>
-                              </List.Item>
-                           )
-                        })}
-                     </List>
-                  </ScrollArea>
-               </Grid.Col>
-
-               <Grid.Col span={12}>
-                  <Button
-                     onClick={() => {
-                        setOpened(true)
-                     }}
-                     rightIcon={<IconPlus size={18} stroke={1.5} />}
-                     color="green"
-                     pr={12}>
-                     Allow New User
-                  </Button>
-               </Grid.Col>
-            </Grid>
+               </Grid>
+            )}
             <Button
                size="xl"
                style={{

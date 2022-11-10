@@ -15,31 +15,31 @@ const useStyles = createStyles(() => ({
 }))
 type ComponentStylesNames = Selectors<typeof useStyles>
 export const getServerSideProps: GetServerSideProps = async (context) => {
-   await connectMongo()
-   const sessionData = (await fetcher(
-      'http://localhost:3000/api/session/getSessionByID',
-      {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            _id: context.params.id,
-         }),
-      }
-   )) as ISessionData
+   // await connectMongo()
+   // const sessionData = (await fetcher(
+   //    'http://localhost:3000/api/session/getSessionByID',
+   //    {
+   //       method: 'POST',
+   //       headers: { 'Content-Type': 'application/json' },
+   //       body: JSON.stringify({
+   //          _id: context.params.id,
+   //       }),
+   //    }
+   // )) as ISessionData
    // console.log("SessionData", res);
    return {
-      props: { sessionData },
+      props: { sessionID: context.params.id },
    }
 }
 
 const SessionDetailPage: React.FC<IPropsSessionData> = ({
-   sessionData,
+   sessionID,
 }: IPropsSessionData) => {
    const { classes, theme } = useStyles()
    return (
       <>
          <PageWrapper currentPage="sessions">
-            <SessionDetail sessionData={sessionData} />
+            <SessionDetail sessionID={sessionID} />
          </PageWrapper>
       </>
    )
