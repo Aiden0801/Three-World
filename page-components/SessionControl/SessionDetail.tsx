@@ -191,7 +191,6 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
          <Container style={{}} size="xl" px="xs">
             <Text
                component="span"
-               align="center"
                variant="gradient"
                gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
                weight={700}
@@ -216,7 +215,7 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                   </Grid.Col>
 
                   <Grid.Col span={9}>
-                     <Text size="xl"></Text>
+                     <Text size="xl">{detailData.description}</Text>
                   </Grid.Col>
 
                   <Grid.Col span={3}>
@@ -249,27 +248,28 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                         </Button>
                      )}
                   </Grid.Col>
+                  <Grid.Col span={10}>
+                     <Text size="xl">Session Users</Text>
+                  </Grid.Col>
+                  <Grid.Col
+                     span={2}
+                     style={{
+                        display: 'flex',
+                        justifyContent: 'flex-end',
+                     }}>
+                     <Button
+                        onClick={() => {
+                           setOpened(true)
+                        }}
+                        color="green">
+                        <IconPlus size={18} stroke={1.5} />
+                     </Button>
+                  </Grid.Col>
+
                   {detailData.users.length === 0 ? (
                      <Text size="xl">No Users Available</Text>
                   ) : (
                      <>
-                        <Grid.Col span={10}>
-                           <Text size="xl">Session Users</Text>
-                        </Grid.Col>
-                        <Grid.Col
-                           span={2}
-                           style={{
-                              display: 'flex',
-                              justifyContent: 'flex-end',
-                           }}>
-                           <Button
-                              onClick={() => {
-                                 setOpened(true)
-                              }}
-                              color="green">
-                              <IconPlus size={18} stroke={1.5} />
-                           </Button>
-                        </Grid.Col>
                         <Grid.Col span={12} style={{}}>
                            <ScrollArea style={{ height: 450 }}>
                               <Table>
