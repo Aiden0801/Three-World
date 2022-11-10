@@ -10,7 +10,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { creator, _id } = req.body
-   console.log(creator)
    try {
       let session = await Session.findOne({
          creator: creator,
