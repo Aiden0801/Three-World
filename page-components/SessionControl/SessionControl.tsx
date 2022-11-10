@@ -189,10 +189,7 @@ const SessionControl = () => {
                </SimpleGrid>
             </form>
          </Modal>
-         <Container
-            style={{
-               textAlign: 'center',
-            }}>
+         <Container>
             <Text
                component="span"
                align="center"
