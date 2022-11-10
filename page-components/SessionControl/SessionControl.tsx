@@ -1,8 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-
+import { XOctagonFill } from 'react-bootstrap-icons'
 import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
-
 import {
    Button,
    Container,
@@ -15,15 +14,22 @@ import {
    Text,
    Textarea,
    TextInput,
+   Group,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { IconActivity, IconListDetails, IconPlus } from '@tabler/icons'
+import {
+   IconActivity,
+   IconListDetails,
+   IconPlus,
+   IconPoint,
+} from '@tabler/icons'
 
 import { fetcher } from '../../lib/fetcher'
 
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
+      top: '50px',
       margin: '10px,10px,10px,10px',
    },
 }))
@@ -144,6 +150,21 @@ const SessionControl = () => {
       },
       [mutate]
    )
+   const handleDeleteSession = useCallback(
+      async (_id) => {
+         setIsHandling(true)
+         const response = await fetcher('/api/session/deleteSessionByID', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               _id: _id,
+            }),
+         })
+         mutate()
+         setIsHandling(false)
+      },
+      [mutate]
+   )
    return (
       <div className={classes.container}>
          <LoadingOverlay
@@ -184,10 +205,7 @@ const SessionControl = () => {
                </SimpleGrid>
             </form>
          </Modal>
-         <Container
-            style={{
-               textAlign: 'center',
-            }}>
+         <Container>
             <Text
                component="span"
                align="center"
@@ -202,6 +220,7 @@ const SessionControl = () => {
             </Text>
             <ScrollArea>
                <Table
+                  withBorder
                   striped
                   withColumnBorders
                   sx={{ minWidth: 800 }}
@@ -220,7 +239,6 @@ const SessionControl = () => {
                         <th>Users</th>
                         <th>Active</th>
                         <th>Actions</th>
-                        <th>Details</th>
                      </tr>
                   </thead>
                   <tbody>
@@ -245,40 +263,56 @@ const SessionControl = () => {
                                        : session.users.length + ' Users'}
                                  </td>
                                  <td>
-                                    {session.isActive == true
-                                       ? 'Active'
-                                       : 'Dead'}
-                                 </td>
-                                 <td>
-                                    {session.isActive ? (
-                                       <Button
-                                          leftIcon={<IconActivity />}
-                                          onClick={() =>
-                                             handleKillSession(session._id)
+                                    <Group>
+                                       <IconPoint
+                                          color={
+                                             session.isActive ? 'green' : 'red'
                                           }
-                                          color="red">
-                                          {' '}
-                                          Stop
-                                       </Button>
-                                    ) : (
-                                       <Button
-                                          leftIcon={<IconActivity />}
-                                          onClick={() =>
-                                             handleActivateSession(session._id)
-                                          }>
-                                          {' '}
-                                          Activate
-                                       </Button>
-                                    )}
+                                          size={24}
+                                       />
+                                       {session.isActive == true
+                                          ? 'Active'
+                                          : 'Dead'}
+                                    </Group>
                                  </td>
-                                 <td>
-                                    <Button
-                                       leftIcon={<IconListDetails />}
-                                       color="green"
-                                       component="a"
-                                       href={`./sessions/${session._id}`}>
-                                       Details
-                                    </Button>
+                                 <td width={200}>
+                                    <div
+                                       style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                       }}>
+                                       <Button
+                                          onClick={() => {
+                                             session.isActive
+                                                ? handleKillSession(session._id)
+                                                : handleActivateSession(
+                                                     session._id
+                                                  )
+                                          }}
+                                          color={
+                                             session.isActive ? 'red' : 'green'
+                                          }
+                                          variant="subtle">
+                                          <IconActivity />
+                                       </Button>
+                                       <Button
+                                          color="indigo"
+                                          component="a"
+                                          href={`./sessions/${session._id}`}
+                                          variant="subtle">
+                                          <IconListDetails />
+                                       </Button>
+
+                                       <Button
+                                          onClick={() =>
+                                             handleDeleteSession(session._id)
+                                          }
+                                          color="dark"
+                                          variant="subtle">
+                                          <XOctagonFill />
+                                       </Button>
+                                    </div>
                                  </td>
                               </tr>
                            )

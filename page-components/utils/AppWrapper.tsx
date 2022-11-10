@@ -1,24 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 /**
  * Next-Auth
  */
-import { useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react'
 
 import {
-  AppShell,
-  Burger,
-  Group,
-  Header,
-  MediaQuery,
-  Switch,
-} from '@mantine/core';
-import {
-  IconMoon,
-  IconSun,
-} from '@tabler/icons';
+   AppShell,
+   Burger,
+   Group,
+   Header,
+   MediaQuery,
+   Switch,
+} from '@mantine/core'
+import { IconMoon, IconSun } from '@tabler/icons'
 
-import { Navbar } from '../../components/Layout';
+import { Navbar } from '../../components/Layout'
 
 const PageWrapper = ({ children, currentPage }) => {
    const [opened, setOpened] = useState(false)
@@ -59,6 +56,7 @@ const PageWrapper = ({ children, currentPage }) => {
                         my={30}
                         style={{
                            position: 'absolute',
+                           right: 0,
                         }}>
                         <Switch
                            // checked={colorScheme === 'dark'}
