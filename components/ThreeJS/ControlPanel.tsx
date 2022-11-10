@@ -111,7 +111,7 @@ function Card({ image, title, category }) {
       </Paper>
    )
 }
-export default function ControlPanel() {
+const ControlPanel = () => {
    const dispatch = useDispatch()
    const curBrowser = useSelector(getCurrentBrowserData)
    const curURL = useSelector(getCurrentURL)
@@ -267,3 +267,4 @@ export default function ControlPanel() {
       </>
    )
 }
+export default ControlPanel
