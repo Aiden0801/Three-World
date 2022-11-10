@@ -158,22 +158,22 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
             </Text>
             <Grid columns={12}>
                <Grid.Col span={3}>
-                  <Text size="xl">Session Name</Text>
+                  <Text size="xl">Name</Text>
                </Grid.Col>
 
                <Grid.Col span={9}>
                   <Text size="xl">{detailData.name}</Text>
                </Grid.Col>
                <Grid.Col span={3}>
-                  <Text size="xl">Session Description</Text>
+                  <Text size="xl">Description</Text>
                </Grid.Col>
 
                <Grid.Col span={9}>
-                  <Text size="xl">ASKDSJAKLD</Text>
+                  <Text size="xl"></Text>
                </Grid.Col>
 
                <Grid.Col span={3}>
-                  <Text size="xl">Session Status</Text>
+                  <Text size="xl">Status</Text>
                </Grid.Col>
                <Grid.Col span={3}>
                   {detailData.isActive ? (
@@ -209,7 +209,7 @@ const SessionDetail = ({ sessionData }: IPropsSessionData) => {
                   ) : (
                      <></>
                   )}
-                  <ScrollArea style={{ height: 500 }}>
+                  <ScrollArea style={{ height: 450 }}>
                      <List
                         spacing="xs"
                         size="sm"
