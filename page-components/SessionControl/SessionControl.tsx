@@ -15,6 +15,7 @@ import {
    Textarea,
    TextInput,
    Group,
+   Grid,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import {
@@ -99,6 +100,7 @@ const SessionControl = () => {
     * */
    const handleCreateNewSession = useCallback(
       async (values) => {
+         setOpened(false)
          const { name, description } = values
          setIsHandling(true)
          const response = await fetcher('/api/session/createSession', {
@@ -112,7 +114,6 @@ const SessionControl = () => {
          })
          mutate()
          setIsHandling(false)
-         setOpened(false)
       },
       [mutate, email]
    )
@@ -207,18 +208,43 @@ const SessionControl = () => {
             </form>
          </Modal>
          <Container>
-            <Text
-               component="span"
-               align="center"
-               variant="gradient"
-               gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-               weight={700}
-               style={{
-                  fontFamily: 'Greycliff CF, sans-serif',
-                  fontSize: '50px',
-               }}>
-               Sessions
-            </Text>
+            <Grid>
+               <Grid.Col span={10}>
+                  <Text
+                     component="span"
+                     align="center"
+                     variant="gradient"
+                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+                     weight={700}
+                     style={{
+                        fontFamily: 'Greycliff CF, sans-serif',
+                        fontSize: '50px',
+                     }}>
+                     Sessions
+                  </Text>
+               </Grid.Col>
+               <Grid.Col span={2}>
+                  <Button
+                     fullWidth
+                     style={{ marginTop: '20px' }}
+                     onClick={() => {
+                        setOpened(true)
+                     }}
+                     color="green"
+                     pr={12}>
+                     <Text
+                        sx={{
+                           [theme.fn.smallerThan('md')]: {
+                              display: 'none',
+                           },
+                        }}>
+                        New
+                     </Text>
+                     <IconPlus size={20} stroke={1.5} />
+                  </Button>
+               </Grid.Col>
+            </Grid>
+
             <ScrollArea>
                <Table
                   striped
@@ -319,16 +345,6 @@ const SessionControl = () => {
                         })}
                   </tbody>
                </Table>
-               <Button
-                  style={{ marginTop: '20px' }}
-                  onClick={() => {
-                     setOpened(true)
-                  }}
-                  rightIcon={<IconPlus size={18} stroke={1.5} />}
-                  color="green"
-                  pr={12}>
-                  Create New
-               </Button>
             </ScrollArea>
          </Container>
       </div>
