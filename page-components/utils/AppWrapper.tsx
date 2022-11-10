@@ -7,11 +7,14 @@ import { useSession } from 'next-auth/react'
 
 import {
    AppShell,
+   Avatar,
    Burger,
    Group,
    Header,
+   Indicator,
    MediaQuery,
    Switch,
+   UnstyledButton,
 } from '@mantine/core'
 import { IconMoon, IconSun } from '@tabler/icons'
 
@@ -35,12 +38,13 @@ const PageWrapper = ({ children, currentPage }) => {
                />
             }
             header={
-               <Header height={40}>
+               <Header height={50}>
                   <div
                      style={{
                         display: 'flex',
                         alignItems: 'center',
                         height: '100%',
+                        backgroundColor: '#CED4DA',
                      }}>
                      <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
                         <Burger
@@ -56,48 +60,20 @@ const PageWrapper = ({ children, currentPage }) => {
                         my={30}
                         style={{
                            position: 'absolute',
-                           right: 0,
+                           right: 20,
                         }}>
-                        <Switch
-                           // checked={colorScheme === 'dark'}
-                           // onChange={() => toggleColorScheme()}
-                           size="lg"
-                           onLabel={
-                              <IconSun
-                                 // color={theme.white}
-                                 size={20}
-                                 stroke={1.5}
-                              />
-                           }
-                           offLabel={
-                              <IconMoon
-                                 // color={theme.colors.gray[6]}
-                                 size={20}
-                                 stroke={1.5}
-                              />
-                           }
-                        />
+                        {session && (
+                           <UnstyledButton>
+                              <Indicator>
+                                 <Avatar
+                                    size={30}
+                                    src={session.user.image}
+                                    alt={session.user.name}
+                                 />
+                              </Indicator>
+                           </UnstyledButton>
+                        )}
                      </Group>
-                     {/* {session && (
-                        <div
-                           style={{
-                              position: 'absolute',
-                              right: 5,
-                           }}>
-                           <Button
-                              variant="outline"
-                              radius="xl"
-                              onClick={(event) => {
-                                 event.preventDefault()
-                                 signOut({
-                                    callbackUrl: 'http://localhost:3000/',
-                                 })
-                              }}
-                              leftIcon={<IconLogout size={15} />}>
-                              Logout
-                           </Button>
-                        </div>
-                     )} */}
                   </div>
                </Header>
             }>
@@ -108,19 +84,3 @@ const PageWrapper = ({ children, currentPage }) => {
 }
 
 export default PageWrapper
-/**
- *                            <Menu>
-                              <Menu.Target>
-                                 <Avatar
-                                    src={session.user.image}
-                                    alt={session.user.name}
-                                 />
-                              </Menu.Target>
-                              <Menu.Dropdown>
-                                 <Menu.Item icon={<IconLogout size={14} />}>
-                                    Logout
-                                 </Menu.Item>
-                              </Menu.Dropdown>
-                           </Menu>
-
- */

@@ -22,7 +22,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { sessionName, sessionDescription, creator } = req.body
-   console.log(sessionName, creator)
+   console.log('createSession', sessionName, sessionDescription)
    try {
       let user = await User.findOne({ email: creator })
       if (!user) {
@@ -47,10 +47,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             creator: user.email,
             session_id: resp.data.session_id,
             embed_url: resp.data.embed_url,
-            isActive: true,
             description: sessionDescription,
+            isActive: true,
          })
          await newSession.save()
+         console.log(newSession)
          res.status(200).json({ newSession })
       }
    } catch (err) {
