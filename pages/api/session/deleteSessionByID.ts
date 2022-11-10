@@ -2,17 +2,17 @@ import connectMongo from '../../../api-lib/mongodb'
 import axios from 'axios'
 const User = require('../../../api-lib/models/users')
 const Session = require('../../../api-lib/models/session')
-// ./api/session/getControlSession
-// Get Sessions created by me
-
+/**
+ * deletes session by id
+ * if session is active now end session first in hyperbeam
+ */
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
-   let { creator, _id } = req.body
+   let { _id } = req.body
    try {
       let session = await Session.findOne({
-         creator: creator,
          _id: _id,
       })
       //.select('name session_id isActive');
@@ -29,45 +29,22 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          )
          const termination_data = resp.data['termination_date']
          console.log(termination_data)
-         if (termination_data !== null) {
-            console.log('Session Ended! Activating')
-            console.log(session.session_id)
-            const settings = {
-               profile: {
-                  load: session.session_id,
-                  save: true,
-               },
-            }
-            const resp = await axios.post(
-               'https://engine.hyperbeam.com/v0/vm',
-               settings,
+         if (termination_data === null) {
+            console.log('Session is active! Deactivating', session.session_id)
+            const resp = await axios.delete(
+               `https://engine.hyperbeam.com/v0/vm/{${session.session_id}}`,
                {
                   headers: {
                      Authorization: `Bearer ${process.env.HYPERBEAM_KEY}`,
                   },
                }
             )
-            console.log(resp)
-            await Session.findOneAndUpdate(
-               { _id: _id },
-               {
-                  isActive: true,
-                  session_id: resp.data.session_id,
-                  embed_url: resp.data.embed_url,
-               },
-               function (error, success) {
-                  if (error) {
-                     res.status(200).send(error)
-                  } else {
-                     console.log(success)
-                  }
-               }
-            ).clone()
-            res.status(200).send('Sucess')
          } else {
             console.log('Session is still running')
-            res.status(200).send({ session })
          }
+
+         await Session.findOneAndDelete({ _id: _id }).clone()
+         res.status(200).send('Success')
       }
    } catch (err) {
       console.error(err.message)
