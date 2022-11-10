@@ -1,22 +1,25 @@
-import React, { useState } from 'react'
-import { SessionControl } from '../../page-components/SessionControl'
-import { Layout, Navbar } from '../../components/Layout'
-import {
-   AppShell,
-   MediaQuery,
-   Burger,
-   Header,
-   Group,
-   Switch,
-   Avatar,
-   Menu,
-   Button,
-} from '@mantine/core'
-import { IconSun, IconMoon, IconLogout } from '@tabler/icons'
+import React, { useState } from 'react';
+
 /**
  * Next-Auth
  */
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react';
+
+import {
+  AppShell,
+  Burger,
+  Group,
+  Header,
+  MediaQuery,
+  Switch,
+} from '@mantine/core';
+import {
+  IconMoon,
+  IconSun,
+} from '@tabler/icons';
+
+import { Navbar } from '../../components/Layout';
+
 const PageWrapper = ({ children, currentPage }) => {
    const [opened, setOpened] = useState(false)
 

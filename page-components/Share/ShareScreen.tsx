@@ -1,13 +1,15 @@
-import React from 'react'
 import { useEffect, useState } from 'react'
+
 import { getSession } from 'next-auth/react'
-import { fetcher } from '../../lib/fetcher'
-import { LoadingOverlay, Alert, Button } from '@mantine/core'
-import { IconAlertCircle } from '@tabler/icons'
-import { Space } from './index'
-import { ControlPanel, BrowserStatus } from '../../components/ThreeJS'
-import { setDataByIndex } from '../../store/browserSlice'
 import { useDispatch } from 'react-redux'
+
+import { LoadingOverlay } from '@mantine/core'
+
+import { ControlPanel } from '../../components/ThreeJS'
+import { fetcher } from '../../lib/fetcher'
+import { setDataByIndex } from '../../store/browserSlice'
+import { Space } from './index'
+
 export default function ShareScreen() {
    const dispatch = useDispatch()
    const [browsers, setBrowsers] = useState(null)

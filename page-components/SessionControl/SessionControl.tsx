@@ -1,26 +1,25 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import useSWR from 'swr'
-import {
-   ScrollArea,
-   Table,
-   LoadingOverlay,
-   createStyles,
-   Container,
-   Checkbox,
-   ActionIcon,
-   Footer,
-   Button,
-   Modal,
-   Text,
-   TextInput,
-   SimpleGrid,
-   Textarea,
-} from '@mantine/core'
-import { IconPlus, IconListDetails, IconActivity } from '@tabler/icons'
+import React, { useCallback, useEffect, useState } from 'react'
+
 import { useSession } from 'next-auth/react'
+import useSWR from 'swr'
+
+import {
+   Button,
+   Container,
+   createStyles,
+   LoadingOverlay,
+   Modal,
+   ScrollArea,
+   SimpleGrid,
+   Table,
+   Text,
+   Textarea,
+   TextInput,
+} from '@mantine/core'
 import { useForm } from '@mantine/form'
+import { IconActivity, IconListDetails, IconPlus } from '@tabler/icons'
+
 import { fetcher } from '../../lib/fetcher'
-import { imageConfigDefault } from 'next/dist/shared/lib/image-config'
 
 const useStyles = createStyles((theme) => ({
    container: {
@@ -28,6 +27,12 @@ const useStyles = createStyles((theme) => ({
       margin: '10px,10px,10px,10px',
    },
 }))
+/**
+ * * fetches data with the api
+ * @param url
+ * @param email
+ * @returns
+ */
 const fetchSessionData = async (url: string, email: string) => {
    const session_data = await fetcher('api/session/getControlSession', {
       method: 'POST',
@@ -38,6 +43,10 @@ const fetchSessionData = async (url: string, email: string) => {
    })
    return session_data ? session_data.user : []
 }
+/***
+ * * Custom Hook for useSWR
+ * ? There mighe be more easier wway?
+ */
 const useControlSession = (email: string) => {
    const { data, mutate, error, isValidating } = useSWR(
       ['api/session/getControlSession', email],
@@ -59,8 +68,9 @@ const SessionControl = () => {
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
    const { classes, theme } = useStyles()
+   // useSWR Hook
    const { data, isLoading, isError, mutate } = useControlSession(email)
-   // const [data, setData] = useState([]);
+
    const form = useForm({
       initialValues: {
          name: '',
@@ -82,50 +92,58 @@ const SessionControl = () => {
    /*
     * hello world
     * */
-   const handleCreateNewSession = async (values) => {
-      const { name, description } = values
-      console.log(session.user.email, name)
-      setIsHandling(true)
-      const response = await fetcher('/api/session/createSession', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            sessionName: name,
-            creator: session.user.email,
-         }),
-      })
-      mutate()
-      setIsHandling(false)
-      setOpened(false)
-   }
+   const handleCreateNewSession = useCallback(
+      async (values) => {
+         const { name, description } = values
+         setIsHandling(true)
+         const response = await fetcher('/api/session/createSession', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               sessionName: name,
+               creator: email,
+            }),
+         })
+         mutate()
+         setIsHandling(false)
+         setOpened(false)
+      },
+      [mutate, email]
+   )
 
-   const handleActivateSession = async (_id) => {
-      console.log(_id)
-      setIsHandling(true)
-      const response = await fetcher('/api/session/activateSessionByID', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            creator: session.user.email,
-            _id: _id,
-         }),
-      })
-      mutate()
-      setIsHandling(false)
-   }
-   const handleKillSession = async (_id) => {
-      console.log(_id)
-      setIsHandling(true)
-      const response = await fetcher('/api/session/killSessionByID', {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            _id: _id,
-         }),
-      })
-      mutate()
-      setIsHandling(false)
-   }
+   const handleActivateSession = useCallback(
+      async (_id) => {
+         console.log(_id)
+         setIsHandling(true)
+         const response = await fetcher('/api/session/activateSessionByID', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               creator: email,
+               _id: _id,
+            }),
+         })
+         mutate()
+         setIsHandling(false)
+      },
+      [mutate, email]
+   )
+   const handleKillSession = useCallback(
+      async (_id) => {
+         console.log(_id)
+         setIsHandling(true)
+         const response = await fetcher('/api/session/killSessionByID', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               _id: _id,
+            }),
+         })
+         mutate()
+         setIsHandling(false)
+      },
+      [mutate]
+   )
    return (
       <div className={classes.container}>
          <LoadingOverlay
