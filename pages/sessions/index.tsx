@@ -1,6 +1,6 @@
 import React from 'react'
 import { SessionControl } from '../../page-components/SessionControl'
-import PageWrapper from '../../page-components/utils/AppWrapper'
+import PageWrapper from '../../components/MainPage/PageWrapper'
 const SessionPage = () => {
    return (
       <>

@@ -3,10 +3,9 @@ import React from 'react'
 
 const Dashboard: React.FC = () => {
    return (
-      <div style={{ height: '100vh', display: 'flex' }}>
+      <div style={{ display: 'flex' }}>
          <Text
-            style={{ margin: 'auto', fontSize: '100px' }}
-            component="span"
+            style={{ margin: 'auto', fontSize: '50px' }}
             variant="gradient"
             gradient={{ from: 'blue', to: 'cyan' }}
             inherit>

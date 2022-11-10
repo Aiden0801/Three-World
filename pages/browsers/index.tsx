@@ -1,6 +1,6 @@
 import React from 'react'
 import { BrowserControl } from '../../page-components/Browser'
-import PageWrapper from '../../page-components/utils/AppWrapper'
+import PageWrapper from '../../components/MainPage/PageWrapper'
 const BrowserPage: React.FC = () => {
    return (
       <>
