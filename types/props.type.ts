@@ -1,4 +1,4 @@
-import { ISessionData } from "./session.type";
+import { ISessionData } from './session.type'
 export interface IPropsSessionData {
-    sessionData: ISessionData,
+   sessionID: string
 }

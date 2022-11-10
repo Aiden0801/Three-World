@@ -14,6 +14,7 @@ import {
    Drawer,
    Box,
    Grid,
+   Dialog,
 } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
 import {
@@ -110,7 +111,7 @@ function Card({ image, title, category }) {
       </Paper>
    )
 }
-export default function ControlPanel() {
+const ControlPanel = () => {
    const dispatch = useDispatch()
    const curBrowser = useSelector(getCurrentBrowserData)
    const curURL = useSelector(getCurrentURL)
@@ -186,7 +187,7 @@ export default function ControlPanel() {
                   ))}
             </Carousel>
          </Modal>
-         <Drawer
+         {/* <Drawer
             opened={opened}
             // style={{ width: 150, height: 70, position: 'absolute', top: 45, right: 25, backgroundColor: 'whilte', }}
             position="right"
@@ -196,8 +197,9 @@ export default function ControlPanel() {
             overlayBlur={0}
             withOverlay={false}
             overlayOpacity={0}
-            size={250}>
-            {/*  */}
+            size={250}> */}
+         {/*  */}
+         <Dialog opened={opened}>
             <Stack align="center" className={classes.stack}>
                <Text
                   align="center"
@@ -260,7 +262,9 @@ export default function ControlPanel() {
                   Scrap
                </Button>
             </Stack>
-         </Drawer>
+         </Dialog>
+         {/* </Drawer> */}
       </>
    )
 }
+export default ControlPanel
