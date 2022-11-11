@@ -139,7 +139,6 @@ const ControlPanel = () => {
             }),
          }
       )
-      // const url = "https://squarepanda.com/";
       setData(newData)
       console.log(newData)
       setIsScraping(false)

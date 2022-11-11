@@ -1,16 +1,14 @@
-import { Index } from '../page-components/Index'
-import { LandingPage } from '../page-components/ThreeJS'
 import { Layout } from '../components/Layout'
+import { Index } from '../page-components/Index'
 const Home: React.FC = () => {
-
-  return (
-    <>
-      <Layout>
-        <Index />
-      </Layout>
-      <LandingPage />
-    </>
-  )
+   return (
+      <>
+         <Layout>
+            <Index />
+         </Layout>
+         {/* <LandingPage /> */}
+      </>
+   )
 }
-export default Home;
+export default Home
 /**Test */
