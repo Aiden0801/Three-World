@@ -15,6 +15,7 @@ import {
    Box,
    Grid,
    Dialog,
+   Tabs,
 } from '@mantine/core'
 import { Carousel } from '@mantine/carousel'
 import {
@@ -23,6 +24,9 @@ import {
    IconArrowBigLeft,
    IconArrowBigRight,
    IconActivity,
+   IconPhoto,
+   IconMessageCircle,
+   IconSettings,
 } from '@tabler/icons'
 import {
    getCurrentBrowser,
@@ -30,9 +34,9 @@ import {
    getCurrentURL,
    setCommand,
    getCommand,
-} from '../../store/browserSlice'
+} from '../../../store/browserSlice'
 import { useDispatch, useSelector } from 'react-redux'
-import { fetcher } from '../../lib/fetcher'
+import { fetcher } from '../../../lib/fetcher'
 import { Box2 } from 'three'
 const useStyles = createStyles((theme) => ({
    card: {
@@ -156,16 +160,108 @@ const ControlPanel = () => {
       )
    }
    return (
-      <>
+      <Box
+         sx={(theme) => ({
+            backgroundColor: 'rgba(0,0,0,0)',
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            width: '200px',
+         })}>
          <LoadingOverlay visible={isHandling} overlayBlur={2} />
-         <Burger
-            color="white"
-            style={{ position: 'absolute', top: 50, right: 50 }}
+         {/* <Burger
+            color="indigo"
             opened={opened}
             onClick={() => setOpened((o) => !o)}
             title={title}
-         />
+         /> */}
 
+         <Tabs orientation="vertical" defaultValue="gallery" placement="right">
+            <Tabs.List>
+               <Tabs.Tab
+                  value="gallery"
+                  icon={<IconPhoto size={24} />}></Tabs.Tab>
+               <Tabs.Tab
+                  value="messages"
+                  icon={<IconMessageCircle size={24} />}></Tabs.Tab>
+               <Tabs.Tab
+                  value="settings"
+                  icon={<IconSettings size={24} />}></Tabs.Tab>
+            </Tabs.List>
+
+            <Tabs.Panel value="gallery" pl="xs">
+               Gallery tab content
+            </Tabs.Panel>
+
+            <Tabs.Panel value="messages" pl="xs">
+               Messages tab content
+            </Tabs.Panel>
+
+            <Tabs.Panel value="settings" pl="xs">
+               <Stack align="center" className={classes.stack}>
+                  <Text
+                     align="center"
+                     variant="gradient"
+                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+                     size="xl"
+                     weight={700}
+                     style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
+                     Control Panel
+                  </Text>
+                  <Text
+                     align="center"
+                     variant="gradient"
+                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+                     size="md"
+                     weight={700}
+                     style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
+                     Screen {curBrowser.index}
+                     {curBrowser && curBrowser.data.url == 'none' && (
+                        <IconActivity color="red" size={15} />
+                     )}
+                     {curBrowser && curBrowser.data.url != 'none' && (
+                        <IconActivity color="green" size={15} />
+                     )}
+                  </Text>
+                  <Text
+                     align="center"
+                     variant="gradient"
+                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+                     size="md"
+                     weight={700}
+                     style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
+                     {curBrowser.data.name}
+                  </Text>
+                  <Grid justify="space-around">
+                     <Grid.Col span={3} style={{ minWidth: 60 }}>
+                        <ActionIcon
+                           size="xl"
+                           variant="filled"
+                           color="green"
+                           onClick={() => handleCommand(1)}>
+                           <IconArrowBigLeft size={60} />
+                        </ActionIcon>
+                     </Grid.Col>
+                     <Grid.Col span={3} style={{ minWidth: 60 }}>
+                        <ActionIcon
+                           size="xl"
+                           variant="filled"
+                           color="green"
+                           onClick={() => handleCommand(2)}>
+                           <IconArrowBigRight size={60} />
+                        </ActionIcon>
+                     </Grid.Col>
+                  </Grid>
+                  <Button
+                     size="md"
+                     leftIcon={<IconWorldDownload size={20} />}
+                     onClick={handleScrapClick}
+                     loading={isScraping}>
+                     Scrap
+                  </Button>
+               </Stack>
+            </Tabs.Panel>
+         </Tabs>
          <Modal size="700px" opened={clicked} onClose={() => setClicked(false)}>
             <Text color="teal" size="xl">
                Teal text
@@ -263,7 +359,7 @@ const ControlPanel = () => {
             </Stack>
          </Dialog>
          {/* </Drawer> */}
-      </>
+      </Box>
    )
 }
 export default ControlPanel

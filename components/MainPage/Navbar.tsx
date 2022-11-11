@@ -1,37 +1,30 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
 import {
-   createStyles,
-   Navbar,
-   Group,
    Code,
+   createStyles,
+   Group,
    Image,
-   Button,
+   Navbar,
    NavLink,
-   Avatar,
    TextInput,
-   ActionIcon,
-   Switch,
    useMantineColorScheme,
    useMantineTheme,
 } from '@mantine/core'
 import {
-   IconDatabaseImport,
-   IconLogout,
-   IconUserPlus,
-   IconScreenShare,
-   IconDashboard,
-   IconShare,
-   IconMessage2,
    IconBuildingCommunity,
    IconBuildingLighthouse,
-   IconSettingsAutomation,
+   IconDashboard,
+   IconDatabaseImport,
    IconKey,
+   IconMessage2,
+   IconScreenShare,
    IconSearch,
+   IconSettingsAutomation,
+   IconShare,
+   IconUserPlus,
 } from '@tabler/icons'
-import { MantineLogo } from '@mantine/ds'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
 
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')

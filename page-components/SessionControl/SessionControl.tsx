@@ -172,7 +172,7 @@ const SessionControl = () => {
       [mutate]
    )
    return (
-      <Container className={classes.container}>
+      <Container mt="xl" className={classes.container}>
          {/* <LoadingOverlay
             visible={isLoading || isHandling}
             overlayBlur={2}></LoadingOverlay> */}

@@ -4,7 +4,9 @@ import { lazy, Suspense } from 'react'
 import { CameraPosition } from '../../components/ThreeJS'
 import { useState, useEffect } from 'react'
 import { PerspectiveCamera } from '@react-three/drei'
+import ControlPanel from '../../components/ThreeJS/ControlPanel/ControlPanel'
 const SkyComponent = lazy(() => import('../../components/ThreeJS/sky'))
+
 export default function SpaceScreen() {
    const [isBrowser, setIsBrowser] = useState(false)
    useEffect(() => {
@@ -22,24 +24,24 @@ export default function SpaceScreen() {
             height: '100%',
          }}>
          {isBrowser ? (
-            <Canvas
-               camera={{
-                  fov: 50,
-               }}>
-               <Suspense fallback={null}>
-                  <PerspectiveCamera>
-                     <SkyComponent />
+            // <Canvas
+            //    camera={{
+            //       fov: 50,
+            //    }}>
+            //    <Suspense fallback={null}>
+            //       <PerspectiveCamera>
+            //          <SkyComponent />
 
-                     <group>
-                        <CameraPosition />
-                     </group>
-                     <Light />
-                  </PerspectiveCamera>
-               </Suspense>
-            </Canvas>
+            //          <group><CameraPosition /></group>
+            //          <Light />
+            //       </PerspectiveCamera>
+            //    </Suspense>
+            // </Canvas>
+            <></>
          ) : (
             <div></div>
          )}
+         <ControlPanel />
       </div>
    )
 }
