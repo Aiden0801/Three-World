@@ -41,8 +41,6 @@ export default function FooterComp() {
    return (
       <Box
          style={{
-            position: 'absolute',
-            bottom: 0,
             backgroundColor: 'rgba(0, 0, 0, 0)',
          }}>
          <Footer

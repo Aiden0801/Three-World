@@ -110,16 +110,18 @@ export default function HeaderMenu() {
    return (
       <Box
          pb={20}
-         style={{
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-         }}>
-         <Header
-            height={60}
-            px="md"
-            style={{
-               backgroundColor: 'rgba(0, 0, 0, 0)',
-            }}>
-            <Group position="apart" sx={{ height: '100%' }}>
+         sx={(theme) => ({
+            backgroundColor: 'rgba(255, 0, 0, 0)',
+            position: 'fixed',
+            width: `calc(100vw - ${theme.spacing.md * 2}px)`,
+            top: 0,
+            left: 0,
+            zIndex: 45,
+
+            backdropFilter: 'blur(5px) drop-shadow(4px 4px 10px blue)',
+         })}>
+         <Header height={60}>
+            <Group position="apart" sx={{ height: '100%' }} pl="xl">
                <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
 
                <Group
@@ -131,6 +133,12 @@ export default function HeaderMenu() {
                   </a>
                   <a href="#" className={classes.link}>
                      Features
+                  </a>
+                  <a href="#" className={classes.link}>
+                     Pricing
+                  </a>
+                  <a href="#" className={classes.link}>
+                     About
                   </a>
                   <a href="#" className={classes.link}>
                      Contact US
