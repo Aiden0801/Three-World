@@ -96,7 +96,6 @@ export default function ShareScreen() {
       <>
          <LoadingOverlay visible={isHandling} overlayBlur={2} />
          {browsers && browsers.length == 4 ? <Space /> : <div>Loading </div>}
-         <ControlPanel />
       </>
    )
 }
