@@ -2,23 +2,20 @@ import {
    Container,
    createStyles,
    Divider,
+   Paper,
    ScrollArea,
    Skeleton,
    Table,
    Text,
-   Paper,
 } from '@mantine/core'
-import { ModalsProvider } from '@mantine/modals'
-import { openConfirmModal } from '@mantine/modals'
+import { ModalsProvider, openConfirmModal } from '@mantine/modals'
 import { IconGripVertical } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { fetcher } from '../../lib/fetcher'
 
-import styled from 'styled-components'
 import useSWR from 'swr'
-const Item = styled.tr
 
 const useStyles = createStyles((theme) => ({
    container: {
@@ -90,7 +87,6 @@ const useSessionData = (email: string) => {
 export default function BrowserControl() {
    const { data: session, status } = useSession()
    const { classes, theme } = useStyles()
-   const [email, setEmail] = useState('')
    const [isBrowser, setIsBrowser] = useState(false)
 
    const [isHandling, setIsHandling] = useState(false)
@@ -100,13 +96,13 @@ export default function BrowserControl() {
       mutate: mutateB,
       isError: isErrorB,
       isLoading: isLoadingB,
-   } = useBrowserData(email)
+   } = useBrowserData(session.user.email)
    const {
       data: session_data,
       mutate: mutateS,
       isError: isErrorS,
       isLoading: isLoadingS,
-   } = useSessionData(email)
+   } = useSessionData(session.user.email)
    const openModal = (session_id, browser_id) =>
       openConfirmModal({
          title: 'Please confirm your action',
@@ -152,12 +148,6 @@ export default function BrowserControl() {
          }
       }
    }, [])
-   useEffect(() => {
-      if (status == 'authenticated') {
-         setEmail(session.user.email)
-      }
-      console.log(status)
-   }, [status])
    return (
       <ModalsProvider>
          <Container className={classes.container}>

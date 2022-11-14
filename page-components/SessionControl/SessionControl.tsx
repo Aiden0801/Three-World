@@ -74,11 +74,12 @@ const useControlSession = (email: string) => {
 
 const SessionControl = () => {
    const { data: session, status } = useSession()
-   const [email, setEmail] = useState<string>('')
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
    const { classes, theme } = useStyles()
-   const { data, isLoading, isError, mutate } = useControlSession(email)
+   const { data, isLoading, isError, mutate } = useControlSession(
+      session.user.email
+   )
 
    const form = useForm({
       initialValues: {
@@ -91,12 +92,6 @@ const SessionControl = () => {
             value.length < 1 ? 'Description Field Required' : null,
       },
    })
-   useEffect(() => {
-      if (status == 'authenticated') {
-         setEmail(session.user.email)
-      }
-      console.log(status)
-   }, [status])
 
    /*
     * hello world
@@ -111,14 +106,14 @@ const SessionControl = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                sessionName: name,
-               creator: email,
+               creator: session.user.email,
                sessionDescription: description,
             }),
          })
          mutate()
          setIsHandling(false)
       },
-      [mutate, email]
+      [mutate]
    )
 
    const handleActivateSession = useCallback(
@@ -129,14 +124,14 @@ const SessionControl = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-               creator: email,
+               creator: session.user.email,
                _id: _id,
             }),
          })
          mutate()
          setIsHandling(false)
       },
-      [mutate, email]
+      [mutate]
    )
    const handleDeleteSession = useCallback(
       async (_id) => {
