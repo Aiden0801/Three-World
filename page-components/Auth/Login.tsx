@@ -24,6 +24,8 @@ export default function Login() {
    const handleLogIn = async (providerName: string) => {
       await signIn(providerName.toLowerCase(), {
          callbackUrl: 'http://localhost:3000/dashboard',
+      }).then((res) => {
+         console.log('message', res)
       })
    }
    return (
