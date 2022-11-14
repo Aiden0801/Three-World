@@ -29,7 +29,10 @@ const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
    return {
       container: {
-         backgroundColor: theme.colors.gray[1],
+         backgroundColor:
+            theme.colorScheme === 'dark'
+               ? theme.colors.dark[6]
+               : theme.colors.gray[0],
       },
       header: {
          paddingBottom: theme.spacing.md,

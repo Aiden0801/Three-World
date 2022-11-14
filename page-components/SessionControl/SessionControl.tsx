@@ -78,7 +78,6 @@ const SessionControl = () => {
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
    const { classes, theme } = useStyles()
-   // useSWR Hook
    const { data, isLoading, isError, mutate } = useControlSession(email)
 
    const form = useForm({
