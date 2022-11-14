@@ -144,38 +144,34 @@ export default function HeaderMenu() {
                   </a>
                </Group>
 
-               {!session && (
-                  <>
-                     <Group className={classes.hiddenMobile}>
-                        {/* <Button component="a" href="/auth/login" variant="default" className={classes.button}>Log in</Button> */}
-                        <Button
-                           component="a"
-                           href="/login"
-                           variant="default"
-                           className={classes.button}>
-                           Log in
-                        </Button>
-                     </Group>
-                  </>
-               )}
+               <>
+                  <Group className={classes.hiddenMobile}>
+                     {/* <Button component="a" href="/auth/login" variant="default" className={classes.button}>Log in</Button> */}
+                     <Button
+                        component="a"
+                        href="/login"
+                        variant="default"
+                        className={classes.button}>
+                        Log in
+                     </Button>
+                  </Group>
+               </>
 
-               {session && (
-                  <>
-                     <Group className={classes.hiddenMobile}>
-                        <Avatar
-                           src={session.user.image}
-                           alt={session.user.email}
-                        />
-                        <Button
-                           onClick={() => {
-                              signOut()
-                           }}
-                           className={classes.button}>
-                           Log out
-                        </Button>
-                     </Group>
-                  </>
-               )}
+               <>
+                  <Group className={classes.hiddenMobile}>
+                     <Avatar
+                        src={session.user.image}
+                        alt={session.user.email}
+                     />
+                     <Button
+                        onClick={() => {
+                           signOut()
+                        }}
+                        className={classes.button}>
+                        Log out
+                     </Button>
+                  </Group>
+               </>
 
                <Burger
                   opened={drawerOpened}
@@ -202,15 +198,13 @@ export default function HeaderMenu() {
                            Contact US
                         </a>
 
-                        {!session && (
-                           <Button
-                              component="a"
-                              href="/login"
-                              variant="default"
-                              className={classes.button}>
-                              Log in
-                           </Button>
-                        )}
+                        <Button
+                           component="a"
+                           href="/login"
+                           variant="default"
+                           className={classes.button}>
+                           Log in
+                        </Button>
                      </Paper>
                   )}
                </Transition>
