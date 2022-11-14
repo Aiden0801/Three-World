@@ -24,7 +24,10 @@ const useStyles = createStyles((theme) => ({
    container: {
       margin: '10px,10px,10px,10px',
       paddingBottom: '20px',
-      backgroundColor: theme.colors.gray[1],
+      backgroundColor:
+         theme.colorScheme === 'dark'
+            ? theme.colors.dark[6]
+            : theme.colors.gray[1],
    },
 }))
 

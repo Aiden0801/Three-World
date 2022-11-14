@@ -12,8 +12,10 @@ import { useRouter } from 'next/router'
 import LoadingScreen from './loading'
 function MySession({ Component, pageProps: { ...pageProps } }: AppProps) {
    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
-   const toggleColorScheme = (value?: ColorScheme) =>
+   const toggleColorScheme = (value?: ColorScheme) => {
+      console.log('_appp', value)
       setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+   }
    const router = useRouter()
    const { data: session, status } = useSession()
 
@@ -34,7 +36,7 @@ function MySession({ Component, pageProps: { ...pageProps } }: AppProps) {
          <MantineProvider
             withGlobalStyles
             withNormalizeCSS
-            theme={{ loader: 'bars' }}>
+            theme={{ loader: 'bars', colorScheme }}>
             <Component {...pageProps} curSession={session} />
          </MantineProvider>
       </ColorSchemeProvider>
