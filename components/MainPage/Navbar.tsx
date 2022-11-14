@@ -23,8 +23,7 @@ import {
    IconUserPlus,
 } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
@@ -134,12 +133,6 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
    const [active, setActive] = useState(initialState)
    const { data: session, status } = useSession()
 
-   const router = useRouter()
-   useEffect(() => {
-      if (status === 'unauthenticated') {
-         router.push('./')
-      }
-   }, [status])
    return (
       <Navbar p="md" className={classes.container} {...props}>
          <Group className={classes.header} position="apart">
