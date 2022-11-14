@@ -105,21 +105,22 @@ export default function HeaderMenu() {
       useDisclosure(false)
    const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false)
    const { classes, theme } = useStyles()
-
    const { data: session, status } = useSession()
    return (
       <Box
          pb={20}
-         style={{
-            backgroundColor: 'rgba(0, 0, 0, 0)',
-         }}>
-         <Header
-            height={60}
-            px="md"
-            style={{
-               backgroundColor: 'rgba(0, 0, 0, 0)',
-            }}>
-            <Group position="apart" sx={{ height: '100%' }}>
+         sx={(theme) => ({
+            backgroundColor: 'rgba(255, 0, 0, 0)',
+            position: 'fixed',
+            width: `calc(100vw - ${theme.spacing.md * 2}px)`,
+            top: 0,
+            left: 0,
+            zIndex: 45,
+
+            backdropFilter: 'blur(5px) drop-shadow(4px 4px 10px blue)',
+         })}>
+         <Header height={60}>
+            <Group position="apart" sx={{ height: '100%' }} pl="xl">
                <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
 
                <Group
@@ -133,42 +134,44 @@ export default function HeaderMenu() {
                      Features
                   </a>
                   <a href="#" className={classes.link}>
+                     Pricing
+                  </a>
+                  <a href="#" className={classes.link}>
+                     About
+                  </a>
+                  <a href="#" className={classes.link}>
                      Contact US
                   </a>
                </Group>
 
-               {!session && (
-                  <>
-                     <Group className={classes.hiddenMobile}>
-                        {/* <Button component="a" href="/auth/login" variant="default" className={classes.button}>Log in</Button> */}
-                        <Button
-                           component="a"
-                           href="/login"
-                           variant="default"
-                           className={classes.button}>
-                           Log in
-                        </Button>
-                     </Group>
-                  </>
-               )}
+               <>
+                  <Group className={classes.hiddenMobile}>
+                     {/* <Button component="a" href="/auth/login" variant="default" className={classes.button}>Log in</Button> */}
+                     <Button
+                        component="a"
+                        href="/login"
+                        variant="default"
+                        className={classes.button}>
+                        Log in
+                     </Button>
+                  </Group>
+               </>
 
-               {session && (
-                  <>
-                     <Group className={classes.hiddenMobile}>
-                        <Avatar
-                           src={session.user.image}
-                           alt={session.user.email}
-                        />
-                        <Button
-                           onClick={() => {
-                              signOut()
-                           }}
-                           className={classes.button}>
-                           Log out
-                        </Button>
-                     </Group>
-                  </>
-               )}
+               <>
+                  <Group className={classes.hiddenMobile}>
+                     <Avatar
+                        src={session.user.image}
+                        alt={session.user.email}
+                     />
+                     <Button
+                        onClick={() => {
+                           signOut()
+                        }}
+                        className={classes.button}>
+                        Log out
+                     </Button>
+                  </Group>
+               </>
 
                <Burger
                   opened={drawerOpened}
@@ -195,15 +198,13 @@ export default function HeaderMenu() {
                            Contact US
                         </a>
 
-                        {!session && (
-                           <Button
-                              component="a"
-                              href="/login"
-                              variant="default"
-                              className={classes.button}>
-                              Log in
-                           </Button>
-                        )}
+                        <Button
+                           component="a"
+                           href="/login"
+                           variant="default"
+                           className={classes.button}>
+                           Log in
+                        </Button>
                      </Paper>
                   )}
                </Transition>

@@ -1,43 +1,38 @@
-import { signIn, signOut, useSession } from 'next-auth/react'
-import { useEffect } from 'react'
-import { useRouter } from 'next/router'
-import { useState } from 'react'
 import {
-   createStyles,
-   Navbar,
-   Group,
    Code,
+   createStyles,
+   Group,
    Image,
-   Button,
+   Navbar,
    NavLink,
-   Avatar,
    TextInput,
-   ActionIcon,
-   Switch,
    useMantineColorScheme,
    useMantineTheme,
 } from '@mantine/core'
 import {
-   IconDatabaseImport,
-   IconLogout,
-   IconUserPlus,
-   IconScreenShare,
-   IconDashboard,
-   IconShare,
-   IconMessage2,
    IconBuildingCommunity,
    IconBuildingLighthouse,
-   IconSettingsAutomation,
+   IconDashboard,
+   IconDatabaseImport,
    IconKey,
+   IconMessage2,
+   IconScreenShare,
    IconSearch,
+   IconSettingsAutomation,
+   IconShare,
+   IconUserPlus,
 } from '@tabler/icons'
-import { MantineLogo } from '@mantine/ds'
+import { useSession } from 'next-auth/react'
+import { useState } from 'react'
 
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
    return {
       container: {
-         backgroundColor: theme.colors.gray[1],
+         backgroundColor:
+            theme.colorScheme === 'dark'
+               ? theme.colors.dark[6]
+               : theme.colors.gray[0],
       },
       header: {
          paddingBottom: theme.spacing.md,
@@ -141,12 +136,6 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
    const [active, setActive] = useState(initialState)
    const { data: session, status } = useSession()
 
-   const router = useRouter()
-   useEffect(() => {
-      if (status === 'unauthenticated') {
-         router.push('./')
-      }
-   }, [status])
    return (
       <Navbar p="md" className={classes.container} {...props}>
          <Group className={classes.header} position="apart">

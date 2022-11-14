@@ -318,7 +318,7 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                style={{
                   position: 'absolute',
                   right: '20px',
-                  bottom: '30px',
+                  bottom: '60px',
                }}
                component="a"
                href="./"

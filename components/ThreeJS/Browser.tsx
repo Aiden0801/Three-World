@@ -89,9 +89,6 @@ export default function Browser(props) {
       console.log('browserData', props.bid, embedURL)
 
       if (embedURL == null || embedURL == 'none') return
-      // let flag = false;
-      // if (props.bid == "1")
-      //     flag = true;
       try {
          hb = await Hyperbeam(hbContainer, embedURL, {
             delegateKeyboard: false,

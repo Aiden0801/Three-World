@@ -16,6 +16,8 @@ import {
    TextInput,
    Group,
    Grid,
+   Paper,
+   Skeleton,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import {
@@ -26,11 +28,13 @@ import {
 } from '@tabler/icons'
 
 import { fetcher } from '../../lib/fetcher'
-
+const BREAKPOINT = '@media (max-width: 755px)'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
       margin: '10px,10px,10px,10px',
+      display: 'flex',
+      flexDirection: 'column',
    },
 }))
 /**
@@ -70,12 +74,12 @@ const useControlSession = (email: string) => {
 
 const SessionControl = () => {
    const { data: session, status } = useSession()
-   const [email, setEmail] = useState<string>('')
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
    const { classes, theme } = useStyles()
-   // useSWR Hook
-   const { data, isLoading, isError, mutate } = useControlSession(email)
+   const { data, isLoading, isError, mutate } = useControlSession(
+      session.user.email
+   )
 
    const form = useForm({
       initialValues: {
@@ -88,12 +92,6 @@ const SessionControl = () => {
             value.length < 1 ? 'Description Field Required' : null,
       },
    })
-   useEffect(() => {
-      if (status == 'authenticated') {
-         setEmail(session.user.email)
-      }
-      console.log(status)
-   }, [status])
 
    /*
     * hello world
@@ -108,14 +106,14 @@ const SessionControl = () => {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                sessionName: name,
-               creator: email,
+               creator: session.user.email,
                sessionDescription: description,
             }),
          })
          mutate()
          setIsHandling(false)
       },
-      [mutate, email]
+      [mutate]
    )
 
    const handleActivateSession = useCallback(
@@ -126,14 +124,14 @@ const SessionControl = () => {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-               creator: email,
+               creator: session.user.email,
                _id: _id,
             }),
          })
          mutate()
          setIsHandling(false)
       },
-      [mutate, email]
+      [mutate]
    )
    const handleDeleteSession = useCallback(
       async (_id) => {
@@ -168,10 +166,10 @@ const SessionControl = () => {
       [mutate]
    )
    return (
-      <div className={classes.container}>
-         <LoadingOverlay
+      <Container mt="xl" className={classes.container}>
+         {/* <LoadingOverlay
             visible={isLoading || isHandling}
-            overlayBlur={2}></LoadingOverlay>
+            overlayBlur={2}></LoadingOverlay> */}
          <Modal
             title="Create New Session"
             opened={opened}
@@ -207,7 +205,7 @@ const SessionControl = () => {
                </SimpleGrid>
             </form>
          </Modal>
-         <Container>
+         <Paper shadow="md" p="xl">
             <Grid>
                <Grid.Col span={10}>
                   <Text
@@ -246,15 +244,16 @@ const SessionControl = () => {
             </Grid>
 
             <ScrollArea>
-               <Table
-                  withBorder
-                  striped
-                  withColumnBorders
-                  sx={{ minWidth: 800 }}
-                  verticalSpacing="xs">
-                  <thead>
-                     <tr>
-                        {/* <th style={{ width: 40 }}>
+               <Skeleton visible={isLoading || isHandling}>
+                  <Table
+                     withBorder
+                     striped
+                     withColumnBorders
+                     sx={{ minWidth: 800 }}
+                     verticalSpacing="xs">
+                     <thead>
+                        <tr>
+                           {/* <th style={{ width: 40 }}>
                                     <Checkbox
                                         onChange={toggleAll}
                                         checked={selection.length === data.length}
@@ -262,19 +261,19 @@ const SessionControl = () => {
                                         transitionDuration={0}
                                     />
                                 </th> */}
-                        <th>Name</th>
-                        <th>Users</th>
-                        <th>Active</th>
-                        <th>Actions</th>
-                     </tr>
-                  </thead>
-                  <tbody>
-                     {data &&
-                        data.map((session, index) => {
-                           // const selected = selection.includes(session._id);
-                           return (
-                              <tr key={index}>
-                                 {/* <td>
+                           <th>Name</th>
+                           <th>Users</th>
+                           <th>Active</th>
+                           <th>Actions</th>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        {data &&
+                           data.map((session, index) => {
+                              // const selected = selection.includes(session._id);
+                              return (
+                                 <tr key={index}>
+                                    {/* <td>
                                             <td>
                                                 <Checkbox
                                                     checked={selection.includes(session._id)}
@@ -283,72 +282,79 @@ const SessionControl = () => {
                                                 />
                                             </td>
                                         </td> */}
-                                 <td>{session.name}</td>
-                                 <td>
-                                    {session.users.length == 0
-                                       ? 'No Available Users'
-                                       : session.users.length + ' Users'}
-                                 </td>
-                                 <td>
-                                    <Group>
-                                       <IconPoint
-                                          color={
-                                             session.isActive ? 'green' : 'red'
-                                          }
-                                          size={24}
-                                       />
-                                       {session.isActive == true
-                                          ? 'Active'
-                                          : 'Dead'}
-                                    </Group>
-                                 </td>
-                                 <td width={200}>
-                                    <div
-                                       style={{
-                                          display: 'flex',
-                                          alignItems: 'center',
-                                          justifyContent: 'center',
-                                       }}>
-                                       <Button
-                                          onClick={() => {
-                                             session.isActive
-                                                ? handleKillSession(session._id)
-                                                : handleActivateSession(
-                                                     session._id
-                                                  )
-                                          }}
-                                          color={
-                                             session.isActive ? 'red' : 'green'
-                                          }
-                                          variant="subtle">
-                                          <IconActivity />
-                                       </Button>
-                                       <Button
-                                          color="indigo"
-                                          component="a"
-                                          href={`./sessions/${session._id}`}
-                                          variant="subtle">
-                                          <IconListDetails />
-                                       </Button>
+                                    <td>{session.name}</td>
+                                    <td>
+                                       {session.users.length == 0
+                                          ? 'No Available Users'
+                                          : session.users.length + ' Users'}
+                                    </td>
+                                    <td>
+                                       <Group>
+                                          <IconPoint
+                                             color={
+                                                session.isActive
+                                                   ? 'green'
+                                                   : 'red'
+                                             }
+                                             size={24}
+                                          />
+                                          {session.isActive == true
+                                             ? 'Active'
+                                             : 'Dead'}
+                                       </Group>
+                                    </td>
+                                    <td width={200}>
+                                       <div
+                                          style={{
+                                             display: 'flex',
+                                             alignItems: 'center',
+                                             justifyContent: 'center',
+                                          }}>
+                                          <Button
+                                             onClick={() => {
+                                                session.isActive
+                                                   ? handleKillSession(
+                                                        session._id
+                                                     )
+                                                   : handleActivateSession(
+                                                        session._id
+                                                     )
+                                             }}
+                                             color={
+                                                session.isActive
+                                                   ? 'red'
+                                                   : 'green'
+                                             }
+                                             variant="subtle">
+                                             <IconActivity />
+                                          </Button>
+                                          <Button
+                                             color="indigo"
+                                             component="a"
+                                             href={`./sessions/${session._id}`}
+                                             variant="subtle">
+                                             <IconListDetails />
+                                          </Button>
 
-                                       <Button
-                                          onClick={() =>
-                                             handleDeleteSession(session._id)
-                                          }
-                                          color="orange"
-                                          variant="subtle">
-                                          <XOctagonFill />
-                                       </Button>
-                                    </div>
-                                 </td>
-                              </tr>
-                           )
-                        })}
-                  </tbody>
-               </Table>
+                                          <Button
+                                             onClick={() =>
+                                                handleDeleteSession(session._id)
+                                             }
+                                             color="orange"
+                                             variant="subtle">
+                                             <XOctagonFill />
+                                          </Button>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              )
+                           })}
+                     </tbody>
+                  </Table>
+               </Skeleton>
             </ScrollArea>
-         </Container>
-      </div>
+         </Paper>
+      </Container>
    )
 }
 
