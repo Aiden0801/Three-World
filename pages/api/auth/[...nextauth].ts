@@ -6,11 +6,12 @@ import NextAuth, {
    Profile,
    Account,
 } from 'next-auth'
+import type { NextAuthOptions } from 'next-auth'
 import { AdapterUser } from 'next-auth/adapters'
 // import Providers from "next-auth/providers"
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
-
+import DiscordProvider from 'next-auth/providers/discord'
 import { fetcher } from '../../../lib/fetcher'
 //import clientPromise from '../../../lib/mongodb'
 
@@ -19,9 +20,10 @@ import { fetcher } from '../../../lib/fetcher'
 interface IProps {
    user: User | AdapterUser
    account: Account
+
    profile: Profile
 }
-export default NextAuth({
+export const authOptions: NextAuthOptions = {
    // https://next-auth.js.org/configuration/providers
 
    // Database optional. MySQL, Maria DB, Postgres and MongoDB are supported.
@@ -35,6 +37,10 @@ export default NextAuth({
       GoogleProvider({
          clientId: process.env.GOOGLE_ID,
          clientSecret: process.env.GOOGLE_SECRET,
+      }),
+      DiscordProvider({
+         clientId: process.env.DISCORD_ID,
+         clientSecret: process.env.DISCORD_SECRET,
       }),
       // ...add more providers here
    ],
@@ -50,6 +56,7 @@ export default NextAuth({
    secret: process.env.SECRET,
 
    session: {
+      maxAge: 24 * 60 * 60,
       // Use JSON Web Tokens for session instead of database sessions.
       // This option can be used with or without a database for users/accounts.
       // Note: `jwt` is automatically set to `true` if no database is specified.
@@ -122,8 +129,16 @@ export default NextAuth({
 
    // Events are useful for logging
    // https://next-auth.js.org/configuration/events
-   events: {},
+   events: {
+      async signIn(messages) {
+         console.log('Sign In', messages)
+      },
+      async signOut(messages) {
+         console.log('Sign out ', messages)
+      },
+   },
 
    // Enable debug messages in the console if you are having problems
    debug: false,
-})
+}
+export default NextAuth(authOptions)

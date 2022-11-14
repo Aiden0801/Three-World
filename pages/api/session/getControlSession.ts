@@ -3,13 +3,22 @@ import axios from 'axios'
 const User = require('../../../api-lib/models/users')
 const Session = require('../../../api-lib/models/session')
 import { fetcher } from '../../../lib/fetcher'
-
+import { getToken } from 'next-auth/jwt'
+import { unstable_getServerSession } from 'next-auth/next'
+import { authOptions } from '../auth/[...nextauth]'
 // ./api/session/getControlSession
 // Get Sessions created by me
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
+   const session = await unstable_getServerSession(req, res, authOptions)
+   if (session) {
+      console.log('Session')
+   } else {
+      console.log('no session')
+      res.status(401).send('unauthenticated')
+   }
    await connectMongo()
    let { creator } = req.body
    console.log(creator)

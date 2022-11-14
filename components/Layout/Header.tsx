@@ -105,7 +105,6 @@ export default function HeaderMenu() {
       useDisclosure(false)
    const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false)
    const { classes, theme } = useStyles()
-
    const { data: session, status } = useSession()
    return (
       <Box

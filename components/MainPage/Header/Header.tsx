@@ -34,6 +34,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 const HeaderComponent = ({ handleNavToogle }) => {
    const [opened, setOpened] = useState(false)
    const { data: session, status } = useSession()
+
    const { classes, cx } = useStyles()
    return (
       <Header height={50} className={classes.container}>
