@@ -20,7 +20,12 @@ const Index: React.FC = () => {
       }
    }, [status])
    return (
-      <div style={{}}>
+      <div
+         style={{
+            backdropFilter: 'blur(5px) drop-shadow(4px 4px 10px blue)',
+            zIndex: 1,
+            position: 'relative',
+         }}>
          <LandingCard />
          <FeaturesCards />
          <FaqWithBg />

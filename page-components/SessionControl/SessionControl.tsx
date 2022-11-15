@@ -65,7 +65,7 @@ const useControlSession = (email: string) => {
    )
 
    return {
-      data: data,
+      data: data ? data : [],
       isLoading: (!error && !data) || isValidating,
       isError: error,
       mutate: mutate,
@@ -268,12 +268,11 @@ const SessionControl = () => {
                         </tr>
                      </thead>
                      <tbody>
-                        {data &&
-                           data.map((session, index) => {
-                              // const selected = selection.includes(session._id);
-                              return (
-                                 <tr key={index}>
-                                    {/* <td>
+                        {data.map((session, index) => {
+                           // const selected = selection.includes(session._id);
+                           return (
+                              <tr key={index}>
+                                 {/* <td>
                                             <td>
                                                 <Checkbox
                                                     checked={selection.includes(session._id)}
@@ -282,73 +281,67 @@ const SessionControl = () => {
                                                 />
                                             </td>
                                         </td> */}
-                                    <td>{session.name}</td>
-                                    <td>
-                                       {session.users.length == 0
-                                          ? 'No Available Users'
-                                          : session.users.length + ' Users'}
-                                    </td>
-                                    <td>
-                                       <Group>
-                                          <IconPoint
-                                             color={
-                                                session.isActive
-                                                   ? 'green'
-                                                   : 'red'
-                                             }
-                                             size={24}
-                                          />
-                                          {session.isActive == true
-                                             ? 'Active'
-                                             : 'Dead'}
-                                       </Group>
-                                    </td>
-                                    <td width={200}>
-                                       <div
-                                          style={{
-                                             display: 'flex',
-                                             alignItems: 'center',
-                                             justifyContent: 'center',
-                                          }}>
-                                          <Button
-                                             onClick={() => {
-                                                session.isActive
-                                                   ? handleKillSession(
-                                                        session._id
-                                                     )
-                                                   : handleActivateSession(
-                                                        session._id
-                                                     )
-                                             }}
-                                             color={
-                                                session.isActive
-                                                   ? 'red'
-                                                   : 'green'
-                                             }
-                                             variant="subtle">
-                                             <IconActivity />
-                                          </Button>
-                                          <Button
-                                             color="indigo"
-                                             component="a"
-                                             href={`./sessions/${session._id}`}
-                                             variant="subtle">
-                                             <IconListDetails />
-                                          </Button>
+                                 <td>{session.name}</td>
+                                 <td>
+                                    {session.users.length == 0
+                                       ? 'No Available Users'
+                                       : session.users.length + ' Users'}
+                                 </td>
+                                 <td>
+                                    <Group>
+                                       <IconPoint
+                                          color={
+                                             session.isActive ? 'green' : 'red'
+                                          }
+                                          size={24}
+                                       />
+                                       {session.isActive == true
+                                          ? 'Active'
+                                          : 'Dead'}
+                                    </Group>
+                                 </td>
+                                 <td width={200}>
+                                    <div
+                                       style={{
+                                          display: 'flex',
+                                          alignItems: 'center',
+                                          justifyContent: 'center',
+                                       }}>
+                                       <Button
+                                          onClick={() => {
+                                             session.isActive
+                                                ? handleKillSession(session._id)
+                                                : handleActivateSession(
+                                                     session._id
+                                                  )
+                                          }}
+                                          color={
+                                             session.isActive ? 'red' : 'green'
+                                          }
+                                          variant="subtle">
+                                          <IconActivity />
+                                       </Button>
+                                       <Button
+                                          color="indigo"
+                                          component="a"
+                                          href={`./sessions/${session._id}`}
+                                          variant="subtle">
+                                          <IconListDetails />
+                                       </Button>
 
-                                          <Button
-                                             onClick={() =>
-                                                handleDeleteSession(session._id)
-                                             }
-                                             color="orange"
-                                             variant="subtle">
-                                             <XOctagonFill />
-                                          </Button>
-                                       </div>
-                                    </td>
-                                 </tr>
-                              )
-                           })}
+                                       <Button
+                                          onClick={() =>
+                                             handleDeleteSession(session._id)
+                                          }
+                                          color="orange"
+                                          variant="subtle">
+                                          <XOctagonFill />
+                                       </Button>
+                                    </div>
+                                 </td>
+                              </tr>
+                           )
+                        })}
                      </tbody>
                   </Table>
                </Skeleton>

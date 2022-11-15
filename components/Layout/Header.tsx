@@ -157,22 +157,6 @@ export default function HeaderMenu() {
                   </Group>
                </>
 
-               <>
-                  <Group className={classes.hiddenMobile}>
-                     <Avatar
-                        src={session.user.image}
-                        alt={session.user.email}
-                     />
-                     <Button
-                        onClick={() => {
-                           signOut()
-                        }}
-                        className={classes.button}>
-                        Log out
-                     </Button>
-                  </Group>
-               </>
-
                <Burger
                   opened={drawerOpened}
                   onClick={toggleDrawer}
