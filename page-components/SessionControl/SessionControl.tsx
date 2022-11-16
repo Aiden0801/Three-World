@@ -221,9 +221,10 @@ const SessionControl = () => {
                      Sessions
                   </Text>
                </Grid.Col>
+
                <Grid.Col span={2}>
                   <Button
-                     fullWidth
+                     compact
                      style={{ marginTop: '20px' }}
                      onClick={() => {
                         setOpened(true)

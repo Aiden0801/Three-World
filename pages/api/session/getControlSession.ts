@@ -28,18 +28,18 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          res.status(200).send('No Session created by this user')
       } else {
          // for (const session of user) {
-         //     console.log('getControlSession Sessions', session)
-         //     console.log('session of user', session._id)
-         //     const resp = await fetcher(
-         //         'http://localhost:3000/api/session/updateSessionStateByID',
-         //         {
-         //             method: 'POST',
-         //             headers: { 'Content-Type': 'application/json' },
-         //             body: JSON.stringify({
-         //                 _id: session._id,
-         //             }),
-         //         }
-         //     )
+         //    console.log('getControlSession Sessions', session)
+         //    console.log('session of user', session._id)
+         //    const resp = await fetcher(
+         //       'http://localhost:3000/api/session/updateSessionStateByID',
+         //       {
+         //          method: 'POST',
+         //          headers: { 'Content-Type': 'application/json' },
+         //          body: JSON.stringify({
+         //             _id: session._id,
+         //          }),
+         //       }
+         //    )
          // }
          res.status(200).send({ user })
       }

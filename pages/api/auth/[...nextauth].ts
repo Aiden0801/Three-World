@@ -1,18 +1,12 @@
-import NextAuth, {
-   Awaitable,
-   CallbacksOptions,
-   Session,
-   User,
-   Profile,
-   Account,
-} from 'next-auth'
 import type { NextAuthOptions } from 'next-auth'
+import NextAuth, { Account, Profile, User } from 'next-auth'
 import { AdapterUser } from 'next-auth/adapters'
 // import Providers from "next-auth/providers"
+import DiscordProvider from 'next-auth/providers/discord'
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
-import DiscordProvider from 'next-auth/providers/discord'
 import { fetcher } from '../../../lib/fetcher'
+
 //import clientPromise from '../../../lib/mongodb'
 
 // For more information on each option (and a full list of options) go to
@@ -20,14 +14,12 @@ import { fetcher } from '../../../lib/fetcher'
 interface IProps {
    user: User | AdapterUser
    account: Account
-
    profile: Profile
 }
 export const authOptions: NextAuthOptions = {
    // https://next-auth.js.org/configuration/providers
 
    // Database optional. MySQL, Maria DB, Postgres and MongoDB are supported.
-   // https://next-auth.js.org/configuration/databases.
 
    providers: [
       GithubProvider({
@@ -56,7 +48,6 @@ export const authOptions: NextAuthOptions = {
    secret: process.env.SECRET,
 
    session: {
-      maxAge: 24 * 60 * 60,
       // Use JSON Web Tokens for session instead of database sessions.
       // This option can be used with or without a database for users/accounts.
       // Note: `jwt` is automatically set to `true` if no database is specified.
@@ -93,7 +84,7 @@ export const authOptions: NextAuthOptions = {
       // signOut: '/auth/signout', // Displays form with sign out button
       // error: '/auth/error', // Error code passed in query string as ?error=
       // verifyRequest: '/auth/verify-request', // Used for check email page
-      // newUser: null // If set, new users will be directed here on first sign in
+      // newUser: '/session', // If set, new users will be directed here on first sign in
    },
 
    // Callbacks are asynchronous functions you can use to control what happens
@@ -135,6 +126,9 @@ export const authOptions: NextAuthOptions = {
       },
       async signOut(messages) {
          console.log('Sign out ', messages)
+      },
+      async createUser(messages) {
+         console.log('Create User', messages)
       },
    },
 
