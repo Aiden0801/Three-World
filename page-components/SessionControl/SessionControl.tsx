@@ -65,7 +65,11 @@ const useControlSession = (email: string) => {
    )
 
    return {
+<<<<<<< HEAD
       data: data ? data : [],
+=======
+      data: data,
+>>>>>>> 686db4e75cef611f214d17565328c1128605cb38
       isLoading: (!error && !data) || isValidating,
       isError: error,
       mutate: mutate,
@@ -221,10 +225,16 @@ const SessionControl = () => {
                      Sessions
                   </Text>
                </Grid.Col>
+<<<<<<< HEAD
 
                <Grid.Col span={2}>
                   <Button
                      compact
+=======
+               <Grid.Col span={2}>
+                  <Button
+                     fullWidth
+>>>>>>> 686db4e75cef611f214d17565328c1128605cb38
                      style={{ marginTop: '20px' }}
                      onClick={() => {
                         setOpened(true)
@@ -269,11 +279,20 @@ const SessionControl = () => {
                         </tr>
                      </thead>
                      <tbody>
+<<<<<<< HEAD
                         {data.map((session, index) => {
                            // const selected = selection.includes(session._id);
                            return (
                               <tr key={index}>
                                  {/* <td>
+=======
+                        {data &&
+                           data.map((session, index) => {
+                              // const selected = selection.includes(session._id);
+                              return (
+                                 <tr key={index}>
+                                    {/* <td>
+>>>>>>> 686db4e75cef611f214d17565328c1128605cb38
                                             <td>
                                                 <Checkbox
                                                     checked={selection.includes(session._id)}
@@ -282,6 +301,7 @@ const SessionControl = () => {
                                                 />
                                             </td>
                                         </td> */}
+<<<<<<< HEAD
                                  <td>{session.name}</td>
                                  <td>
                                     {session.users.length == 0
@@ -343,6 +363,75 @@ const SessionControl = () => {
                               </tr>
                            )
                         })}
+=======
+                                    <td>{session.name}</td>
+                                    <td>
+                                       {session.users.length == 0
+                                          ? 'No Available Users'
+                                          : session.users.length + ' Users'}
+                                    </td>
+                                    <td>
+                                       <Group>
+                                          <IconPoint
+                                             color={
+                                                session.isActive
+                                                   ? 'green'
+                                                   : 'red'
+                                             }
+                                             size={24}
+                                          />
+                                          {session.isActive == true
+                                             ? 'Active'
+                                             : 'Dead'}
+                                       </Group>
+                                    </td>
+                                    <td width={200}>
+                                       <div
+                                          style={{
+                                             display: 'flex',
+                                             alignItems: 'center',
+                                             justifyContent: 'center',
+                                          }}>
+                                          <Button
+                                             onClick={() => {
+                                                session.isActive
+                                                   ? handleKillSession(
+                                                        session._id
+                                                     )
+                                                   : handleActivateSession(
+                                                        session._id
+                                                     )
+                                             }}
+                                             color={
+                                                session.isActive
+                                                   ? 'red'
+                                                   : 'green'
+                                             }
+                                             variant="subtle">
+                                             <IconActivity />
+                                          </Button>
+                                          <Button
+                                             color="indigo"
+                                             component="a"
+                                             href={`./sessions/${session._id}`}
+                                             variant="subtle">
+                                             <IconListDetails />
+                                          </Button>
+
+                                          <Button
+                                             onClick={() =>
+                                                handleDeleteSession(session._id)
+                                             }
+                                             color="orange"
+                                             variant="subtle">
+                                             <XOctagonFill />
+                                          </Button>
+                                       </div>
+                                    </td>
+                                 </tr>
+                              )
+                           })}
+>>>>>>> 686db4e75cef611f214d17565328c1128605cb38
                      </tbody>
                   </Table>
                </Skeleton>

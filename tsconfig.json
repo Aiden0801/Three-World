@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
    "compilerOptions": {
       "target": "es2017",
       "lib": ["dom", "dom.iterable", "esnext"],
@@ -33,4 +34,35 @@
       "api-lib/mongodbauth.js"
    ],
    "exclude": ["node_modules"]
+=======
+  "compilerOptions": {
+    "target": "es5",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": false,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "incremental": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve"
+  },
+  "include": [
+    "next-env.d.ts",
+    "types/**/*.ts",
+    "**/*.ts",
+    "**/*.tsx"
+, "pages/_app.ts", "pages/_app.ts", "pages/_app.ts", "pages/_app.ts", "pages/api/auth/[...nextauth].js", "store/store.js", "store/store.js", "store/browserSlice.js", "api-lib/models/session.js", "api-lib/models/session.js"  ],
+  "exclude": [
+    "node_modules"
+  ]
+>>>>>>> 686db4e75cef611f214d17565328c1128605cb38
 }
