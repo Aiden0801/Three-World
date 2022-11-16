@@ -150,7 +150,6 @@ export default function HeaderMenu() {
                      <Button
                         component="a"
                         href="/login"
-                        variant="default"
                         className={classes.button}>
                         Log in
                      </Button>

@@ -7,7 +7,7 @@ import {
    MantineProvider,
 } from '@mantine/core'
 import { IconPlus } from '@tabler/icons'
-
+import FadeIn from '../../utils/spring/FadeIn'
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('control')
 
@@ -90,59 +90,68 @@ const placeholder =
 export function FaqWithBg() {
    const { classes } = useStyles()
    return (
-      <div className={classes.wrapper}>
-         <Container size="sm">
-            <Title align="center" className={classes.title}>
-               Frequently Asked Questions
-            </Title>
+      <FadeIn>
+         <div className={classes.wrapper}>
+            <Container size="sm">
+               <Title align="center" className={classes.title}>
+                  Frequently Asked Questions
+               </Title>
 
-            <Accordion
-               chevronPosition="right"
-               defaultValue="reset-password"
-               chevronSize={50}
-               variant="separated"
-               disableChevronRotation
-               chevron={
-                  <ThemeIcon radius="xl" className={classes.gradient} size={32}>
-                     <IconPlus size={18} stroke={1.5} />
-                  </ThemeIcon>
-               }>
-               <Accordion.Item className={classes.item} value="reset-password">
-                  <Accordion.Control>
-                     How can I reset my password?
-                  </Accordion.Control>
-                  <Accordion.Panel>{placeholder}</Accordion.Panel>
-               </Accordion.Item>
+               <Accordion
+                  chevronPosition="right"
+                  defaultValue="reset-password"
+                  chevronSize={50}
+                  variant="separated"
+                  disableChevronRotation
+                  chevron={
+                     <ThemeIcon
+                        radius="xl"
+                        className={classes.gradient}
+                        size={32}>
+                        <IconPlus size={18} stroke={1.5} />
+                     </ThemeIcon>
+                  }>
+                  <Accordion.Item
+                     className={classes.item}
+                     value="reset-password">
+                     <Accordion.Control>
+                        How can I reset my password?
+                     </Accordion.Control>
+                     <Accordion.Panel>{placeholder}</Accordion.Panel>
+                  </Accordion.Item>
 
-               <Accordion.Item className={classes.item} value="another-account">
-                  <Accordion.Control>
-                     Can I create more that one account?
-                  </Accordion.Control>
-                  <Accordion.Panel>{placeholder}</Accordion.Panel>
-               </Accordion.Item>
+                  <Accordion.Item
+                     className={classes.item}
+                     value="another-account">
+                     <Accordion.Control>
+                        Can I create more that one account?
+                     </Accordion.Control>
+                     <Accordion.Panel>{placeholder}</Accordion.Panel>
+                  </Accordion.Item>
 
-               <Accordion.Item className={classes.item} value="newsletter">
-                  <Accordion.Control>
-                     How can I subscribe to monthly newsletter?
-                  </Accordion.Control>
-                  <Accordion.Panel>{placeholder}</Accordion.Panel>
-               </Accordion.Item>
+                  <Accordion.Item className={classes.item} value="newsletter">
+                     <Accordion.Control>
+                        How can I subscribe to monthly newsletter?
+                     </Accordion.Control>
+                     <Accordion.Panel>{placeholder}</Accordion.Panel>
+                  </Accordion.Item>
 
-               <Accordion.Item className={classes.item} value="credit-card">
-                  <Accordion.Control>
-                     Do you store credit card information securely?
-                  </Accordion.Control>
-                  <Accordion.Panel>{placeholder}</Accordion.Panel>
-               </Accordion.Item>
+                  <Accordion.Item className={classes.item} value="credit-card">
+                     <Accordion.Control>
+                        Do you store credit card information securely?
+                     </Accordion.Control>
+                     <Accordion.Panel>{placeholder}</Accordion.Panel>
+                  </Accordion.Item>
 
-               <Accordion.Item className={classes.item} value="payment">
-                  <Accordion.Control>
-                     What payment systems to you work with?
-                  </Accordion.Control>
-                  <Accordion.Panel>{placeholder}</Accordion.Panel>
-               </Accordion.Item>
-            </Accordion>
-         </Container>
-      </div>
+                  <Accordion.Item className={classes.item} value="payment">
+                     <Accordion.Control>
+                        What payment systems to you work with?
+                     </Accordion.Control>
+                     <Accordion.Panel>{placeholder}</Accordion.Panel>
+                  </Accordion.Item>
+               </Accordion>
+            </Container>
+         </div>
+      </FadeIn>
    )
 }
