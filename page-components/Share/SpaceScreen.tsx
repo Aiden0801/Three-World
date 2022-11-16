@@ -24,20 +24,21 @@ export default function SpaceScreen() {
             height: '100%',
          }}>
          {isBrowser ? (
-            // <Canvas
-            //    camera={{
-            //       fov: 50,
-            //    }}>
-            //    <Suspense fallback={null}>
-            //       <PerspectiveCamera>
-            //          <SkyComponent />
+            <Canvas
+               camera={{
+                  fov: 50,
+               }}>
+               <Suspense fallback={null}>
+                  <PerspectiveCamera>
+                     <SkyComponent />
 
-            //          <group><CameraPosition /></group>
-            //          <Light />
-            //       </PerspectiveCamera>
-            //    </Suspense>
-            // </Canvas>
-            <></>
+                     <group>
+                        <CameraPosition />
+                     </group>
+                     <Light />
+                  </PerspectiveCamera>
+               </Suspense>
+            </Canvas>
          ) : (
             <div></div>
          )}

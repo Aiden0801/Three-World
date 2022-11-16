@@ -1,19 +1,17 @@
-import styles from './layout.module.css';
+import styles from './layout.module.css'
 import Header from './Header'
 import Footer from './Footer'
-import { Container } from '@mantine/core'
+import { AppShell } from '@mantine/core'
 const Layout = ({ children }) => {
-    return (
-        <>
-            <Container >
-                <Header />
-                <main >
-                    {children}
-                </main>
-                <Footer />
-
-            </Container>
-        </>
-    );
+   return (
+      <>
+         {/* <Header />
+         {children}
+         <Footer /> */}
+         <AppShell padding={0} header={<Header />} footer={<Footer />}>
+            {children}
+         </AppShell>
+      </>
+   )
 }
-export default Layout;
+export default Layout

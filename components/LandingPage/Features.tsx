@@ -7,9 +7,11 @@ import {
    Card,
    SimpleGrid,
    Container,
+   Transition,
 } from '@mantine/core'
 import { IconGauge, IconUser, IconCookie } from '@tabler/icons'
-
+import React, { useState } from 'react'
+import FadeIn from '../../utils/spring/FadeIn'
 const mockdata = [
    {
       title: 'Extreme performance',
@@ -78,22 +80,24 @@ const useStyles = createStyles((theme) => ({
 
 export function FeaturesCards() {
    const { classes, theme } = useStyles()
-   const features = mockdata.map((feature) => (
-      <Card
-         key={feature.title}
-         shadow="md"
-         radius="md"
-         className={classes.card}
-         p="xl">
-         <feature.icon size={50} stroke={2} color={theme.fn.primaryColor()} />
-         <Text size="lg" weight={500} className={classes.cardTitle} mt="md">
-            {feature.title}
-         </Text>
-         <Text size="sm" color="dimmed" mt="sm">
-            {feature.description}
-         </Text>
-      </Card>
+   const features = mockdata.map((feature, index) => (
+      <FadeIn key={feature.title} delayTime={index * 500}>
+         <Card shadow="md" radius="md" className={classes.card} p="xl">
+            <feature.icon
+               size={50}
+               stroke={2}
+               color={theme.fn.primaryColor()}
+            />
+            <Text size="lg" weight={500} className={classes.cardTitle} mt="md">
+               {feature.title}
+            </Text>
+            <Text size="sm" color="dimmed" mt="sm">
+               {feature.description}
+            </Text>
+         </Card>
+      </FadeIn>
    ))
+   const [opened, setOpened] = useState(true)
    return (
       <Container size="lg" py="xl">
          <Group position="center">
@@ -115,7 +119,6 @@ export function FeaturesCards() {
             fangs. This happens when hunger drives it to try biting a Steel-type
             Pokémon.
          </Text>
-
          <SimpleGrid
             cols={3}
             spacing="xl"

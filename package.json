@@ -48,6 +48,11 @@
       "react-bootstrap-icons": "^1.9.1",
       "react-dom": "18.2.0",
       "react-redux": "^8.0.4",
+<<<<<<< HEAD
+      "react-spring": "^9.5.5",
+      "react-waypoint": "^10.3.0",
+=======
+>>>>>>> 686db4e75cef611f214d17565328c1128605cb38
       "redux": "^4.2.0",
       "redux-devtools-extension": "^2.13.9",
       "redux-thunk": "^2.4.1",

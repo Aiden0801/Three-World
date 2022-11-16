@@ -7,6 +7,7 @@ import React from 'react'
 import { FeaturesCards } from '../../components/LandingPage/Features'
 import LandingCard from '../../components/LandingPage/Landing'
 import { FaqWithBg } from '../../components/LandingPage/FAQ'
+import { ContactUs } from '../../components/LandingPage/ContactUs'
 
 const Index: React.FC = () => {
    const router = useRouter()
@@ -20,10 +21,16 @@ const Index: React.FC = () => {
       }
    }, [status])
    return (
-      <div style={{}}>
+      <div
+         style={{
+            backdropFilter: 'blur(5px) drop-shadow(4px 4px 10px blue)',
+            zIndex: 1,
+            position: 'relative',
+         }}>
          <LandingCard />
          <FeaturesCards />
          <FaqWithBg />
+         <ContactUs />
       </div>
    )
 }

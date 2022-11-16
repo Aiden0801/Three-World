@@ -7,7 +7,7 @@ import {
    MantineProvider,
 } from '@mantine/core'
 import { IconPlus } from '@tabler/icons'
-
+import FadeIn from '../../utils/spring/FadeIn'
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('control')
 
@@ -90,6 +90,7 @@ const placeholder =
 export function FaqWithBg() {
    const { classes } = useStyles()
    return (
+      <FadeIn>
       <MantineProvider inherit theme={{ colorScheme: 'light' }}>
          <div className={classes.wrapper}>
             <Container size="sm">
@@ -152,6 +153,6 @@ export function FaqWithBg() {
                </Accordion>
             </Container>
          </div>
-      </MantineProvider>
+      </FadeIn>
    )
 }

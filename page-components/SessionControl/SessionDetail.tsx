@@ -18,6 +18,7 @@ import {
    TextInput,
    ThemeIcon,
    Table,
+   Paper,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 // Users with a higher priority will preempt the control of lower priority users.
@@ -37,6 +38,9 @@ const useStyles = createStyles((theme) => ({
       display: 'flex',
       alignItems: 'center',
       margin: '10px,10px,10px,10px',
+   },
+   detail: {
+      marginTop: '100px',
    },
 }))
 
@@ -78,7 +82,6 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
    const { classes, theme } = useStyles()
-   const [users, setUser] = useState([])
    const {
       data: detailData,
       isLoading,
@@ -123,6 +126,8 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
    })
    const handleAllowUser = async (values) => {
       const { email } = values
+      setOpened(false)
+
       setIsHandling(true)
       console.log('handleAllowUser', detailData.creator, detailData._id, email)
       const response = await fetcher('/api/session/allowUsertoSession', {
@@ -136,7 +141,6 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
       })
       console.log('handleAllowUser', response)
       mutate()
-      setOpened(false)
       setIsHandling(false)
    }
    const handleDenyAllowedUser = async (values) => {
@@ -158,10 +162,10 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
       setIsHandling(false)
    }
    return (
-      <div className={classes.container}>
-         <LoadingOverlay
+      <Container className={classes.container}>
+         {/* <LoadingOverlay
             visible={isHandling || isLoading}
-            overlayBlur={2}></LoadingOverlay>
+            overlayBlur={2}></LoadingOverlay> */}
          <Modal
             title="Allow User"
             opened={opened}
@@ -188,7 +192,12 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                </SimpleGrid>
             </form>
          </Modal>
-         <Container style={{}} size="xl" px="xs">
+         <Paper
+            shadow="md"
+            p="xl"
+            style={{}}
+            px="xs"
+            className="classes.detail">
             <Text
                component="span"
                variant="gradient"
@@ -261,8 +270,20 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                         onClick={() => {
                            setOpened(true)
                         }}
-                        color="green">
-                        <IconPlus size={18} stroke={1.5} />
+                        color="green"
+                        variant="outline"
+                        compact
+                        loading={isHandling}
+                        leftIcon={
+                           <IconPlus
+                              onClick={() => {
+                                 setOpened(true)
+                              }}
+                              size={18}
+                              stroke={1.5}
+                           />
+                        }>
+                        New
                      </Button>
                   </Grid.Col>
 
@@ -272,7 +293,7 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                      <>
                         <Grid.Col span={12} style={{}}>
                            <ScrollArea style={{ height: 450 }}>
-                              <Table>
+                              <Table withBorder>
                                  <thead>
                                     <tr>
                                        <th> Name</th>
@@ -327,8 +348,8 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                pr={20}>
                Back
             </Button>
-         </Container>
-      </div>
+         </Paper>
+      </Container>
    )
 }
 

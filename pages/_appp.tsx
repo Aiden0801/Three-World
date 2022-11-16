@@ -10,6 +10,8 @@ import React, { useState } from 'react'
 import { useSession, getSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import LoadingScreen from './loading'
+
+import { NotificationsProvider } from '@mantine/notifications'
 function MySession({ Component, pageProps: { ...pageProps } }: AppProps) {
    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
    const toggleColorScheme = (value?: ColorScheme) => {
@@ -37,7 +39,9 @@ function MySession({ Component, pageProps: { ...pageProps } }: AppProps) {
             withGlobalStyles
             withNormalizeCSS
             theme={{ loader: 'bars', colorScheme }}>
-            <Component {...pageProps} curSession={session} />
+            <NotificationsProvider>
+               <Component {...pageProps} curSession={session} />
+            </NotificationsProvider>
          </MantineProvider>
       </ColorSchemeProvider>
    )

@@ -33,6 +33,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
             theme.colorScheme === 'dark'
                ? theme.colors.dark[6]
                : theme.colors.gray[0],
+         boxShadow: `3px 0px 5px ${theme.colors.gray[1]}`,
       },
       header: {
          paddingBottom: theme.spacing.md,
