@@ -7,6 +7,7 @@ import React from 'react'
 import { FeaturesCards } from '../../components/LandingPage/Features'
 import LandingCard from '../../components/LandingPage/Landing'
 import { FaqWithBg } from '../../components/LandingPage/FAQ'
+import { ContactUs } from '../../components/LandingPage/ContactUs'
 
 const Index: React.FC = () => {
    const router = useRouter()
@@ -29,6 +30,7 @@ const Index: React.FC = () => {
          <LandingCard />
          <FeaturesCards />
          <FaqWithBg />
+         <ContactUs />
       </div>
    )
 }

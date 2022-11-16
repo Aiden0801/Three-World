@@ -9,6 +9,7 @@ import {
    Image,
    Transition,
    Paper,
+   Stack,
 } from '@mantine/core'
 
 import { MantineLogo } from '@mantine/ds'
@@ -82,7 +83,6 @@ const useStyles = createStyles((theme) => ({
       borderTopLeftRadius: 0,
       borderTopWidth: 0,
       overflow: 'hidden',
-      backgroundColor: 'rgba(255,255,255,0.5)',
       [theme.fn.largerThan('sm')]: {
          display: 'none',
       },
@@ -172,23 +172,25 @@ export default function HeaderMenu() {
                         className={classes.dropdown}
                         withBorder
                         style={styles}>
-                        <a href="#" className={classes.link}>
-                           Home
-                        </a>
-                        <a href="#" className={classes.link}>
-                           Features
-                        </a>
-                        <a href="#" className={classes.link}>
-                           Contact US
-                        </a>
+                        <Stack>
+                           <a href="#" className={classes.link}>
+                              Home
+                           </a>
+                           <a href="#" className={classes.link}>
+                              Features
+                           </a>
+                           <a href="#" className={classes.link}>
+                              Contact US
+                           </a>
 
-                        <Button
-                           component="a"
-                           href="/login"
-                           variant="default"
-                           className={classes.button}>
-                           Log in
-                        </Button>
+                           <Button
+                              component="a"
+                              href="/login"
+                              variant="default"
+                              className={classes.button}>
+                              Log in
+                           </Button>
+                        </Stack>
                      </Paper>
                   )}
                </Transition>
