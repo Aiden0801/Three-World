@@ -24,6 +24,8 @@ import {
    getCommand,
    getCurrentBrowserData,
    setCommand,
+   setBrowser,
+   getCurrentBrowser,
 } from '../../../store/browserSlice'
 import Utility from './Utility'
 const useStyles = createStyles((theme) => ({
@@ -65,6 +67,8 @@ const useStyles = createStyles((theme) => ({
 const ControlPanel = () => {
    const dispatch = useDispatch()
    const curBrowser = useSelector(getCurrentBrowserData)
+
+   const bIndex = useSelector(getCurrentBrowser)
    const curCommand = useSelector(getCommand)
    const [opened, setOpened] = useState(false)
    const title = opened ? 'Close navigation' : 'Open navigation'
@@ -73,7 +77,8 @@ const ControlPanel = () => {
    const { classes, cx } = useStyles()
 
    const handleCommand = async (type) => {
-      if (curCommand.handle == 1) return
+      // if (curCommand.handle == 1) return
+      // dispatch(setBrowser((bIndex + 3) % 4))
       dispatch(
          setCommand({
             type: type,
@@ -172,7 +177,7 @@ const ControlPanel = () => {
                            size="xl"
                            variant="filled"
                            color="green"
-                           onClick={() => handleCommand(1)}>
+                           onClick={() => handleCommand(-1)}>
                            <IconArrowBigLeft size={60} />
                         </ActionIcon>
                      </Grid.Col>
@@ -181,7 +186,7 @@ const ControlPanel = () => {
                            size="xl"
                            variant="filled"
                            color="green"
-                           onClick={() => handleCommand(2)}>
+                           onClick={() => handleCommand(1)}>
                            <IconArrowBigRight size={60} />
                         </ActionIcon>
                      </Grid.Col>

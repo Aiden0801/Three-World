@@ -58,7 +58,7 @@ export default function Browser(props) {
 
       loadBrowser()
       return () => {
-         hb.destroy()
+         if (hb) hb.destroy()
       }
    }, [])
    useWindowEvent('keydown', (event) => {

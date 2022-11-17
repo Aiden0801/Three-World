@@ -127,7 +127,7 @@ interface INavbarProps extends React.PropsWithChildren {
    initialState?: string
    hidden?: any
    hiddenBreakpoint?: any
-   handleNavToogle?: any
+   handlenavtoogle?: any
    width?: any
 }
 const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
