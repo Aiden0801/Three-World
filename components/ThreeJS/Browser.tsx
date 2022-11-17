@@ -27,8 +27,13 @@ let hb: HyperbeamEmbed | undefined
  *
  *
  */
+const copypos = new THREE.Vector2(0, 0)
+const copytexture = new THREE.Texture()
+
+const width = 5.6
+const height = 3.3
+const geometry = new THREE.PlaneGeometry(width, height)
 export default function Browser(props) {
-   // const authState = useSelector()
    const dispatch = useDispatch()
    const texture = new THREE.Texture()
    const curBrowser = useSelector(getCurrentBrowserData)
@@ -39,19 +44,11 @@ export default function Browser(props) {
    )
    const hbContainer = document.createElement('div')
    const meshobject = useRef()
-   const monitor = useRef()
-   const width = 5.6
-   const height = 3.3
-   const [active, setActive] = useState(false)
-   const [geometry, setgeometry] = useState(
-      new THREE.PlaneGeometry(width, height)
-   )
+
    const [material, setMaterial] = useState(
       new THREE.MeshBasicMaterial({ map: texture })
    )
-   const title = React.createElement('div', { id: 'hbContainer' }, '')
    const { viewport, gl, scene } = useThree()
-   let room = ''
    useEffect(() => {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
@@ -104,11 +101,8 @@ export default function Browser(props) {
                   texture.image = frame
                   texture.needsUpdate = true
                } else {
-                  gl.copyTextureToTexture(
-                     new THREE.Vector2(0, 0),
-                     new THREE.Texture(frame as HTMLVideoElement),
-                     texture
-                  )
+                  var copytexture = new THREE.Texture(frame as HTMLVideoElement)
+                  gl.copyTextureToTexture(copypos, copytexture, texture)
                }
             },
          })
