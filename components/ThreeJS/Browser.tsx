@@ -57,6 +57,9 @@ export default function Browser(props) {
       defMaterial.side = THREE.DoubleSide
 
       loadBrowser()
+      return () => {
+         hb.destroy()
+      }
    }, [])
    useWindowEvent('keydown', (event) => {
       if (curBrowser.index == props.bid && hb && hb.tabs) {

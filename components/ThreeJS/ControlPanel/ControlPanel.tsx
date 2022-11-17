@@ -18,6 +18,7 @@ import {
    IconSettings,
 } from '@tabler/icons'
 import { useState } from 'react'
+import { useMouse } from '@mantine/hooks'
 import { useDispatch, useSelector } from 'react-redux'
 import {
    getCommand,
@@ -36,7 +37,12 @@ const useStyles = createStyles((theme) => ({
       backgroundPosition: 'center',
    },
    stack: {},
-
+   tablist: {},
+   tabs: {
+      color: 'black',
+      backgroundColor: theme.colors.gray[1],
+      marginBottom: 30,
+   },
    title: {
       fontFamily: `Greycliff CF, ${theme.fontFamily}`,
       fontWeight: 900,
@@ -75,32 +81,50 @@ const ControlPanel = () => {
          })
       )
    }
+   const { ref, x, y } = useMouse()
+
    return (
       <Box
+         ref={ref}
          sx={(theme) => ({
-            backgroundColor: 'rgba(0,0,0,0)',
+            backgroundColor: 'rgba(255,0,0,0)',
             position: 'absolute',
-            right: 0,
-            top: 0,
+            right: 20,
+            top: 20,
             width: '200px',
          })}>
          <LoadingOverlay visible={isHandling} overlayBlur={2} />
 
-         <Tabs orientation="vertical" defaultValue="gallery" placement="right">
+         <Tabs
+            orientation="vertical"
+            defaultValue="gallery"
+            placement="right"
+            variant="pills"
+            className={classes.tablist}>
             <Tabs.List>
                <Tabs.Tab
                   value="gallery"
+                  className={classes.tabs}
                   icon={<IconPhoto size={24} />}></Tabs.Tab>
                <Tabs.Tab
                   value="messages"
+                  className={classes.tabs}
                   icon={<IconMessageCircle size={24} />}></Tabs.Tab>
                <Tabs.Tab
                   value="settings"
+                  className={classes.tabs}
                   icon={<IconSettings size={24} />}></Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="gallery" pl="xs">
-               Gallery tab content
+            <Tabs.Panel
+               value="gallery"
+               pl="xs"
+               style={
+                  {
+                     // backgroundColor: 'red',
+                  }
+               }>
+               Gallery tab content{x}
             </Tabs.Panel>
 
             <Tabs.Panel value="messages" pl="xs">

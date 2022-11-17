@@ -91,7 +91,6 @@ export function FaqWithBg() {
    const { classes } = useStyles()
    return (
       <FadeIn>
-      <MantineProvider inherit theme={{ colorScheme: 'light' }}>
          <div className={classes.wrapper}>
             <Container size="sm">
                <Title align="center" className={classes.title}>
