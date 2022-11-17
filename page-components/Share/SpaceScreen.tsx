@@ -73,7 +73,7 @@ export default function SpaceScreen() {
                   fov: 50,
                }}>
                <Suspense fallback={null}>
-                  <animated.perspectiveCamera rotation-y={rotation.y}>
+                  <animated.perspectiveCamera>
                      <SkyComponent />
                      <group>
                         <CameraPosition />

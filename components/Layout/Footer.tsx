@@ -1,22 +1,10 @@
+import { ActionIcon, Container, createStyles, Group, Text } from '@mantine/core'
 import {
-   createStyles,
-   Text,
-   Container,
-   ActionIcon,
-   Group,
-   Image,
-} from '@mantine/core'
-import {
+   IconBrandInstagram,
    IconBrandTwitter,
    IconBrandYoutube,
-   IconBrandInstagram,
 } from '@tabler/icons'
-import { MantineLogo } from '@mantine/ds'
-import {
-   useWindowScroll,
-   useElementSize,
-   useViewportSize,
-} from '@mantine/hooks'
+import Image from 'next/image'
 const useStyles = createStyles((theme) => ({
    footer: {
       paddingTop: theme.spacing.xl * 2,

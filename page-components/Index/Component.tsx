@@ -19,11 +19,11 @@ const Index: React.FC = () => {
          console.log('rouing')
          router.push('./dashboard')
       }
-   }, [status])
+   }, [router, status])
    return (
       <div
          style={{
-            backdropFilter: 'blur(5px) drop-shadow(4px 4px 10px blue)',
+            // backdropFilter: 'blur(5px) drop-shadow(4px 4px 10px blue)',
             zIndex: 1,
             position: 'relative',
          }}>

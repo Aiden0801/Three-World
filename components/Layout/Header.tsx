@@ -6,12 +6,11 @@ import {
    Box,
    Burger,
    Avatar,
-   Image,
    Transition,
    Paper,
    Stack,
 } from '@mantine/core'
-
+import Image from 'next/image'
 import { MantineLogo } from '@mantine/ds'
 import { useDisclosure } from '@mantine/hooks'
 

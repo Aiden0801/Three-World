@@ -5,9 +5,6 @@ import { AppShell } from '@mantine/core'
 const Layout = ({ children }) => {
    return (
       <>
-         {/* <Header />
-         {children}
-         <Footer /> */}
          <AppShell padding={0} header={<Header />} footer={<Footer />}>
             {children}
          </AppShell>

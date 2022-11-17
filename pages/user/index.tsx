@@ -1,20 +1,13 @@
 import React from 'react'
 import { User } from '../../page-components/User'
-import { Layout, Navbar } from '../../components/Layout'
-import { Grid, SimpleGrid } from '@mantine/core';
+import { Layout } from '../../components/Layout'
+import { Grid, SimpleGrid } from '@mantine/core'
 const UserPage: React.FC = () => {
-    return (
-        <>
-            <Grid>
-                <Grid.Col xs={2}>
-                    <Navbar initialState={'user'} /></Grid.Col>
-                <Grid.Col xs={10}> <User /></Grid.Col>
-
-            </Grid>
-
-        </>
-
-    )
+   return (
+      <>
+         <User />
+      </>
+   )
 }
 
 export default UserPage
