@@ -2,13 +2,14 @@ import { useFrame, useThree } from '@react-three/fiber'
 
 import * as THREE from 'three'
 import { Browser } from '.'
-
+import React, { useEffect } from 'react'
 let x = 0
-export default function CameraPosition() {
+function CameraPosition() {
    const { camera } = useThree()
-   useFrame(() => {
+   useEffect(() => {
       camera.position.set(0, 0, 0)
    })
+   useFrame(() => {})
    return (
       <>
          <Browser
@@ -34,3 +35,4 @@ export default function CameraPosition() {
       </>
    )
 }
+export default React.memo(CameraPosition)

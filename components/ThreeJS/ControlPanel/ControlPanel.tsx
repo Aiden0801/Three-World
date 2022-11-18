@@ -19,15 +19,13 @@ import {
 } from '@tabler/icons'
 import { useState } from 'react'
 import { useMouse } from '@mantine/hooks'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-   getCommand,
-   getCurrentBrowserData,
-   setCommand,
-   setBrowser,
-   getCurrentBrowser,
-} from '../../../store/browserSlice'
 import Utility from './Utility'
+import { useRecoilValue, useRecoilState } from 'recoil'
+import {
+   currentBrowserIndex,
+   currentBrowsers,
+   getFocusedBrowser,
+} from '../../../utils/recoil/browser'
 const useStyles = createStyles((theme) => ({
    card: {
       height: 440,
@@ -65,26 +63,23 @@ const useStyles = createStyles((theme) => ({
    },
 }))
 const ControlPanel = () => {
-   const dispatch = useDispatch()
-   const curBrowser = useSelector(getCurrentBrowserData)
-
-   const bIndex = useSelector(getCurrentBrowser)
-   const curCommand = useSelector(getCommand)
    const [opened, setOpened] = useState(false)
    const title = opened ? 'Close navigation' : 'Open navigation'
    const [data, setData] = useState([])
    const [isHandling, setIsHandling] = useState(false)
    const { classes, cx } = useStyles()
-
+   const [index, setIndex] = useRecoilState(currentBrowserIndex)
+   const browser = useRecoilValue(getFocusedBrowser)
    const handleCommand = async (type) => {
+      setIndex((index) => (index + type + 4) % 4)
       // if (curCommand.handle == 1) return
       // dispatch(setBrowser((bIndex + 3) % 4))
-      dispatch(
-         setCommand({
-            type: type,
-            handling: 1,
-         })
-      )
+      // dispatch(
+      //    setCommand({
+      //       type: type,
+      //       handling: 1,
+      //    })
+      // )
    }
    const { ref, x, y } = useMouse()
 
@@ -154,11 +149,11 @@ const ControlPanel = () => {
                      size="md"
                      weight={700}
                      style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                     Screen {curBrowser.index}
-                     {curBrowser && curBrowser.data.url == 'none' && (
+                     Screen {index}
+                     {browser && browser.url == 'none' && (
                         <IconActivity color="red" size={15} />
-                     )}
-                     {curBrowser && curBrowser.data.url != 'none' && (
+                     )}{' '}
+                     {browser && browser.url != 'none' && (
                         <IconActivity color="green" size={15} />
                      )}
                   </Text>
@@ -169,7 +164,7 @@ const ControlPanel = () => {
                      size="md"
                      weight={700}
                      style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                     {curBrowser.data.name}
+                     {/* {curBrowser.data.name} */}
                   </Text>
                   <Grid justify="space-around">
                      <Grid.Col span={3} style={{ minWidth: 60 }}>
@@ -212,11 +207,11 @@ const ControlPanel = () => {
                   size="md"
                   weight={700}
                   style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                  Screen {curBrowser.index}
-                  {curBrowser && curBrowser.data.url == 'none' && (
+                  Screen {index}
+                  {browser && browser[index].url == 'none' && (
                      <IconActivity color="red" size={15} />
                   )}
-                  {curBrowser && curBrowser.data.url != 'none' && (
+                  {browser && browser[index].url != 'none' && (
                      <IconActivity color="green" size={15} />
                   )}
                </Text>
@@ -227,7 +222,7 @@ const ControlPanel = () => {
                   size="md"
                   weight={700}
                   style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                  {curBrowser.data.name}
+                  {/* {curBrowser.data.name} */}
                </Text>
                <Grid justify="space-around">
                   <Grid.Col span={3} style={{ minWidth: 60 }}>

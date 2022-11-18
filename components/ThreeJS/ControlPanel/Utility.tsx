@@ -1,17 +1,8 @@
 import { Carousel } from '@mantine/carousel'
-import {
-   Button,
-   Container,
-   createStyles,
-   Modal,
-   Paper,
-   Text,
-} from '@mantine/core'
+import { Button, createStyles, Modal, Paper, Text } from '@mantine/core'
 import { IconDownload, IconWorldDownload } from '@tabler/icons'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { fetcher } from '../../../lib/fetcher'
-import { getCurrentURL } from '../../../store/browserSlice'
 
 const useStyles = createStyles((theme) => ({
    card: {
@@ -92,14 +83,12 @@ function Card({ image, title, category }) {
 }
 export default function Utility() {
    const [isScraping, setIsScraping] = useState(false)
-   const curURL = useSelector(getCurrentURL)
    const [data, setData] = useState([])
    const [clicked, setClicked] = useState(false)
 
    const handleScrapClick = async () => {
       setIsScraping(true)
 
-      console.log(curURL)
       const url = 'https://squarepanda.com/'
       const newData = await fetcher(
          'http://localhost:3000/api/scrap/scrapfromURL',
