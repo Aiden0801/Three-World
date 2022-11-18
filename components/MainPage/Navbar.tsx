@@ -22,8 +22,11 @@ import {
    IconShare,
    IconUserPlus,
 } from '@tabler/icons'
+<<<<<<< HEAD
+=======
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+>>>>>>> 801cc9e9fc256c4e528d84eb5d12645a1d5fa522
 
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')

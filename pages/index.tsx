@@ -6,7 +6,6 @@ const Home: React.FC = () => {
          <Layout>
             <Index />
          </Layout>
-         {/* <LandingPage /> */}
       </>
    )
 }
