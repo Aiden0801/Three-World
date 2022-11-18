@@ -31,7 +31,6 @@ import {
    IconKey,
    IconSearch,
 } from '@tabler/icons'
-import { MantineLogo } from '@mantine/ds'
 
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
