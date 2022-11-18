@@ -8,13 +8,17 @@ import { wrapper } from '../store/store'
 import type { AppProps } from 'next/app'
 import React, { useState } from 'react'
 import MySession from './_appp'
+import { RecoilRoot } from 'recoil'
+
 function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
    const toggleColorScheme = (value?: ColorScheme) =>
       setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
    return (
       <SessionProvider session={pageProps.session}>
-         <MySession Component={Component} pageProps={{ ...pageProps }} />
+         <RecoilRoot>
+            <MySession Component={Component} pageProps={{ ...pageProps }} />
+         </RecoilRoot>
       </SessionProvider>
    )
 }

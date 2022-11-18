@@ -7,9 +7,10 @@ import {
    Skeleton,
    Table,
    Text,
+   Group,
 } from '@mantine/core'
 import { ModalsProvider, openConfirmModal } from '@mantine/modals'
-import { IconGripVertical } from '@tabler/icons'
+import { IconGripVertical, IconPoint } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
@@ -330,10 +331,24 @@ export default function BrowserControl() {
                                                                      }
                                                                   </td>
                                                                   <td>
-                                                                     {session.isActive ==
-                                                                     true
-                                                                        ? 'Active'
-                                                                        : 'Dead'}
+                                                                     <td>
+                                                                        <Group>
+                                                                           <IconPoint
+                                                                              color={
+                                                                                 session.isActive
+                                                                                    ? 'green'
+                                                                                    : 'red'
+                                                                              }
+                                                                              size={
+                                                                                 24
+                                                                              }
+                                                                           />
+                                                                           {session.isActive ==
+                                                                           true
+                                                                              ? 'Active'
+                                                                              : 'Dead'}
+                                                                        </Group>
+                                                                     </td>
                                                                   </td>
                                                                </tr>
                                                                {snapshot.isDragging && (

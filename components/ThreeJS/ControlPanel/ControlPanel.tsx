@@ -18,13 +18,14 @@ import {
    IconSettings,
 } from '@tabler/icons'
 import { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-   getCommand,
-   getCurrentBrowserData,
-   setCommand,
-} from '../../../store/browserSlice'
+import { useMouse } from '@mantine/hooks'
 import Utility from './Utility'
+import { useRecoilValue, useRecoilState } from 'recoil'
+import {
+   currentBrowserIndex,
+   currentBrowsers,
+   getFocusedBrowser,
+} from '../../../utils/recoil/browser'
 const useStyles = createStyles((theme) => ({
    card: {
       height: 440,
@@ -36,7 +37,12 @@ const useStyles = createStyles((theme) => ({
       backgroundPosition: 'center',
    },
    stack: {},
-
+   tablist: {},
+   tabs: {
+      color: 'black',
+      backgroundColor: theme.colors.gray[1],
+      marginBottom: 30,
+   },
    title: {
       fontFamily: `Greycliff CF, ${theme.fontFamily}`,
       fontWeight: 900,
@@ -57,50 +63,68 @@ const useStyles = createStyles((theme) => ({
    },
 }))
 const ControlPanel = () => {
-   const dispatch = useDispatch()
-   const curBrowser = useSelector(getCurrentBrowserData)
-   const curCommand = useSelector(getCommand)
    const [opened, setOpened] = useState(false)
    const title = opened ? 'Close navigation' : 'Open navigation'
    const [data, setData] = useState([])
    const [isHandling, setIsHandling] = useState(false)
    const { classes, cx } = useStyles()
-
+   const [index, setIndex] = useRecoilState(currentBrowserIndex)
+   const browser = useRecoilValue(getFocusedBrowser)
    const handleCommand = async (type) => {
-      if (curCommand.handle == 1) return
-      dispatch(
-         setCommand({
-            type: type,
-            handling: 1,
-         })
-      )
+      setIndex((index) => (index + type + 4) % 4)
+      // if (curCommand.handle == 1) return
+      // dispatch(setBrowser((bIndex + 3) % 4))
+      // dispatch(
+      //    setCommand({
+      //       type: type,
+      //       handling: 1,
+      //    })
+      // )
    }
+   const { ref, x, y } = useMouse()
+
    return (
       <Box
+         ref={ref}
          sx={(theme) => ({
-            backgroundColor: 'rgba(0,0,0,0)',
+            backgroundColor: 'rgba(255,0,0,0)',
             position: 'absolute',
-            right: 0,
-            top: 0,
+            right: 20,
+            top: 20,
             width: '200px',
          })}>
          <LoadingOverlay visible={isHandling} overlayBlur={2} />
 
-         <Tabs orientation="vertical" defaultValue="gallery" placement="right">
+         <Tabs
+            orientation="vertical"
+            defaultValue="gallery"
+            placement="right"
+            variant="pills"
+            className={classes.tablist}>
             <Tabs.List>
                <Tabs.Tab
                   value="gallery"
+                  className={classes.tabs}
                   icon={<IconPhoto size={24} />}></Tabs.Tab>
                <Tabs.Tab
                   value="messages"
+                  className={classes.tabs}
                   icon={<IconMessageCircle size={24} />}></Tabs.Tab>
                <Tabs.Tab
                   value="settings"
+                  className={classes.tabs}
                   icon={<IconSettings size={24} />}></Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel value="gallery" pl="xs">
-               Gallery tab content
+            <Tabs.Panel
+               value="gallery"
+               pl="xs"
+               style={
+                  {
+                     // backgroundColor: 'red',
+                  }
+               }>
+               Gallery tab content{x}
             </Tabs.Panel>
 
             <Tabs.Panel value="messages" pl="xs">
@@ -125,11 +149,11 @@ const ControlPanel = () => {
                      size="md"
                      weight={700}
                      style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                     Screen {curBrowser.index}
-                     {curBrowser && curBrowser.data.url == 'none' && (
+                     Screen {index}
+                     {browser && browser.url == 'none' && (
                         <IconActivity color="red" size={15} />
-                     )}
-                     {curBrowser && curBrowser.data.url != 'none' && (
+                     )}{' '}
+                     {browser && browser.url != 'none' && (
                         <IconActivity color="green" size={15} />
                      )}
                   </Text>
@@ -140,7 +164,7 @@ const ControlPanel = () => {
                      size="md"
                      weight={700}
                      style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                     {curBrowser.data.name}
+                     {/* {curBrowser.data.name} */}
                   </Text>
                   <Grid justify="space-around">
                      <Grid.Col span={3} style={{ minWidth: 60 }}>
@@ -148,7 +172,7 @@ const ControlPanel = () => {
                            size="xl"
                            variant="filled"
                            color="green"
-                           onClick={() => handleCommand(1)}>
+                           onClick={() => handleCommand(-1)}>
                            <IconArrowBigLeft size={60} />
                         </ActionIcon>
                      </Grid.Col>
@@ -157,7 +181,7 @@ const ControlPanel = () => {
                            size="xl"
                            variant="filled"
                            color="green"
-                           onClick={() => handleCommand(2)}>
+                           onClick={() => handleCommand(1)}>
                            <IconArrowBigRight size={60} />
                         </ActionIcon>
                      </Grid.Col>
@@ -183,11 +207,11 @@ const ControlPanel = () => {
                   size="md"
                   weight={700}
                   style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                  Screen {curBrowser.index}
-                  {curBrowser && curBrowser.data.url == 'none' && (
+                  Screen {index}
+                  {browser && browser[index].url == 'none' && (
                      <IconActivity color="red" size={15} />
                   )}
-                  {curBrowser && curBrowser.data.url != 'none' && (
+                  {browser && browser[index].url != 'none' && (
                      <IconActivity color="green" size={15} />
                   )}
                </Text>
@@ -198,7 +222,7 @@ const ControlPanel = () => {
                   size="md"
                   weight={700}
                   style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                  {curBrowser.data.name}
+                  {/* {curBrowser.data.name} */}
                </Text>
                <Grid justify="space-around">
                   <Grid.Col span={3} style={{ minWidth: 60 }}>

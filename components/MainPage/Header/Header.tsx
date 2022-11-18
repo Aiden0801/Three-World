@@ -32,7 +32,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       },
    }
 })
-const HeaderComponent = ({ handleNavToogle }) => {
+const HeaderComponent = ({ handlenavtoogle }) => {
    const [opened, setOpened] = useState(false)
    const { data: session, status } = useSession()
    const { classes, cx } = useStyles()
@@ -66,7 +66,7 @@ const HeaderComponent = ({ handleNavToogle }) => {
                   opened={opened}
                   onClick={() => {
                      setOpened((o) => !o)
-                     handleNavToogle()
+                     handlenavtoogle()
                   }}
                   size="sm"
                />

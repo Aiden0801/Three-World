@@ -3,12 +3,21 @@ import { Canvas } from '@react-three/fiber'
 import { lazy, Suspense } from 'react'
 import { CameraPosition } from '../../components/ThreeJS'
 import { useState, useEffect } from 'react'
-import { PerspectiveCamera } from '@react-three/drei'
 import ControlPanel from '../../components/ThreeJS/ControlPanel/ControlPanel'
+import { useSpring, animated, config } from '@react-spring/three'
+
+import { useHotkeys } from '@mantine/hooks'
 const SkyComponent = lazy(() => import('../../components/ThreeJS/sky'))
+import * as THREE from 'three'
+import { AmbientLight, AnimationLoader, PointLight } from 'three'
+import { useRecoilValue } from 'recoil'
+import { currentBrowserIndex } from '../../utils/recoil/browser'
+import { usePrevious } from '@mantine/hooks'
+const from = new THREE.Euler(0, 0, 0)
+const to = new THREE.Euler(-Math.PI, 0, 0)
 
 export default function SpaceScreen() {
-   const [isBrowser, setIsBrowser] = useState(false)
+   const [isBrowser, setIsBrowser] = useState(true)
    useEffect(() => {
       if (typeof window !== 'undefined') {
          {
@@ -16,6 +25,31 @@ export default function SpaceScreen() {
          }
       }
    }, [])
+
+   const curIndex = useRecoilValue(currentBrowserIndex)
+   const previousValue = usePrevious(curIndex)
+   const [toogle, setToogle] = useState(0)
+   useEffect(() => {
+      console.log(previousValue, curIndex)
+      if (toogle != curIndex)
+         setToogle((toogle) => toogle + (curIndex - previousValue))
+   }, [curIndex])
+   const rotation = useSpring({
+      x: (toogle * Math.PI) / 2,
+      y: (toogle * Math.PI) / 2,
+      z: (toogle * Math.PI) / 2,
+      config: config.wobbly,
+   })
+   useHotkeys([
+      [
+         'ctrl+q',
+         () => {
+            setToogle((toogle) => toogle + 1)
+            console.log('KKK')
+            console.log(toogle)
+         },
+      ],
+   ])
    return (
       <div
          style={{
@@ -23,25 +57,25 @@ export default function SpaceScreen() {
             width: '100%',
             height: '100%',
          }}>
-         {isBrowser ? (
-            <Canvas
-               camera={{
-                  fov: 50,
-               }}>
-               <Suspense fallback={null}>
-                  <PerspectiveCamera>
-                     <SkyComponent />
+         <Canvas
+            camera={{
+               fov: 50,
+            }}>
+            <animated.perspectiveCamera rotation-y={rotation.y}>
+               <SkyComponent />
+               <group>
+                  <CameraPosition />
+               </group>
+            </animated.perspectiveCamera>
 
-                     <group>
-                        <CameraPosition />
-                     </group>
-                     <Light />
-                  </PerspectiveCamera>
-               </Suspense>
-            </Canvas>
-         ) : (
-            <div></div>
-         )}
+            <ambientLight color={0xff4040} />
+            <pointLight
+               distance={10}
+               intensity={10}
+               color="white"
+               position={[0, 0, 0]}
+            />
+         </Canvas>
          <ControlPanel />
       </div>
    )
@@ -50,7 +84,14 @@ export default function SpaceScreen() {
 function Light() {
    return (
       <>
-         {/* <pointLight distance={10} intensity={10} color="white" position={[0, 4.5, 0]} /> */}
+         {/* <AmbientLight color={0x404040} /> */}
+
+         {/* <pointLight
+            distance={10}
+            intensity={10}
+            color="white"
+            position={[0, 4.5, 0]}
+         /> */}
       </>
    )
 }

@@ -6,7 +6,7 @@ import Navbar from './Navbar'
 import { useCallback } from 'react'
 const PageWrapper = ({ children, currentPage }) => {
    const [opened, setOpened] = useState(false)
-   const handleNavToogle = useCallback(() => {
+   const handlenavtoogle = useCallback(() => {
       setOpened(!opened)
    }, [opened])
    return (
@@ -15,14 +15,13 @@ const PageWrapper = ({ children, currentPage }) => {
             padding={0}
             navbar={
                <Navbar
-                  handleNavToogle={handleNavToogle}
                   hidden={!opened}
                   hiddenBreakpoint="sm"
                   width={{ sm: 300 }}
                   initialState={currentPage}
                />
             }
-            header={<Header handleNavToogle={handleNavToogle} />}
+            header={<Header handlenavtoogle={handlenavtoogle} />}
             footer={<Footer />}>
             {children}
          </AppShell>

@@ -1,21 +1,18 @@
 import {
-   createStyles,
-   Header,
-   Group,
-   Button,
    Box,
    Burger,
-   Avatar,
-   Image,
-   Transition,
+   Button,
+   createStyles,
+   Group,
+   Header,
    Paper,
    Stack,
+   Transition,
 } from '@mantine/core'
-
-import { MantineLogo } from '@mantine/ds'
 import { useDisclosure } from '@mantine/hooks'
+import Image from 'next/image'
 
-import { signIn, signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 const useStyles = createStyles((theme) => ({
    link: {
       display: 'flex',
