@@ -2,36 +2,37 @@ import { useState } from 'react'
 /**
  * Next-Auth
  */
-import { useSession } from 'next-auth/react'
-import { createStyles, Title } from '@mantine/core'
 import {
-   Avatar,
    Burger,
+   Code,
+   createStyles,
    Group,
    Header,
    Image,
    Indicator,
    MediaQuery,
-   UnstyledButton,
    Text,
    TextInput,
-   Code,
-   Popover,
+   Title,
 } from '@mantine/core'
-import { IconSearch, IconBell } from '@tabler/icons'
-import { ThemeContext } from '@emotion/react'
+import { IconBell, IconSearch } from '@tabler/icons'
+import { useSession } from 'next-auth/react'
+import ActionToggle from './ColorSchemeToogle'
 import UserAvatar from './UserAvatar'
 const useStyles = createStyles((theme, _params, getRef) => {
    return {
       container: {
-         backgroundColor: theme.colors.indigo[4],
+         backgroundColor:
+            theme.colorScheme === 'dark'
+               ? theme.colors.green[6]
+               : theme.colors.indigo[4],
       },
       logo: {
          marginLeft: '20px',
       },
    }
 })
-const HeaderComponent = ({ handleNavToogle }) => {
+const HeaderComponent = ({ handlenavtoogle }) => {
    const [opened, setOpened] = useState(false)
    const { data: session, status } = useSession()
    const { classes, cx } = useStyles()
@@ -65,7 +66,7 @@ const HeaderComponent = ({ handleNavToogle }) => {
                   opened={opened}
                   onClick={() => {
                      setOpened((o) => !o)
-                     handleNavToogle()
+                     handlenavtoogle()
                   }}
                   size="sm"
                />
@@ -91,14 +92,15 @@ const HeaderComponent = ({ handleNavToogle }) => {
                      ml="xl"
                   />
                </MediaQuery>
-               {session && (
-                  <>
-                     <Indicator withBorder color="pink" mt="sm">
-                        <IconBell size={20} color="white" />
-                     </Indicator>
-                     <UserAvatar img={session.user.image} />
-                  </>
-               )}
+               {/* {session && ( */}
+               <>
+                  <ActionToggle />
+                  <Indicator withBorder color="pink" mt="sm">
+                     <IconBell size={20} color="white" />
+                  </Indicator>
+                  <UserAvatar img={session.user.image} />
+               </>
+               {/* )} */}
             </Group>
          </div>
       </Header>

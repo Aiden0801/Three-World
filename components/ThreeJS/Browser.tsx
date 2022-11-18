@@ -1,21 +1,17 @@
-import * as THREE from 'three'
 import Hyperbeam, { HyperbeamEmbed } from '@hyperbeam/web'
-import { useSpring, animated, config } from '@react-spring/three'
-
-import React, { lazy, useEffect, useCallback } from 'react'
-import { useState, useRef, Suspense, useMemo } from 'react'
-import { Canvas, useThree, useFrame, useLoader } from '@react-three/fiber'
-import { useTexture, Html } from '@react-three/drei'
-import { useDispatch, useSelector } from 'react-redux'
-import {
-   setURL,
-   getDataByIndex,
-   getCurrentBrowser,
-   getCurrentBrowserData,
-} from '../../store/browserSlice'
+import { animated } from '@react-spring/three'
+import * as THREE from 'three'
 
 import { useWindowEvent } from '@mantine/hooks'
+import { useTexture } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
+import React, { lazy, useCallback, useEffect, useRef, useState } from 'react'
+import { useRecoilValue, useSetRecoilState } from 'recoil'
 import { Object3D } from 'three'
+import {
+   currentBrowserIndex,
+   currentBrowsers,
+} from '../../utils/recoil/browser'
 const TvComponent = lazy(() => import('./TvModel'))
 // import display from './assets/tv_screen.glb';
 let hb: HyperbeamEmbed | undefined
@@ -27,39 +23,47 @@ let hb: HyperbeamEmbed | undefined
  *
  *
  */
-export default function Browser(props) {
-   // const authState = useSelector()
-   const dispatch = useDispatch()
+const copypos = new THREE.Vector2(0, 0)
+const copytexture = new THREE.Texture()
+
+const width = 5.6
+const height = 3.3
+const geometry = new THREE.PlaneGeometry(width, height)
+function Browser(props) {
    const texture = new THREE.Texture()
-   const curBrowser = useSelector(getCurrentBrowserData)
-   const browserData = useSelector(getDataByIndex(props.bid))
    const deftexture = useTexture('loading.jpg')
    const [defMaterial, setDefmaterial] = useState(
       new THREE.MeshBasicMaterial({ map: deftexture })
    )
    const hbContainer = document.createElement('div')
    const meshobject = useRef()
-   const monitor = useRef()
-   const width = 5.6
-   const height = 3.3
-   const [active, setActive] = useState(false)
-   const [geometry, setgeometry] = useState(
-      new THREE.PlaneGeometry(width, height)
-   )
+
    const [material, setMaterial] = useState(
       new THREE.MeshBasicMaterial({ map: texture })
    )
-   const title = React.createElement('div', { id: 'hbContainer' }, '')
    const { viewport, gl, scene } = useThree()
-   let room = ''
+
+   const userBrowser = useRecoilValue(currentBrowsers)
+   const curIndex = useRecoilValue(currentBrowserIndex)
+   const setCurIndex = useSetRecoilState(currentBrowserIndex)
    useEffect(() => {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
+      console.log('render')
 
       loadBrowser()
+      return () => {
+         if (hb) hb.destroy()
+      }
    }, [])
+   useEffect(() => {
+      if (hb) {
+         if (curIndex == props.bid) hb.videoPaused = false
+         else hb.videoPaused = true
+      }
+   }, [curIndex, props.bid])
    useWindowEvent('keydown', (event) => {
-      if (curBrowser.index == props.bid && hb && hb.tabs) {
+      if (curIndex == props.bid && hb && hb.tabs) {
          hb.sendEvent({
             type: 'keydown' as any,
             key: event.key,
@@ -69,7 +73,7 @@ export default function Browser(props) {
       }
    })
    useWindowEvent('keyup', (event) => {
-      if (curBrowser.index == props.bid && hb && hb.tabs) {
+      if (curIndex == props.bid && hb && hb.tabs) {
          hb.sendEvent({
             type: 'keyup' as any,
             key: event.key,
@@ -79,19 +83,14 @@ export default function Browser(props) {
       }
    })
    useWindowEvent('contextmenu', (event) => {
-      if (curBrowser.index == props.bid && hb && hb.tabs) {
+      if (curIndex == props.bid && hb && hb.tabs) {
          event.preventDefault()
       }
    })
-   const loadBrowser = async () => {
-      let embedURL = browserData['url']
-      // let embedURL;
-      console.log('browserData', props.bid, embedURL)
+   const loadBrowser = useCallback(async () => {
+      let embedURL = userBrowser[props.bid].url
 
       if (embedURL == null || embedURL == 'none') return
-      // let flag = false;
-      // if (props.bid == "1")
-      //     flag = true;
       try {
          hb = await Hyperbeam(hbContainer, embedURL, {
             delegateKeyboard: false,
@@ -104,11 +103,8 @@ export default function Browser(props) {
                   texture.image = frame
                   texture.needsUpdate = true
                } else {
-                  gl.copyTextureToTexture(
-                     new THREE.Vector2(0, 0),
-                     new THREE.Texture(frame as HTMLVideoElement),
-                     texture
-                  )
+                  var copytexture = new THREE.Texture(frame as HTMLVideoElement)
+                  gl.copyTextureToTexture(copypos, copytexture, texture)
                }
             },
          })
@@ -116,7 +112,8 @@ export default function Browser(props) {
             if (changeInfo.title) {
                const tabs = await hb.tabs.query({ active: true })
                console.log(props.bid, tabs[0].url)
-               dispatch(setURL(tabs[0].url))
+               // setCurIndex()
+               // dispatch(setURL(tabs[0].url))
                //                    currentSite.innerText = tabs[0].url;
             }
          })
@@ -125,7 +122,7 @@ export default function Browser(props) {
       } catch (err) {
          console.log(err.message)
       }
-   }
+   }, [gl, hbContainer, props.bid, texture, userBrowser])
 
    const handleMouseEvent = useCallback((e) => {
       let point = e.point
@@ -150,7 +147,6 @@ export default function Browser(props) {
       if (meshobject && meshobject.current) {
          ;(meshobject.current as Object3D).worldToLocal(point)
          if (hb && e.eventtype != '') {
-            console.log('mouseenvent')
             hb.sendEvent({
                type: eventtype,
                x: point.x / width + 0.5,
@@ -160,7 +156,6 @@ export default function Browser(props) {
          }
       }
    }, [])
-   useFrame(() => {})
    return (
       <animated.group {...props}>
          <mesh
@@ -171,14 +166,13 @@ export default function Browser(props) {
             onContextMenu={handleMouseEvent}
             ref={meshobject}
             material={
-               curBrowser &&
-               curBrowser.data.url != 'none' &&
-               curBrowser.data.url != 'No Session'
+               userBrowser &&
+               userBrowser[props.bid].url != 'none' &&
+               userBrowser[props.bid].url != 'No Session'
                   ? material
                   : defMaterial
             }
             geometry={geometry}
-            visible
             userData={{ hello: 'world' }}
             position={new THREE.Vector3(0, 0, 0.13)}
             rotation={new THREE.Euler(0, Math.PI, Math.PI)}
@@ -187,3 +181,4 @@ export default function Browser(props) {
       </animated.group>
    )
 }
+export default React.memo(Browser)

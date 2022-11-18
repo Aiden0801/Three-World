@@ -33,7 +33,10 @@ export default function UserAvatar({ img }) {
                leftIcon={<IconLogout stroke={1.5} />}
                onClick={(event) => {
                   event.preventDefault()
-                  signOut({ callbackUrl: 'http://localhost:3000/' })
+                  signOut({
+                     redirect: false,
+                     callbackUrl: 'http://localhost:3000/',
+                  })
                }}>
                Logout
             </Button>

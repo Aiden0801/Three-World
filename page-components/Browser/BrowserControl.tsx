@@ -2,28 +2,30 @@ import {
    Container,
    createStyles,
    Divider,
+   Paper,
    ScrollArea,
    Skeleton,
    Table,
    Text,
+   Group,
 } from '@mantine/core'
-import { ModalsProvider } from '@mantine/modals'
-import { openConfirmModal } from '@mantine/modals'
-import { IconGripVertical } from '@tabler/icons'
+import { ModalsProvider, openConfirmModal } from '@mantine/modals'
+import { IconGripVertical, IconPoint } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { fetcher } from '../../lib/fetcher'
 
-import styled from 'styled-components'
 import useSWR from 'swr'
-const Item = styled.tr
 
 const useStyles = createStyles((theme) => ({
    container: {
-      left: '200px',
       margin: '10px,10px,10px,10px',
-      marginTop: '20px',
+      paddingBottom: '20px',
+      backgroundColor:
+         theme.colorScheme === 'dark'
+            ? theme.colors.dark[6]
+            : theme.colors.gray[1],
    },
 }))
 
@@ -86,7 +88,6 @@ const useSessionData = (email: string) => {
 export default function BrowserControl() {
    const { data: session, status } = useSession()
    const { classes, theme } = useStyles()
-   const [email, setEmail] = useState('')
    const [isBrowser, setIsBrowser] = useState(false)
 
    const [isHandling, setIsHandling] = useState(false)
@@ -96,13 +97,13 @@ export default function BrowserControl() {
       mutate: mutateB,
       isError: isErrorB,
       isLoading: isLoadingB,
-   } = useBrowserData(email)
+   } = useBrowserData(session.user.email)
    const {
       data: session_data,
       mutate: mutateS,
       isError: isErrorS,
       isLoading: isLoadingS,
-   } = useSessionData(email)
+   } = useSessionData(session.user.email)
    const openModal = (session_id, browser_id) =>
       openConfirmModal({
          title: 'Please confirm your action',
@@ -148,15 +149,9 @@ export default function BrowserControl() {
          }
       }
    }, [])
-   useEffect(() => {
-      if (status == 'authenticated') {
-         setEmail(session.user.email)
-      }
-      console.log(status)
-   }, [status])
    return (
       <ModalsProvider>
-         <div className={classes.container}>
+         <Container className={classes.container}>
             {isBrowser ? (
                <Container style={{}}>
                   {/* <LoadingOverlay
@@ -179,53 +174,53 @@ export default function BrowserControl() {
                         }}>
                         Browsers
                      </Text>
-                     <ScrollArea
-                        style={{
-                           border: '2px solid',
-                           borderColor: 'LightSlateGray',
-                           height: '210px',
-                        }}>
-                        <Skeleton
-                           visible={isLoadingB || isHandling}
-                           style={{ height: 200 }}>
-                           <Table
-                              striped
-                              withColumnBorders
-                              sx={{ minWidth: 800 }}
-                              verticalSpacing="xs">
-                              <thead>
-                                 <tr>
-                                    <th>Index</th>
-                                    <th>Session Name</th>
-                                 </tr>
-                              </thead>
+                     <Paper shadow="xl" radius="md">
+                        <ScrollArea
+                           style={{
+                              height: '210px',
+                           }}>
+                           <Skeleton
+                              visible={isLoadingB || isHandling}
+                              style={{ height: 200 }}>
+                              <Table
+                                 striped
+                                 withColumnBorders
+                                 sx={{ minWidth: 800 }}
+                                 verticalSpacing="xs">
+                                 <thead>
+                                    <tr>
+                                       <th>Index</th>
+                                       <th>Session Name</th>
+                                    </tr>
+                                 </thead>
 
-                              <tbody>
-                                 {browser_data &&
-                                    browser_data.map((browser, index) => (
-                                       <Droppable
-                                          key={index}
-                                          droppableId={index.toString()}>
-                                          {(provided) => (
-                                             <tr
-                                                {...provided.droppableProps}
-                                                ref={provided.innerRef}>
-                                                <td>{index}</td>
-                                                <td>
-                                                   {browser.name === ''
-                                                      ? 'No Session'
-                                                      : browser.name}
-                                                </td>
+                                 <tbody>
+                                    {browser_data &&
+                                       browser_data.map((browser, index) => (
+                                          <Droppable
+                                             key={index}
+                                             droppableId={index.toString()}>
+                                             {(provided) => (
+                                                <tr
+                                                   {...provided.droppableProps}
+                                                   ref={provided.innerRef}>
+                                                   <td>{index}</td>
+                                                   <td>
+                                                      {browser.name === ''
+                                                         ? 'No Session'
+                                                         : browser.name}
+                                                   </td>
 
-                                                {provided.placeholder}
-                                             </tr>
-                                          )}
-                                       </Droppable>
-                                    ))}
-                              </tbody>
-                           </Table>
-                        </Skeleton>
-                     </ScrollArea>
+                                                   {provided.placeholder}
+                                                </tr>
+                                             )}
+                                          </Droppable>
+                                       ))}
+                                 </tbody>
+                              </Table>
+                           </Skeleton>
+                        </ScrollArea>
+                     </Paper>
 
                      <Divider my="md" size={5} color="grey"></Divider>
                      <Text
@@ -244,106 +239,72 @@ export default function BrowserControl() {
                         }}>
                         Available Sessions
                      </Text>
-                     <ScrollArea
-                        style={{
-                           height: '500px',
-                           border: '2px solid',
-                           borderColor: 'LightSlateGray',
-                           padding: '10px',
-                        }}>
-                        {isLoadingS ? (
-                           <>
-                              <Skeleton height={100} circle mt={6} />
-                              <Skeleton height={50} mt={6} />
-                              <Skeleton height={50} mt={6} />
-                              <Skeleton height={50} mt={6} />
-                              <Skeleton height={50} mt={6} />
-                              <Skeleton height={50} mt={6} />
-                              <Skeleton height={50} mt={6} />
-                              <Skeleton height={50} mt={6} />
-                           </>
-                        ) : (
-                           <>
-                              <Table
-                                 striped
-                                 withColumnBorders
-                                 sx={{ minWidth: 800 }}
-                                 verticalSpacing="xs">
-                                 <thead>
-                                    <tr>
-                                       <th>Drag</th>
-                                       <th>ID</th>
-                                       <th>Name</th>
-                                       <th>Creator</th>
-                                       <th>Active</th>
-                                    </tr>
-                                 </thead>
+                     <Paper shadow="xl" radius="md">
+                        <ScrollArea
+                           style={{
+                              height: '500px',
+                              padding: '10px',
+                           }}>
+                           {isLoadingS ? (
+                              <>
+                                 <Skeleton height={100} circle mt={6} />
+                                 <Skeleton height={50} mt={6} />
+                                 <Skeleton height={50} mt={6} />
+                                 <Skeleton height={50} mt={6} />
+                                 <Skeleton height={50} mt={6} />
+                                 <Skeleton height={50} mt={6} />
+                                 <Skeleton height={50} mt={6} />
+                                 <Skeleton height={50} mt={6} />
+                              </>
+                           ) : (
+                              <>
+                                 <Table
+                                    striped
+                                    withColumnBorders
+                                    sx={{ minWidth: 800 }}
+                                    verticalSpacing="xs">
+                                    <thead>
+                                       <tr>
+                                          <th>Drag</th>
+                                          <th>ID</th>
+                                          <th>Name</th>
+                                          <th>Creator</th>
+                                          <th>Active</th>
+                                       </tr>
+                                    </thead>
 
-                                 <Droppable
-                                    droppableId="sessions"
-                                    isDropDisabled={true}>
-                                    {(provided, snapshot) => (
-                                       <tbody ref={provided.innerRef}>
-                                          {session_data &&
-                                             session_data.map(
-                                                (session, index) => (
-                                                   <Draggable
-                                                      key={session.name}
-                                                      draggableId={session._id}
-                                                      index={index}>
-                                                      {(provided, snapshot) => (
-                                                         <>
-                                                            <tr
-                                                               ref={
-                                                                  provided.innerRef
-                                                               }
-                                                               {...provided.draggableProps}
-                                                               style={
-                                                                  provided
-                                                                     .draggableProps
-                                                                     .style
-                                                               }>
-                                                               <td>
-                                                                  <div
-                                                                     {...provided.dragHandleProps}>
-                                                                     <IconGripVertical
-                                                                        size={
-                                                                           18
-                                                                        }
-                                                                        stroke={
-                                                                           1.5
-                                                                        }
-                                                                     />
-                                                                  </div>
-                                                               </td>
-                                                               <td>
-                                                                  {session._id}
-                                                               </td>
-                                                               <td>
-                                                                  {session.name}
-                                                               </td>
-                                                               <td>
-                                                                  {
-                                                                     session.creator
-                                                                  }
-                                                               </td>
-                                                               <td>
-                                                                  {session.isActive ==
-                                                                  true
-                                                                     ? 'Active'
-                                                                     : 'Dead'}
-                                                               </td>
-                                                            </tr>
-                                                            {snapshot.isDragging && (
+                                    <Droppable
+                                       droppableId="sessions"
+                                       isDropDisabled={true}>
+                                       {(provided, snapshot) => (
+                                          <tbody ref={provided.innerRef}>
+                                             {session_data &&
+                                                session_data.map(
+                                                   (session, index) => (
+                                                      <Draggable
+                                                         key={session.name}
+                                                         draggableId={
+                                                            session._id
+                                                         }
+                                                         index={index}>
+                                                         {(
+                                                            provided,
+                                                            snapshot
+                                                         ) => (
+                                                            <>
                                                                <tr
-                                                                  style={{
-                                                                     display:
-                                                                        'none !important',
-                                                                     transform:
-                                                                        'none !important',
-                                                                  }}>
+                                                                  ref={
+                                                                     provided.innerRef
+                                                                  }
+                                                                  {...provided.draggableProps}
+                                                                  style={
+                                                                     provided
+                                                                        .draggableProps
+                                                                        .style
+                                                                  }>
                                                                   <td>
-                                                                     <div>
+                                                                     <div
+                                                                        {...provided.dragHandleProps}>
                                                                         <IconGripVertical
                                                                            size={
                                                                               18
@@ -370,30 +331,87 @@ export default function BrowserControl() {
                                                                      }
                                                                   </td>
                                                                   <td>
-                                                                     {session.isActive ==
-                                                                     true
-                                                                        ? 'Active'
-                                                                        : 'Dead'}
+                                                                     <td>
+                                                                        <Group>
+                                                                           <IconPoint
+                                                                              color={
+                                                                                 session.isActive
+                                                                                    ? 'green'
+                                                                                    : 'red'
+                                                                              }
+                                                                              size={
+                                                                                 24
+                                                                              }
+                                                                           />
+                                                                           {session.isActive ==
+                                                                           true
+                                                                              ? 'Active'
+                                                                              : 'Dead'}
+                                                                        </Group>
+                                                                     </td>
                                                                   </td>
                                                                </tr>
-                                                            )}
-                                                         </>
-                                                      )}
-                                                   </Draggable>
-                                                )
-                                             )}
-                                          {provided.placeholder}
-                                       </tbody>
-                                    )}
-                                 </Droppable>
-                              </Table>
-                           </>
-                        )}
-                     </ScrollArea>
+                                                               {snapshot.isDragging && (
+                                                                  <tr
+                                                                     style={{
+                                                                        display:
+                                                                           'none !important',
+                                                                        transform:
+                                                                           'none !important',
+                                                                     }}>
+                                                                     <td>
+                                                                        <div>
+                                                                           <IconGripVertical
+                                                                              size={
+                                                                                 18
+                                                                              }
+                                                                              stroke={
+                                                                                 1.5
+                                                                              }
+                                                                           />
+                                                                        </div>
+                                                                     </td>
+                                                                     <td>
+                                                                        {
+                                                                           session._id
+                                                                        }
+                                                                     </td>
+                                                                     <td>
+                                                                        {
+                                                                           session.name
+                                                                        }
+                                                                     </td>
+                                                                     <td>
+                                                                        {
+                                                                           session.creator
+                                                                        }
+                                                                     </td>
+                                                                     <td>
+                                                                        {session.isActive ==
+                                                                        true
+                                                                           ? 'Active'
+                                                                           : 'Dead'}
+                                                                     </td>
+                                                                  </tr>
+                                                               )}
+                                                            </>
+                                                         )}
+                                                      </Draggable>
+                                                   )
+                                                )}
+                                             {provided.placeholder}
+                                          </tbody>
+                                       )}
+                                    </Droppable>
+                                 </Table>
+                              </>
+                           )}
+                        </ScrollArea>
+                     </Paper>
                   </DragDropContext>
                </Container>
             ) : null}
-         </div>
+         </Container>
       </ModalsProvider>
    )
 }
