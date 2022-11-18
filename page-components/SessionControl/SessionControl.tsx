@@ -115,7 +115,6 @@ const SessionControl = () => {
       },
       [mutate]
    )
-
    const handleActivateSession = useCallback(
       async (_id) => {
          console.log(_id)

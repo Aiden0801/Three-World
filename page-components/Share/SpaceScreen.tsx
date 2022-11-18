@@ -9,7 +9,7 @@ import { useSpring, animated, config } from '@react-spring/three'
 import { useHotkeys } from '@mantine/hooks'
 const SkyComponent = lazy(() => import('../../components/ThreeJS/sky'))
 import * as THREE from 'three'
-import { AnimationLoader } from 'three'
+import { AmbientLight, AnimationLoader, PointLight } from 'three'
 import { useRecoilValue } from 'recoil'
 import { currentBrowserIndex } from '../../utils/recoil/browser'
 import { usePrevious } from '@mantine/hooks'
@@ -44,7 +44,7 @@ export default function SpaceScreen() {
       [
          'ctrl+q',
          () => {
-            setToogle((toogle) => toogle - 4)
+            setToogle((toogle) => toogle + 1)
             console.log('KKK')
             console.log(toogle)
          },
@@ -57,7 +57,6 @@ export default function SpaceScreen() {
             width: '100%',
             height: '100%',
          }}>
-         {/* {isBrowser ? ( */}
          <Canvas
             camera={{
                fov: 50,
@@ -67,8 +66,15 @@ export default function SpaceScreen() {
                <group>
                   <CameraPosition />
                </group>
-               <Light />
             </animated.perspectiveCamera>
+
+            <ambientLight color={0xff4040} />
+            <pointLight
+               distance={10}
+               intensity={10}
+               color="white"
+               position={[0, 0, 0]}
+            />
          </Canvas>
          <ControlPanel />
       </div>
@@ -78,7 +84,14 @@ export default function SpaceScreen() {
 function Light() {
    return (
       <>
-         {/* <pointLight distance={10} intensity={10} color="white" position={[0, 4.5, 0]} /> */}
+         {/* <AmbientLight color={0x404040} /> */}
+
+         {/* <pointLight
+            distance={10}
+            intensity={10}
+            color="white"
+            position={[0, 4.5, 0]}
+         /> */}
       </>
    )
 }

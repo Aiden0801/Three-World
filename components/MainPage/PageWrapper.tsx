@@ -15,7 +15,6 @@ const PageWrapper = ({ children, currentPage }) => {
             padding={0}
             navbar={
                <Navbar
-                  handlenavtoogle={handlenavtoogle}
                   hidden={!opened}
                   hiddenBreakpoint="sm"
                   width={{ sm: 300 }}

@@ -1,19 +1,17 @@
-import * as THREE from 'three'
 import Hyperbeam, { HyperbeamEmbed } from '@hyperbeam/web'
-import { useSpring, animated, config } from '@react-spring/three'
+import { animated } from '@react-spring/three'
+import * as THREE from 'three'
 
-import React, { lazy, useEffect, useCallback } from 'react'
-import { useState, useRef, Suspense, useMemo } from 'react'
-import { Canvas, useThree, useFrame, useLoader } from '@react-three/fiber'
-import { useTexture, Html } from '@react-three/drei'
+import { useWindowEvent } from '@mantine/hooks'
+import { useTexture } from '@react-three/drei'
+import { useThree } from '@react-three/fiber'
+import React, { lazy, useCallback, useEffect, useRef, useState } from 'react'
 import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { Object3D } from 'three'
 import {
    currentBrowserIndex,
-   getCurrentBrowsers,
    currentBrowsers,
 } from '../../utils/recoil/browser'
-import { useWindowEvent } from '@mantine/hooks'
-import { Object3D } from 'three'
 const TvComponent = lazy(() => import('./TvModel'))
 // import display from './assets/tv_screen.glb';
 let hb: HyperbeamEmbed | undefined
@@ -58,6 +56,12 @@ function Browser(props) {
          if (hb) hb.destroy()
       }
    }, [])
+   useEffect(() => {
+      if (hb) {
+         if (curIndex == props.bid) hb.videoPaused = false
+         else hb.videoPaused = true
+      }
+   }, [curIndex, props.bid])
    useWindowEvent('keydown', (event) => {
       if (curIndex == props.bid && hb && hb.tabs) {
          hb.sendEvent({
