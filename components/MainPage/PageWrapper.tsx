@@ -17,7 +17,7 @@ const PageWrapper = ({ children, currentPage }) => {
                <Navbar
                   hidden={!opened}
                   hiddenBreakpoint="sm"
-                  width={{ sm: 300 }}
+                  width={{ sm: 200 }}
                   initialState={currentPage}
                />
             }

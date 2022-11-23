@@ -7,6 +7,7 @@ const DashboardPage: React.FC = () => {
          <PageWrapper currentPage="dashboard">
             <Dashboard />
          </PageWrapper>
+         {/* <div>hello</div> */}
       </>
    )
 }

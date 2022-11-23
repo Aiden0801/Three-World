@@ -51,6 +51,7 @@
       "react-spring": "^9.5.5",
       "react-waypoint": "^10.3.0",
       "recoil": "^0.7.6",
+      "recoilize": "^3.1.6",
       "redux": "^4.2.0",
       "redux-devtools-extension": "^2.13.9",
       "redux-thunk": "^2.4.1",
@@ -62,6 +63,7 @@
       "three": "^0.145.0"
    },
    "devDependencies": {
+      "@types/recoilize": "^0.8.0",
       "eslint": "8.25.0",
       "eslint-config-next": "12.3.1"
    }
