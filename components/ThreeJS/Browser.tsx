@@ -29,7 +29,7 @@ const copytexture = new THREE.Texture()
 const width = 5.6
 const height = 3.3
 const geometry = new THREE.PlaneGeometry(width, height)
-function Browser(props) {
+function Browser(props): any {
    const texture = new THREE.Texture()
    const deftexture = useTexture('loading.jpg')
    const [defMaterial, setDefmaterial] = useState(
