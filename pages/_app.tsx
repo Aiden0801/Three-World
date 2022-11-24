@@ -2,6 +2,7 @@ import { ColorScheme } from '@mantine/core'
 import { Session } from 'next-auth'
 import { SessionProvider } from 'next-auth/react'
 import type { AppProps } from 'next/app'
+import { Router } from 'next/router'
 import { useState } from 'react'
 import { RecoilRoot } from 'recoil'
 import { wrapper } from '../store/store'
@@ -14,6 +15,7 @@ function MyApp({
    pageProps: { ...pageProps },
 }: AppProps<{
    session: Session
+   router?: Router
 }>) {
    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
    const toggleColorScheme = (value?: ColorScheme) =>
