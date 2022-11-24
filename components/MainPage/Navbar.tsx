@@ -22,11 +22,6 @@ import {
    IconShare,
    IconUserPlus,
 } from '@tabler/icons'
-<<<<<<< HEAD
-=======
-import { useSession } from 'next-auth/react'
-import { useState } from 'react'
->>>>>>> 801cc9e9fc256c4e528d84eb5d12645a1d5fa522
 
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
@@ -136,8 +131,6 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
    const { colorScheme, toggleColorScheme } = useMantineColorScheme()
    const theme = useMantineTheme()
    const { classes, cx } = useStyles()
-   const [active, setActive] = useState(initialState)
-   const { data: session, status } = useSession()
 
    return (
       <Navbar p="md" className={classes.container} {...props}>
@@ -179,7 +172,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                href="/dashboard"
-               active={active == 'dashboard' ? true : false}
+               active={initialState == 'dashboard' ? true : false}
                icon={
                   <IconDashboard size="20" color="royalblue"></IconDashboard>
                }
@@ -199,7 +192,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                href="/sessions"
-               active={active == 'sessions' ? true : false}
+               active={initialState == 'sessions' ? true : false}
                icon={
                   <IconDatabaseImport
                      size="20"
@@ -212,7 +205,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                href="/browsers"
-               active={active == 'browsers' ? true : false}
+               active={initialState == 'browsers' ? true : false}
                icon={<IconScreenShare size="20" color="red"></IconScreenShare>}
             />
             <NavLink
@@ -221,7 +214,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                href="/share"
-               active={active == 'share' ? true : false}
+               active={initialState == 'share' ? true : false}
                icon={<IconShare size="20" color="red"></IconShare>}
             />
             <NavLink
@@ -235,7 +228,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                label="UserManagement"
                description="Additional information"
                href="/user"
-               active={active == 'user' ? true : false}
+               active={initialState == 'user' ? true : false}
                icon={<IconUserPlus size="20" color="blue"></IconUserPlus>}
             />
             <NavLink
@@ -243,26 +236,6 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                icon={<IconKey size="20" color="black"></IconKey>}
             />
          </Navbar.Section>
-         {/* 
-         <Navbar.Section className={classes.footer}>
-            <a
-               href="#"
-               className={classes.link}
-               onClick={(event) => {
-                  event.preventDefault()
-                  signOut({ callbackUrl: 'http://localhost:3000/' })
-               }}>
-               {session && (
-                  <Avatar
-                     src={session.user.image}
-                     alt={session.user.name}
-                     style={{ marginRight: '10px' }}
-                  />
-               )}
-               <IconLogout className={classes.linkIcon} stroke={1.5} />
-               <span>Logout</span>
-            </a>
-         </Navbar.Section> */}
       </Navbar>
    )
 }
