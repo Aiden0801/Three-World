@@ -2,6 +2,7 @@ import { useState } from 'react'
 /**
  * Next-Auth
  */
+import { serverURL } from '../../../config/urlcontrol'
 import {
    Burger,
    Code,
@@ -46,7 +47,7 @@ const HeaderComponent = ({ handlenavtoogle }) => {
             }}>
             <Group className={classes.logo}>
                <Image
-                  src="http://localhost:3000/logo/logo.svg"
+                  src={`${serverURL}/logo/logo.svg`}
                   alt="logo"
                   width={40}
                   height={40}

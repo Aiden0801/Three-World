@@ -2,7 +2,7 @@ import { Stack, Text, Paper, Box } from '@mantine/core'
 import { signIn, useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect } from 'react'
-
+import { serverURL } from '../../config/urlcontrol'
 import {
    DiscordButton,
    GithubButton,
@@ -23,7 +23,7 @@ export default function Login() {
    })
    const handleLogIn = async (providerName: string) => {
       await signIn(providerName.toLowerCase(), {
-         callbackUrl: 'http://localhost:3000/dashboard',
+         callbackUrl: `${serverURL}/dashboard`,
       }).then((res) => {
          console.log('message', res)
       })

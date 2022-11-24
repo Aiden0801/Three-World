@@ -15,7 +15,7 @@ import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { fetcher } from '../../lib/fetcher'
-
+import { serverURL } from '../../config/urlcontrol'
 import useSWR from 'swr'
 
 const useStyles = createStyles((theme) => ({
@@ -31,7 +31,7 @@ const useStyles = createStyles((theme) => ({
 
 const fetchBrowserData = async (url: string, email: string) => {
    const session_data = await fetcher(
-      'http://localhost:3000/api/users/getBrowsersByEmail',
+      `${serverURL}/api/users/getBrowsersByEmail`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -60,7 +60,7 @@ const useBrowserData = (email: string) => {
 const fetchSessionData = async (url: string, email: string) => {
    console.log('fetchSessionData', email)
    const session_data = await fetcher(
-      'http://localhost:3000/api/session/getAvailableSessions',
+      `${serverURL}/api/session/getAvailableSessions`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -120,7 +120,7 @@ export default function BrowserControl() {
    const handleSetSessionToBrowser = async (session_id, browser_id) => {
       setIsHandling(true)
       const data = await fetcher(
-         'http://localhost:3000/api/session/setSessiontoBrowser',
+         `${serverURL}/api/session/setSessiontoBrowser`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
