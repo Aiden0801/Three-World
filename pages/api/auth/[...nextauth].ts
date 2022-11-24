@@ -5,6 +5,7 @@ import { AdapterUser } from 'next-auth/adapters'
 import DiscordProvider from 'next-auth/providers/discord'
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
+import { serverURL } from '../../../config/urlcontrol'
 import { fetcher } from '../../../lib/fetcher'
 
 //import clientPromise from '../../../lib/mongodb'
@@ -98,7 +99,7 @@ export const authOptions: NextAuthOptions = {
       }: IProps): Promise<string | boolean> {
          if (user) {
             console.log('next_auth', user)
-            const response = await fetcher('http://localhost:3000/api/users', {
+            const response = await fetcher(`${serverURL}/api/users`, {
                method: 'POST',
                headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify({
