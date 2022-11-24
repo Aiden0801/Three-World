@@ -6,9 +6,9 @@ dist
 .vscode
 .idea
 
-
 yarn-error.log
 example.html
 .eslintrc.json
 *.d.ts
 .env.local
+.env
