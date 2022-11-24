@@ -45,7 +45,7 @@ export const authOptions: NextAuthOptions = {
    // The secret should be set to a reasonably long random string.
    // It is used to sign cookies and to sign and encrypt JSON Web Tokens, unless
    // a separate secret is defined explicitly for encrypting the JWT.
-   secret: process.env.SECRET,
+   secret: 'asjdlfwerjwklerj',
 
    session: {
       // Use JSON Web Tokens for session instead of database sessions.
