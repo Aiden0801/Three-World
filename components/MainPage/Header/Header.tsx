@@ -24,8 +24,8 @@ const useStyles = createStyles((theme, _params, getRef) => {
       container: {
          backgroundColor:
             theme.colorScheme === 'dark'
-               ? theme.colors.green[6]
-               : theme.colors.indigo[4],
+               ? theme.colors.dark[8]
+               : theme.colors.dark[9],
       },
       logo: {
          marginLeft: '20px',
