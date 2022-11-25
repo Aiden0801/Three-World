@@ -250,7 +250,7 @@ const SessionControl = () => {
             <TextInput
                placeholder="Search"
                mb={10}
-               icon={<IconSearch size={14} mb={20} radius="md" />}
+               icon={<IconSearch size={14} radius="md" />}
             />
             <ScrollArea>
                <Skeleton visible={isLoading || isHandling}>
