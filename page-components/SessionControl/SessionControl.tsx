@@ -1,24 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { XOctagonFill } from 'react-bootstrap-icons'
-import { useSession } from 'next-auth/react'
-import useSWR from 'swr'
 import {
+   Box,
    Button,
    Container,
    createStyles,
-   LoadingOverlay,
+   Group,
    Modal,
+   Paper,
    ScrollArea,
    SimpleGrid,
+   Skeleton,
    Table,
    Text,
    Textarea,
    TextInput,
-   Group,
-   Grid,
-   Paper,
-   Skeleton,
-   Box,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import {
@@ -28,6 +22,10 @@ import {
    IconPoint,
    IconSearch,
 } from '@tabler/icons'
+import { useSession } from 'next-auth/react'
+import { useCallback, useState } from 'react'
+import { XOctagonFill } from 'react-bootstrap-icons'
+import useSWR from 'swr'
 
 import { fetcher } from '../../lib/fetcher'
 const BREAKPOINT = '@media (max-width: 755px)'
