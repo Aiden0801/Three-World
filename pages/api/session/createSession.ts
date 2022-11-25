@@ -39,7 +39,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                auth: {
                   type: 'webhook',
                   value: {
-                     url: `${serverURL}/api/hyperbeam/allow`,
+                     url: 'https://three-world.vercel.app/api/hyperbeam/allow',
+                     // url: `${serverURL}/api/hyperbeam/allow`,
                      bearer: process.env.HYPERBEAM_KEY,
                   },
                },
@@ -50,6 +51,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                },
             }
          )
+         console.log(`${serverURL}/api/hyperbeam/allow`)
          let newSession = new Session({
             name: sessionName,
             creator: user.email,

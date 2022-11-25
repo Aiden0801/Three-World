@@ -108,6 +108,7 @@ function Browser(props) {
                   gl.copyTextureToTexture(copypos, copytexture, texture)
                }
             },
+            webhookUserdata: { myAppData: { user: 'your-app-user-id' } },
          })
          hb.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
             if (changeInfo.title) {

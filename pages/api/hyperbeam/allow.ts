@@ -21,7 +21,6 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { serverURL } from '../../../config/urlcontrol'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
-   console.log(req)
    res.status(200).json({ authorized: true })
 }
 
