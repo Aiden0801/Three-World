@@ -6,11 +6,12 @@ import { useWindowEvent } from '@mantine/hooks'
 import { useTexture } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import React, { lazy, useCallback, useEffect, useRef, useState } from 'react'
-import { useRecoilValue, useSetRecoilState } from 'recoil'
+import { useRecoilValue, useRecoilState } from 'recoil'
 import { Object3D } from 'three'
 import {
    currentBrowserIndex,
    currentBrowsers,
+   currentUser,
 } from '../../../utils/recoil/browser'
 // const TvComponent = lazy(() => import('./TVModel'))
 // import display from './assets/tv_screen.glb';
@@ -44,8 +45,8 @@ function Browser(props) {
    const { viewport, gl, scene } = useThree()
 
    const userBrowser = useRecoilValue(currentBrowsers)
-   const curIndex = useRecoilValue(currentBrowserIndex)
-   const setCurIndex = useSetRecoilState(currentBrowserIndex)
+   const userEmail = useRecoilValue(currentUser)
+   const [curIndex, setCurIndex] = useRecoilState(currentBrowserIndex)
    useEffect(() => {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
@@ -108,7 +109,7 @@ function Browser(props) {
                   gl.copyTextureToTexture(copypos, copytexture, texture)
                }
             },
-            webhookUserdata: { myAppData: { user: 'your-app-user-id' } },
+            webhookUserdata: { email: userEmail, url: embedURL },
          })
          hb.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
             if (changeInfo.title) {
