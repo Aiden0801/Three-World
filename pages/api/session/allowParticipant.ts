@@ -20,10 +20,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          await Session.findOneAndUpdate(
             { embed_url: url },
             {
-               $push: {
+               $addToSet: {
                   participants: newParticipant,
                },
-            }
+            },
+            {}
          ).clone()
          console.log('update success')
          res.status(200).send('success')
