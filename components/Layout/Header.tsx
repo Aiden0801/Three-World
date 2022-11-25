@@ -113,6 +113,7 @@ export default function HeaderMenu() {
             width: `calc(100vw - ${theme.spacing.md * 2}px)`,
             top: 0,
             left: 0,
+            zIndex: 24,
          })}>
          <Header height={60} style={{}}>
             <Group position="apart" sx={{ height: '100%' }} pl="xl">
