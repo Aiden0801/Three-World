@@ -23,15 +23,15 @@ import { fetcher } from '../../../lib/fetcher'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    let { user_id, userdata } = req.body
    // res.status(200).json({ name: req.body, name: req.name });
-   console.log(req.body)
-   const response = await fetcher('/api/session/allowUsertoSession', {
+   const response = await fetcher(`${serverURL}/api/session/allowParticipant`, {
       method: 'POST',
-      headers: { 'Content-Type': `${serverURL}/application/json` },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
          url: userdata.url,
          email: userdata.email,
       }),
    })
+   console.log(req.body, response)
    res.status(200).json({ authorized: true })
 }
 
