@@ -51,7 +51,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                },
             }
          )
-         console.log(`${serverURL}/api/hyperbeam/allow`)
          let newSession = new Session({
             name: sessionName,
             creator: user.email,
