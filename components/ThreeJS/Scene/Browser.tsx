@@ -13,6 +13,8 @@ import {
    currentBrowsers,
    currentUser,
 } from '../../../utils/recoil/browser'
+import { fetcher } from '../../../lib/fetcher'
+import { serverURL } from '../../../config/urlcontrol'
 // const TvComponent = lazy(() => import('./TVModel'))
 // import display from './assets/tv_screen.glb';
 let hb: HyperbeamEmbed | undefined
@@ -88,8 +90,27 @@ function Browser(props) {
       }
    })
    const unloadBrowser = useCallback(async () => {
-      if (!hb) return
-   }, [])
+      console.log('lol')
+      console.log(userBrowser[props.bid].url)
+      if (hb === undefined) return
+      if (
+         userBrowser[props.bid].url == 'none' ||
+         userBrowser[props.bid].url == 'No Session'
+      )
+         return
+      hb.destroy()
+      const response = await fetcher(
+         `${serverURL}/api/session/removeParticipant`,
+         {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               email: userEmail,
+               url: userBrowser[props.bid].url,
+            }),
+         }
+      )
+   }, [props.bid, userBrowser, userEmail])
    const loadBrowser = useCallback(async () => {
       if (hb) return
       let embedURL = userBrowser[props.bid].url

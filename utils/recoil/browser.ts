@@ -24,7 +24,13 @@ export const currentBrowsers = atom({
 export const getFocusedBrowser = selector({
    key: 'focusedBrowser',
    get: ({ get }) => {
-      return currentBrowsers[get(currentUser)]
+      console.log(
+         'recoilGetFocused',
+         currentBrowsers,
+         get(currentBrowserIndex),
+         currentBrowsers[get(currentBrowserIndex)]
+      )
+      return currentBrowsers[get(currentBrowserIndex)]
    },
 })
 export const fetchBrowserByEmail = selectorFamily({

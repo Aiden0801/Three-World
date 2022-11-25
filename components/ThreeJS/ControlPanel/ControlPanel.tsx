@@ -16,17 +16,9 @@ import {
 import { useState } from 'react'
 import Control from './TabPanels/Control'
 import Utility from './TabPanels/Utility'
+import Information from './TabPanels/Information'
 import { useSession } from 'next-auth/react'
 const useStyles = createStyles((theme) => ({
-   card: {
-      height: 440,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-   },
    stack: {},
    tablist: {},
    tabs: {
@@ -34,23 +26,10 @@ const useStyles = createStyles((theme) => ({
       backgroundColor: theme.colors.gray[1],
       marginBottom: 30,
    },
-   title: {
-      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-      fontWeight: 900,
-      color: theme.white,
-      lineHeight: 1.2,
-      fontSize: 32,
-      marginTop: theme.spacing.xs,
-   },
-
-   category: {
-      color: theme.white,
-      opacity: 0.7,
-      fontWeight: 700,
-      textTransform: 'uppercase',
-   },
-   drawer: {
-      backgroundColor: 'grey',
+   panel: {
+      backgroundColor: theme.colors.gray[1],
+      width: '200px',
+      height: '100%',
    },
 }))
 const scaleX = {
@@ -69,7 +48,6 @@ const ControlPanel = () => {
    return (
       <Box
          sx={(theme) => ({
-            backgroundColor: 'rgba(255,0,0,0)',
             position: 'absolute',
             right: 20,
             top: 80,
@@ -110,8 +88,10 @@ const ControlPanel = () => {
                   className={classes.tabs}
                   icon={<IconSettings size={24} />}></Tabs.Tab>
             </Tabs.List>
-
-            <Tabs.Panel value="gallery" pl="xs" hidden={true}>
+            <Tabs.Panel value="information" pr="xs" className={classes.panel}>
+               <Information />
+            </Tabs.Panel>
+            <Tabs.Panel value="gallery" pr="xs" hidden={true}>
                <Transition
                   mounted={activeTab == 'gallery' ? true : false}
                   transition="fade"
@@ -127,10 +107,10 @@ const ControlPanel = () => {
                   )}
                </Transition>
             </Tabs.Panel>
-            <Tabs.Panel value="messages" pl="xs">
+            <Tabs.Panel value="messages" pr="xs">
                <Utility />
             </Tabs.Panel>
-            <Tabs.Panel value="settings" pl="xs">
+            <Tabs.Panel value="settings" pr="xs">
                <Control />
             </Tabs.Panel>
          </Tabs>
