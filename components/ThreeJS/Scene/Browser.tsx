@@ -51,10 +51,9 @@ function Browser(props) {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
       console.log('render')
-
       loadBrowser()
       return () => {
-         if (hb) hb.destroy()
+         unloadBrowser()
       }
    }, [])
    useEffect(() => {
@@ -88,7 +87,11 @@ function Browser(props) {
          event.preventDefault()
       }
    })
+   const unloadBrowser = useCallback(async () => {
+      if (!hb) return
+   }, [])
    const loadBrowser = useCallback(async () => {
+      if (hb) return
       let embedURL = userBrowser[props.bid].url
       console.log('userBrowser', userBrowser)
       // let embedURL
