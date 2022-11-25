@@ -3,7 +3,6 @@ import { useFrame, useThree } from '@react-three/fiber'
 import React, { useEffect } from 'react'
 import * as THREE from 'three'
 import Browser from './Browser'
-let x = 0
 function BrowserGroup() {
    const { camera } = useThree()
    useEffect(() => {
