@@ -59,8 +59,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             isActive: true,
          })
          await newSession.save()
-         console.log(newSession)
-         res.status(200).json(resp)
+         console.log(resp)
+         res.status(200).json({ newSession })
       }
    } catch (err) {
       console.error(err.message)
