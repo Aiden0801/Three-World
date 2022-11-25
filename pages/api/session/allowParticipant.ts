@@ -8,6 +8,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { email, url } = req.body
+   console.log(req.body)
    try {
       let user = await Session.findOne({ embed_url: url })
       if (!user) {
