@@ -18,6 +18,7 @@ Also, the keys need to be
 }
  */
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { serverURL } from '../../../config/urlcontrol'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
@@ -34,6 +35,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             {
                profile: {
                   save: true,
+               },
+               auth: {
+                  type: 'webhook',
+                  value: {
+                     url: `${serverURL}/api/hyperbeam/allow`,
+                     bearer: process.env.HYPERBEAM_KEY,
+                  },
                },
             },
             {
@@ -58,22 +66,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       console.error(err.message)
       res.status(500).send('Server error')
    }
-   // const user = await findUserByEmail(db, email);
-   // console.log(user);
-   // if (user) {
-   //     res.status(200).json({ name: 'Account Exists' })
-   // }
-   // else {
-   //     insertUser(db, {
-   //         email: Math.random().toString(36).slice(2) + email,
-   //         bio: '',
-   //         name: Math.random().toString(36).slice(2) + email,
-   //         profilePicture: '',
-   //         username: Math.random().toString(36).slice(2) + email,
-   //     })
-   //     console.log('insert user called');
-   //     res.status(200).json({ name: 'Register Account' })
-   // }
 }
 
 export default handler
