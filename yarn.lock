@@ -1030,6 +1030,11 @@
     "@jridgewell/resolve-uri" "3.1.0"
     "@jridgewell/sourcemap-codec" "1.4.14"
 
+"@kentico/kontent-webhook-helper@^1.2.0":
+  "integrity" "sha512-VDdb9wYxNjv197E9iZm4LFQJdOFE5BIyJ9ZIIPFACRiBvE+rK4s6i1w7j4mN0VTM3xqOjMbevFov5iGCkfKqHQ=="
+  "resolved" "https://registry.npmjs.org/@kentico/kontent-webhook-helper/-/kontent-webhook-helper-1.2.0.tgz"
+  "version" "1.2.0"
+
 "@mantine/carousel@^5.7.1":
   "integrity" "sha512-wWQ03IjutYId2RpdVP9TMRak+M+vO4KM4cn0pCwG7MoBBPUusMjEKMAXMrIhYMHTxE6q5KP1WeXWlbxse8/twQ=="
   "resolved" "https://registry.npmjs.org/@mantine/carousel/-/carousel-5.7.1.tgz"
