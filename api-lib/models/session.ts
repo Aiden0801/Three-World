@@ -29,8 +29,10 @@ const SessionSchema = new mongoose.Schema({
    ],
    participants: [
       {
+         _id: false,
          email: {
             type: String,
+            unique: true,
          },
       },
    ],
