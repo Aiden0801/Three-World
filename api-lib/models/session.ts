@@ -17,6 +17,9 @@ const SessionSchema = new mongoose.Schema({
       type: String,
       required: true,
    },
+   createdAt: {
+      type: Date,
+   },
    users: [
       {
          email: {
@@ -24,7 +27,13 @@ const SessionSchema = new mongoose.Schema({
          },
       },
    ],
-
+   participants: [
+      {
+         email: {
+            type: String,
+         },
+      },
+   ],
    description: {
       type: String,
       required: true,
