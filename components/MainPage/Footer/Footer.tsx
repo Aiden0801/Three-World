@@ -49,7 +49,7 @@ export default function FooterComponent() {
                position="right"
                noWrap>
                <Image
-                  src={`$(serverURL)/logo/logo.svg`}
+                  src={`${serverURL}/logo/logo.svg`}
                   alt="logo"
                   width={40}
                   height={40}

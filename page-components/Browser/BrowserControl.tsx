@@ -1,31 +1,28 @@
 import {
    Container,
    createStyles,
-   Divider,
    Paper,
    ScrollArea,
    Skeleton,
    Table,
    Text,
-   Group,
 } from '@mantine/core'
 import { ModalsProvider, openConfirmModal } from '@mantine/modals'
 import { IconGripVertical, IconPoint } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
-import { fetcher } from '../../lib/fetcher'
-import { serverURL } from '../../config/urlcontrol'
 import useSWR from 'swr'
+import { serverURL } from '../../config/urlcontrol'
+import { fetcher } from '../../lib/fetcher'
 
 const useStyles = createStyles((theme) => ({
    container: {
-      margin: '10px,10px,10px,10px',
       paddingBottom: '20px',
       backgroundColor:
          theme.colorScheme === 'dark'
-            ? theme.colors.dark[6]
-            : theme.colors.gray[1],
+            ? theme.colors.dark[5]
+            : theme.colors.gray[0],
    },
 }))
 
@@ -151,12 +148,9 @@ export default function BrowserControl() {
    }, [])
    return (
       <ModalsProvider>
-         <Container className={classes.container}>
+         <Container className={classes.container} mt="xl">
             {isBrowser ? (
-               <Container style={{}}>
-                  {/* <LoadingOverlay
-                     visible={isHandling}
-                     overlayBlur={2}></LoadingOverlay> */}
+               <Container>
                   <DragDropContext onDragEnd={handleOnDragEnd}>
                      <Text
                         component="span"
@@ -222,7 +216,6 @@ export default function BrowserControl() {
                         </ScrollArea>
                      </Paper>
 
-                     <Divider my="md" size={5} color="grey"></Divider>
                      <Text
                         component="span"
                         align="center"
@@ -242,15 +235,12 @@ export default function BrowserControl() {
                      <Paper shadow="xl" radius="md">
                         <ScrollArea
                            style={{
-                              height: '500px',
+                              height: '400px',
                               padding: '10px',
                            }}>
                            {isLoadingS ? (
                               <>
                                  <Skeleton height={100} circle mt={6} />
-                                 <Skeleton height={50} mt={6} />
-                                 <Skeleton height={50} mt={6} />
-                                 <Skeleton height={50} mt={6} />
                                  <Skeleton height={50} mt={6} />
                                  <Skeleton height={50} mt={6} />
                                  <Skeleton height={50} mt={6} />
@@ -331,23 +321,25 @@ export default function BrowserControl() {
                                                                      }
                                                                   </td>
                                                                   <td>
-                                                                     <td>
-                                                                        <Group>
-                                                                           <IconPoint
-                                                                              color={
-                                                                                 session.isActive
-                                                                                    ? 'green'
-                                                                                    : 'red'
-                                                                              }
-                                                                              size={
-                                                                                 24
-                                                                              }
-                                                                           />
-                                                                           {session.isActive ==
-                                                                           true
-                                                                              ? 'Active'
-                                                                              : 'Dead'}
-                                                                        </Group>
+                                                                     <td
+                                                                        style={{
+                                                                           display:
+                                                                              'flex',
+                                                                        }}>
+                                                                        <IconPoint
+                                                                           color={
+                                                                              session.isActive
+                                                                                 ? 'green'
+                                                                                 : 'red'
+                                                                           }
+                                                                           size={
+                                                                              24
+                                                                           }
+                                                                        />
+                                                                        {session.isActive ==
+                                                                        true
+                                                                           ? 'Active'
+                                                                           : 'Dead'}
                                                                      </td>
                                                                   </td>
                                                                </tr>
