@@ -107,16 +107,14 @@ export default function HeaderMenu() {
       <Box
          pb={20}
          sx={(theme) => ({
-            backgroundColor: 'rgba(255, 0, 0, 0)',
+            backgroundColor: 'red',
+            // backgroundColor: 'rgba(255, 0, 0, 1)',
             position: 'fixed',
             width: `calc(100vw - ${theme.spacing.md * 2}px)`,
             top: 0,
             left: 0,
-            zIndex: 45,
-
-            backdropFilter: 'blur(5px) drop-shadow(4px 4px 10px blue)',
          })}>
-         <Header height={60}>
+         <Header height={60} style={{}}>
             <Group position="apart" sx={{ height: '100%' }} pl="xl">
                <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
 

@@ -1,31 +1,22 @@
 import {
-   ActionIcon,
    Box,
    createStyles,
-   Dialog,
-   Grid,
    LoadingOverlay,
-   Stack,
    Tabs,
-   Text,
+   Transition,
 } from '@mantine/core'
 import {
-   IconActivity,
-   IconArrowBigLeft,
-   IconArrowBigRight,
+   IconInfoCircle,
    IconMessageCircle,
    IconPhoto,
+   IconScreenShare,
    IconSettings,
+   IconShare,
 } from '@tabler/icons'
 import { useState } from 'react'
-import { useMouse } from '@mantine/hooks'
-import Utility from './Utility'
-import { useRecoilValue, useRecoilState } from 'recoil'
-import {
-   currentBrowserIndex,
-   currentBrowsers,
-   getFocusedBrowser,
-} from '../../../utils/recoil/browser'
+import Control from './TabPanels/Control'
+import Utility from './TabPanels/Utility'
+import { useSession } from 'next-auth/react'
 const useStyles = createStyles((theme) => ({
    card: {
       height: 440,
@@ -62,46 +53,50 @@ const useStyles = createStyles((theme) => ({
       backgroundColor: 'grey',
    },
 }))
+const scaleX = {
+   in: { opacity: 1, transform: 'translateX(0)' },
+   out: { opacity: 0, transform: 'translateX(100%)' },
+   common: { transformOrigin: 'right' },
+   transitionProperty: 'transform, opacity',
+}
 const ControlPanel = () => {
    const [opened, setOpened] = useState(false)
-   const title = opened ? 'Close navigation' : 'Open navigation'
-   const [data, setData] = useState([])
    const [isHandling, setIsHandling] = useState(false)
    const { classes, cx } = useStyles()
-   const [index, setIndex] = useRecoilState(currentBrowserIndex)
-   const browser = useRecoilValue(getFocusedBrowser)
-   const handleCommand = async (type) => {
-      setIndex((index) => (index + type + 4) % 4)
-      // if (curCommand.handle == 1) return
-      // dispatch(setBrowser((bIndex + 3) % 4))
-      // dispatch(
-      //    setCommand({
-      //       type: type,
-      //       handling: 1,
-      //    })
-      // )
-   }
-   const { ref, x, y } = useMouse()
-
+   const [activeTab, setActiveTab] = useState<string | null>('Information')
+   const { data: session, status } = useSession()
+   const [hidden, setHidden] = useState(false)
    return (
       <Box
-         ref={ref}
          sx={(theme) => ({
             backgroundColor: 'rgba(255,0,0,0)',
             position: 'absolute',
             right: 20,
-            top: 20,
-            width: '200px',
+            top: 80,
+            zIndex: 45,
          })}>
          <LoadingOverlay visible={isHandling} overlayBlur={2} />
-
          <Tabs
             orientation="vertical"
-            defaultValue="gallery"
+            defaultValue="information"
             placement="right"
             variant="pills"
-            className={classes.tablist}>
+            className={classes.tablist}
+            onTabChange={setActiveTab}>
             <Tabs.List>
+               {/* <Burger opened={opened} title={title} /> */}
+               <Tabs.Tab
+                  value="information"
+                  className={classes.tabs}
+                  icon={<IconInfoCircle size={24} />}></Tabs.Tab>
+               <Tabs.Tab
+                  value="Sessions"
+                  className={classes.tabs}
+                  icon={<IconShare size={24} />}></Tabs.Tab>
+               <Tabs.Tab
+                  value="Browsers"
+                  className={classes.tabs}
+                  icon={<IconScreenShare size={24} />}></Tabs.Tab>
                <Tabs.Tab
                   value="gallery"
                   className={classes.tabs}
@@ -116,137 +111,29 @@ const ControlPanel = () => {
                   icon={<IconSettings size={24} />}></Tabs.Tab>
             </Tabs.List>
 
-            <Tabs.Panel
-               value="gallery"
-               pl="xs"
-               style={
-                  {
-                     // backgroundColor: 'red',
-                  }
-               }>
-               Gallery tab content{x}
+            <Tabs.Panel value="gallery" pl="xs" hidden={true}>
+               <Transition
+                  mounted={activeTab == 'gallery' ? true : false}
+                  transition="fade"
+                  duration={4000}
+                  timingFunction="ease">
+                  {(styles) => (
+                     <Box
+                        style={{
+                           ...styles,
+                        }}>
+                        <Utility />
+                     </Box>
+                  )}
+               </Transition>
             </Tabs.Panel>
-
             <Tabs.Panel value="messages" pl="xs">
                <Utility />
             </Tabs.Panel>
-
             <Tabs.Panel value="settings" pl="xs">
-               <Stack align="center" className={classes.stack}>
-                  <Text
-                     align="center"
-                     variant="gradient"
-                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                     size="xl"
-                     weight={700}
-                     style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                     Settings
-                  </Text>
-                  <Text
-                     align="center"
-                     variant="gradient"
-                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                     size="md"
-                     weight={700}
-                     style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                     Screen {index}
-                     {browser && browser.url == 'none' && (
-                        <IconActivity color="red" size={15} />
-                     )}{' '}
-                     {browser && browser.url != 'none' && (
-                        <IconActivity color="green" size={15} />
-                     )}
-                  </Text>
-                  <Text
-                     align="center"
-                     variant="gradient"
-                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                     size="md"
-                     weight={700}
-                     style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                     {/* {curBrowser.data.name} */}
-                  </Text>
-                  <Grid justify="space-around">
-                     <Grid.Col span={3} style={{ minWidth: 60 }}>
-                        <ActionIcon
-                           size="xl"
-                           variant="filled"
-                           color="green"
-                           onClick={() => handleCommand(-1)}>
-                           <IconArrowBigLeft size={60} />
-                        </ActionIcon>
-                     </Grid.Col>
-                     <Grid.Col span={3} style={{ minWidth: 60 }}>
-                        <ActionIcon
-                           size="xl"
-                           variant="filled"
-                           color="green"
-                           onClick={() => handleCommand(1)}>
-                           <IconArrowBigRight size={60} />
-                        </ActionIcon>
-                     </Grid.Col>
-                  </Grid>
-               </Stack>
+               <Control />
             </Tabs.Panel>
          </Tabs>
-         <Dialog opened={opened}>
-            <Stack align="center" className={classes.stack}>
-               <Text
-                  align="center"
-                  variant="gradient"
-                  gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                  size="xl"
-                  weight={700}
-                  style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                  Control Panel
-               </Text>
-               <Text
-                  align="center"
-                  variant="gradient"
-                  gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                  size="md"
-                  weight={700}
-                  style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                  Screen {index}
-                  {browser && browser[index].url == 'none' && (
-                     <IconActivity color="red" size={15} />
-                  )}
-                  {browser && browser[index].url != 'none' && (
-                     <IconActivity color="green" size={15} />
-                  )}
-               </Text>
-               <Text
-                  align="center"
-                  variant="gradient"
-                  gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                  size="md"
-                  weight={700}
-                  style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
-                  {/* {curBrowser.data.name} */}
-               </Text>
-               <Grid justify="space-around">
-                  <Grid.Col span={3} style={{ minWidth: 60 }}>
-                     <ActionIcon
-                        size="xl"
-                        variant="filled"
-                        color="green"
-                        onClick={() => handleCommand(1)}>
-                        <IconArrowBigLeft size={60} />
-                     </ActionIcon>
-                  </Grid.Col>
-                  <Grid.Col span={3} style={{ minWidth: 60 }}>
-                     <ActionIcon
-                        size="xl"
-                        variant="filled"
-                        color="green"
-                        onClick={() => handleCommand(2)}>
-                        <IconArrowBigRight size={60} />
-                     </ActionIcon>
-                  </Grid.Col>
-               </Grid>
-            </Stack>
-         </Dialog>
-         {/* </Drawer> */}
       </Box>
    )
 }

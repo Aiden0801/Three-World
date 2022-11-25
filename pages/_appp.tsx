@@ -1,4 +1,4 @@
-import { SessionProvider } from 'next-auth/react'
+import { SingletonRouter } from 'next/router'
 import {
    MantineProvider,
    ColorSchemeProvider,
@@ -13,7 +13,7 @@ import LoadingScreen from './loading'
 import { NotificationsProvider } from '@mantine/notifications'
 import { useSetRecoilState } from 'recoil'
 import { currentUser } from '../utils/recoil/browser'
-function MySession({ Component, pageProps: { ...pageProps } }: AppProps) {
+function MySession({ Component, pageProps: { ...pageProps } }: any) {
    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
    const toggleColorScheme = (value?: ColorScheme) => {
       console.log('_appp', value)
@@ -48,7 +48,7 @@ function MySession({ Component, pageProps: { ...pageProps } }: AppProps) {
             withNormalizeCSS
             theme={{ loader: 'bars', colorScheme }}>
             <NotificationsProvider>
-               <Component {...pageProps} curSession={session} />
+               <Component {...pageProps} />
             </NotificationsProvider>
          </MantineProvider>
       </ColorSchemeProvider>

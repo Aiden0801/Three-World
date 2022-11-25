@@ -8,6 +8,7 @@ import {
    Button,
 } from '@mantine/core'
 import { IconLogout, IconSettings } from '@tabler/icons'
+import { serverURL } from '../../../config/urlcontrol'
 export default function UserAvatar({ img }) {
    const [opened, setOpened] = useState(false)
    return (
@@ -35,7 +36,7 @@ export default function UserAvatar({ img }) {
                   event.preventDefault()
                   signOut({
                      redirect: false,
-                     callbackUrl: 'http://localhost:3000/',
+                     callbackUrl: `${serverURL}`,
                   })
                }}>
                Logout

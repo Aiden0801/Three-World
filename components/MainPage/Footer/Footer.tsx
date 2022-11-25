@@ -14,6 +14,7 @@ import {
 } from '@tabler/icons'
 import { MantineLogo } from '@mantine/ds'
 
+import { serverURL } from '../../../config/urlcontrol'
 const useStyles = createStyles((theme) => ({
    footer: {
       borderTop: `1px solid ${
@@ -36,7 +37,6 @@ const useStyles = createStyles((theme) => ({
 
    links: {},
 }))
-
 export default function FooterComponent() {
    const { classes } = useStyles()
 
@@ -49,7 +49,7 @@ export default function FooterComponent() {
                position="right"
                noWrap>
                <Image
-                  src="http://localhost:3000/logo/logo.svg"
+                  src={`${serverURL}/logo/logo.svg`}
                   alt="logo"
                   width={40}
                   height={40}

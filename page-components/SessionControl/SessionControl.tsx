@@ -1,23 +1,18 @@
-import React, { useCallback, useEffect, useState } from 'react'
-import { XOctagonFill } from 'react-bootstrap-icons'
-import { useSession } from 'next-auth/react'
-import useSWR from 'swr'
 import {
+   Box,
    Button,
    Container,
    createStyles,
-   LoadingOverlay,
+   Group,
    Modal,
+   Paper,
    ScrollArea,
    SimpleGrid,
+   Skeleton,
    Table,
    Text,
    Textarea,
    TextInput,
-   Group,
-   Grid,
-   Paper,
-   Skeleton,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import {
@@ -25,7 +20,12 @@ import {
    IconListDetails,
    IconPlus,
    IconPoint,
+   IconSearch,
 } from '@tabler/icons'
+import { useSession } from 'next-auth/react'
+import { useCallback, useState } from 'react'
+import { XOctagonFill } from 'react-bootstrap-icons'
+import useSWR from 'swr'
 
 import { fetcher } from '../../lib/fetcher'
 const BREAKPOINT = '@media (max-width: 755px)'
@@ -205,44 +205,51 @@ const SessionControl = () => {
             </form>
          </Modal>
          <Paper shadow="md" p="xl">
-            <Grid>
-               <Grid.Col span={10}>
+            <Box
+               sx={(theme) => ({
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  align: 'center',
+                  alignItems: 'center',
+               })}>
+               <Text
+                  component="span"
+                  align="center"
+                  variant="gradient"
+                  gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
+                  weight={700}
+                  style={{
+                     fontFamily: 'Greycliff CF, sans-serif',
+                     fontSize: '30px',
+                  }}>
+                  Sessions
+               </Text>
+               <Button
+                  compact
+                  onClick={() => {
+                     setOpened(true)
+                  }}
+                  color="blue"
+                  pr={12}>
                   <Text
-                     component="span"
-                     align="center"
-                     variant="gradient"
-                     gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-                     weight={700}
-                     style={{
-                        fontFamily: 'Greycliff CF, sans-serif',
-                        fontSize: '50px',
+                     sx={{
+                        [theme.fn.smallerThan('md')]: {
+                           display: 'none',
+                        },
                      }}>
-                     Sessions
+                     New
                   </Text>
-               </Grid.Col>
-
-               <Grid.Col span={2}>
-                  <Button
-                     compact
-                     style={{ marginTop: '20px' }}
-                     onClick={() => {
-                        setOpened(true)
-                     }}
-                     color="green"
-                     pr={12}>
-                     <Text
-                        sx={{
-                           [theme.fn.smallerThan('md')]: {
-                              display: 'none',
-                           },
-                        }}>
-                        New
-                     </Text>
-                     <IconPlus size={20} stroke={1.5} />
-                  </Button>
-               </Grid.Col>
-            </Grid>
-
+                  <IconPlus size={20} stroke={1.5} />
+               </Button>
+            </Box>
+            <Text mb={20} span>
+               Create a new Session and share it with friends!
+            </Text>
+            <TextInput
+               placeholder="Search"
+               mb={10}
+               icon={<IconSearch size={14} radius="md" />}
+            />
             <ScrollArea>
                <Skeleton visible={isLoading || isHandling}>
                   <Table

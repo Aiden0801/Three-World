@@ -9,30 +9,21 @@ import {
    Container,
    createStyles,
    Grid,
-   List,
-   LoadingOverlay,
    Modal,
+   Paper,
    ScrollArea,
    SimpleGrid,
+   Table,
    Text,
    TextInput,
-   ThemeIcon,
-   Table,
-   Paper,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 // Users with a higher priority will preempt the control of lower priority users.
-import { useWindowEvent } from '@mantine/hooks'
-import {
-   IconActivity,
-   IconArrowBack,
-   IconCircleCheck,
-   IconPlus,
-} from '@tabler/icons'
+import { IconActivity, IconArrowBack, IconPlus } from '@tabler/icons'
 
+import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import { IPropsSessionData } from '../../types'
-
 const useStyles = createStyles((theme) => ({
    container: {
       display: 'flex',
@@ -47,7 +38,7 @@ const useStyles = createStyles((theme) => ({
 const fetchSessionData = async (url: string, _id: string) => {
    console.log('fetchSessionData', _id)
    const session_data = await fetcher(
-      'http://localhost:3000/api/session/getSessionByID',
+      `${serverURL}/api/session/getSessionByID`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },

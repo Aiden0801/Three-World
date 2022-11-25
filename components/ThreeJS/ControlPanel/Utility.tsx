@@ -3,7 +3,7 @@ import { Button, createStyles, Modal, Paper, Text } from '@mantine/core'
 import { IconDownload, IconWorldDownload } from '@tabler/icons'
 import { useState } from 'react'
 import { fetcher } from '../../../lib/fetcher'
-
+import { serverURL } from '../../../config/urlcontrol'
 const useStyles = createStyles((theme) => ({
    card: {
       height: 440,
@@ -90,16 +90,13 @@ export default function Utility() {
       setIsScraping(true)
 
       const url = 'https://squarepanda.com/'
-      const newData = await fetcher(
-         'http://localhost:3000/api/scrap/scrapfromURL',
-         {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-               url: 'https://squarepanda.com/',
-            }),
-         }
-      )
+      const newData = await fetcher(`${serverURL}/api/scrap/scrapfromURL`, {
+         method: 'POST',
+         headers: { 'Content-Type': 'application/json' },
+         body: JSON.stringify({
+            url: 'https://squarepanda.com/',
+         }),
+      })
       setData(newData)
       console.log(newData)
       setIsScraping(false)
