@@ -22,7 +22,7 @@ import {
    IconShare,
    IconUserPlus,
 } from '@tabler/icons'
-
+import Link from 'next/link'
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
    return {
@@ -167,16 +167,15 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                }
             />
             <NavLink
-               component="a"
                label="Landing Page"
                className={classes.link}
                description="Additional information"
-               href="/dashboard"
                active={initialState == 'dashboard' ? true : false}
                icon={
                   <IconDashboard size="20" color="royalblue"></IconDashboard>
-               }
-            />
+               }>
+               <Link href="/dashboard">Dashboard</Link>
+            </NavLink>
             <NavLink
                className={classes.link}
                label="Bot Settings"

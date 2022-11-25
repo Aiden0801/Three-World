@@ -25,7 +25,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    const response = await fetcher('/api/session/allowUsertoSession', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 'Content-Type': `${serverURL}/application/json` },
       body: JSON.stringify({
          url: userdata.url,
          email: userdata.email,
