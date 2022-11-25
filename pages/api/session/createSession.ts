@@ -59,6 +59,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             embed_url: resp.data.embed_url,
             description: sessionDescription,
             isActive: true,
+            createdAt: new Date(),
          })
          await newSession.save()
          console.log(resp)
