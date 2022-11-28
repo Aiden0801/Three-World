@@ -7,6 +7,7 @@ import {
    currentBrowserIndex,
    currentBrowsers,
 } from '../../../../utils/recoil/browser'
+import { Text, Container } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { SocketContext } from '../../../../utils/context/socket'
 import { useRecoilValue, waitForAll } from 'recoil'
@@ -39,7 +40,8 @@ const useParticipants = (url: string) => {
    }
 }
 const format = (str: string) => {
-   return str.substring(0, 10) + '...'
+   if (str.length < 15) return str
+   return str.substring(0, 6) + '...'
 }
 export default function Information() {
    const [index, browsers] = useRecoilValue(
@@ -53,7 +55,7 @@ export default function Information() {
 
    useEffect(() => {
       socket.on('participantsAdded', (msg) => {
-         console.log('par', msg)
+         console.log('par Added', msg)
          showNotification({
             title: 'Member joining',
             message: `${msg.email} is joining`,
@@ -63,7 +65,7 @@ export default function Information() {
          mutate()
       })
       socket.on('participantsRemoved', (msg) => {
-         console.log('par', msg)
+         console.log('par Removed', msg)
          showNotification({
             title: 'Member leaving',
             message: `${msg.email} left the session`,
@@ -72,14 +74,22 @@ export default function Information() {
          })
          mutate()
       })
+      return () => {
+         socket.off('participantsAdded')
+         socket.off('participantsRemoved')
+      }
    }, [])
    return (
       <>
-         {data &&
-            data.length >= 1 &&
-            data.map((item, index) => (
-               <div key={index}>{format(item.email)}</div>
-            ))}
+         <Container>
+            {data &&
+               data.length >= 1 &&
+               data.map((item, index) => (
+                  <Text color="gray" fw="bold" key={index}>
+                     {format(item.email)}
+                  </Text>
+               ))}
+         </Container>
       </>
    )
 }

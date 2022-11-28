@@ -27,9 +27,10 @@ const useStyles = createStyles((theme) => ({
       marginBottom: 30,
    },
    panel: {
-      backgroundColor: theme.colors.gray[1],
+      // backgroundColor: theme.colors.gray[1],
       width: '200px',
-      height: '100%',
+      opacity: 1,
+      transition: 'visible 0s, linear 0s,opacity 1000ms',
    },
 }))
 const scaleX = {
@@ -55,7 +56,7 @@ const ControlPanel = () => {
          <Tabs
             orientation="vertical"
             defaultValue="information"
-            placement="right"
+            placement="left"
             variant="pills"
             className={classes.tablist}
             onTabChange={setActiveTab}>
@@ -92,9 +93,8 @@ const ControlPanel = () => {
             <Tabs.Panel value="gallery" pr="xs" hidden={true}>
                <Transition
                   mounted={activeTab == 'gallery' ? true : false}
-                  transition="fade"
-                  duration={4000}
-                  timingFunction="ease">
+                  transition="scale-x"
+                  duration={4000}>
                   {(styles) => (
                      <Box
                         style={{
@@ -106,7 +106,20 @@ const ControlPanel = () => {
                </Transition>
             </Tabs.Panel>
             <Tabs.Panel value="messages" pr="xs">
-               <Utility />
+               <Transition
+                  mounted={activeTab == 'messages' ? true : false}
+                  transition="scale-x"
+                  duration={1000}
+                  timingFunction="ease">
+                  {(styles) => (
+                     <Box
+                        style={{
+                           ...styles,
+                        }}>
+                        <Utility />
+                     </Box>
+                  )}
+               </Transition>
             </Tabs.Panel>
             <Tabs.Panel value="settings" pr="xs">
                <Control />

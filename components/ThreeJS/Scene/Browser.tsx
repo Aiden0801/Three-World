@@ -53,11 +53,13 @@ function Browser(props) {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
       console.log('render')
-      loadBrowser()
       return () => {
          unloadBrowser()
       }
    }, [])
+   useEffect(() => {
+      loadBrowser()
+   }, [userBrowser])
    useEffect(() => {
       if (hb) {
          if (curIndex == props.bid) hb.videoPaused = false
