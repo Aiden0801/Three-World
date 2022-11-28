@@ -56,6 +56,9 @@ export default function Information() {
          console.log('par')
          mutate()
       })
+      socket.on('participantsRemoved', (msg) => {
+         mutate()
+      })
    }, [])
    return (
       <>

@@ -1,3 +1,4 @@
+let allClients = []
 const MessageHandler = (io, socket) => {
    console.log('connected')
    const createdMessage = (msg) => {
@@ -11,7 +12,12 @@ const MessageHandler = (io, socket) => {
    const disConnected = () => {
       console.log('disconnected')
    }
+   const participantsRemoved = (msg) => {
+      console.log('Participants Removed Message ')
+      socket.broadcast.emit('participantsRemoved', msg)
+   }
    socket.on('participantsAdded', participantsAdded)
+   socket.on('participantsRemoved', participantsRemoved)
    socket.on('createdMessage', createdMessage)
    socket.on('disconnect', disConnected)
 }

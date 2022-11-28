@@ -10,9 +10,6 @@ import { socket } from '../../../utils/context/socket'
  */
 var client = require('socket.io-client')
 import { serverURL } from '../../../config/urlcontrol'
-const init = async () => {
-   await fetch(`${serverURL}/api/socket`)
-}
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
