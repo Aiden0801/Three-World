@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import { fetcher } from '../../../../lib/fetcher'
 import useSWR from 'swr'
 import { serverURL } from '../../../../config/urlcontrol'
@@ -8,6 +8,7 @@ import {
    currentBrowsers,
 } from '../../../../utils/recoil/browser'
 
+import { SocketContext } from '../../../../utils/context/socket'
 import { useRecoilValue, waitForAll } from 'recoil'
 const fetchParticipantsData = async (url: string, embed_url: string) => {
    console.log('url', embed_url)
@@ -48,7 +49,14 @@ export default function Information() {
    const { data, mutate, isError, isLoading } = useParticipants(
       browsers[index].url
    )
-   console.log('Information', browser, browsers, index, data)
+   const socket = useContext(SocketContext)
+
+   useEffect(() => {
+      socket.on('participantsAdded', (msg) => {
+         console.log('par')
+         mutate()
+      })
+   }, [])
    return (
       <>
          {data &&

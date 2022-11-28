@@ -17,15 +17,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          var newParticipant = {
             email: email,
          }
-         //  await Session.findOneAndUpdate(
-         //     { embed_url: url },
-         //     {
-         //        $pull: {
-         //           participants: newParticipant,
-         //        },
-         //     },
-         //     {}
-         //  ).clone()
+         await Session.findOneAndUpdate(
+            { embed_url: url },
+            {
+               $pull: {
+                  participants: newParticipant,
+               },
+            },
+            {}
+         ).clone()
          console.log('update success')
          res.status(200).send('success')
       }

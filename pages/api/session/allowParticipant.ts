@@ -2,18 +2,24 @@ import connectMongo from '../../../api-lib/mongodb'
 import axios from 'axios'
 const User = require('../../../api-lib/models/users')
 const Session = require('../../../api-lib/models/session')
+import { socket } from '../../../utils/context/socket'
 /**
  * ! should change code URL
  *
  *
  */
+var client = require('socket.io-client')
+import { serverURL } from '../../../config/urlcontrol'
+const init = async () => {
+   await fetch(`${serverURL}/api/socket`)
+}
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { email, url } = req.body
-   console.log(req.body)
    try {
+      var socket = client.connect(`${serverURL}`)
       let user = await Session.findOne({ embed_url: url })
       if (!user) {
          res.status(200).send('No Session')
@@ -30,6 +36,8 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             },
             {}
          ).clone()
+
+         await socket.emit('participantsAdded', { author: 'HHHHHHHHHHHHHH' })
          console.log('update success')
          res.status(200).send('success')
       }
