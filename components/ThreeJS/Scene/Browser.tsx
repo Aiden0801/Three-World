@@ -92,13 +92,11 @@ function Browser(props) {
    const unloadBrowser = useCallback(async () => {
       console.log('lol')
       console.log(userBrowser[props.bid].url)
-      if (hb === undefined) return
       if (
          userBrowser[props.bid].url == 'none' ||
          userBrowser[props.bid].url == 'No Session'
       )
          return
-      hb.destroy()
       const response = await fetcher(
          `${serverURL}/api/session/removeParticipant`,
          {
@@ -110,13 +108,17 @@ function Browser(props) {
             }),
          }
       )
+      if (hb === undefined) return
+
+      hb.destroy()
    }, [props.bid, userBrowser, userEmail])
    const loadBrowser = useCallback(async () => {
       if (hb) return
       let embedURL = userBrowser[props.bid].url
       console.log('userBrowser', userBrowser)
       // let embedURL
-      if (embedURL == null || embedURL == 'none') return
+      if (embedURL == null || embedURL == 'none' || embedURL == 'No Session')
+         return
       try {
          hb = await Hyperbeam(hbContainer, embedURL, {
             delegateKeyboard: false,
@@ -153,7 +155,6 @@ function Browser(props) {
 
    const handleMouseEvent = useCallback((e) => {
       let point = e.point
-      console.log(e.type)
       let eventtype
       switch (e.type) {
          case 'pointermove':

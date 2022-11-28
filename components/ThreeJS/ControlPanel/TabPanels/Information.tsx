@@ -53,21 +53,22 @@ export default function Information() {
 
    useEffect(() => {
       socket.on('participantsAdded', (msg) => {
-         console.log('par')
+         console.log('par', msg)
          showNotification({
             title: 'Member joining',
             message: `${msg.email} is joining`,
             color: 'blue',
-            autoClose: 2000,
+            autoClose: false,
          })
          mutate()
       })
       socket.on('participantsRemoved', (msg) => {
+         console.log('par', msg)
          showNotification({
             title: 'Member leaving',
             message: `${msg.email} left the session`,
             color: 'red',
-            autoClose: 2000,
+            autoClose: false,
          })
          mutate()
       })

@@ -42,7 +42,7 @@ export default function SpaceScreen() {
       x: (toogle * Math.PI) / 2,
       y: (toogle * Math.PI) / 2,
       z: (toogle * Math.PI) / 2,
-      config: config.wobbly,
+      config: config.default,
    })
    useHotkeys([
       [
