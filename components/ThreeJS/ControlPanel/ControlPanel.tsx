@@ -40,7 +40,6 @@ const scaleX = {
 }
 const ControlPanel = () => {
    const [opened, setOpened] = useState(false)
-   const [isHandling, setIsHandling] = useState(false)
    const { classes, cx } = useStyles()
    const [activeTab, setActiveTab] = useState<string | null>('Information')
    const { data: session, status } = useSession()
@@ -53,7 +52,6 @@ const ControlPanel = () => {
             top: 80,
             zIndex: 45,
          })}>
-         <LoadingOverlay visible={isHandling} overlayBlur={2} />
          <Tabs
             orientation="vertical"
             defaultValue="information"
