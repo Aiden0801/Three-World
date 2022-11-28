@@ -43,7 +43,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             ).clone()
          }
 
-         await socket.emit('participantsRemoved', { author: 'HHHHHHHHHHHHHH' })
+         await socket.emit('participantsRemoved', { email: email })
 
          console.log('update success')
          res.status(200).send('success')

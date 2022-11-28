@@ -7,7 +7,7 @@ import {
    currentBrowserIndex,
    currentBrowsers,
 } from '../../../../utils/recoil/browser'
-
+import { showNotification } from '@mantine/notifications'
 import { SocketContext } from '../../../../utils/context/socket'
 import { useRecoilValue, waitForAll } from 'recoil'
 const fetchParticipantsData = async (url: string, embed_url: string) => {
@@ -54,9 +54,21 @@ export default function Information() {
    useEffect(() => {
       socket.on('participantsAdded', (msg) => {
          console.log('par')
+         showNotification({
+            title: 'Member joining',
+            message: `${msg.email} is joining`,
+            color: 'blue',
+            autoClose: 2000,
+         })
          mutate()
       })
       socket.on('participantsRemoved', (msg) => {
+         showNotification({
+            title: 'Member leaving',
+            message: `${msg.email} left the session`,
+            color: 'red',
+            autoClose: 2000,
+         })
          mutate()
       })
    }, [])
