@@ -39,8 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                auth: {
                   type: 'webhook',
                   value: {
-                     url: 'https://three-world.vercel.app/api/hyperbeam/allow',
-                     // url: `${serverURL}/api/hyperbeam/allow`,
+                     url: `${serverURL}/api/hyperbeam/allow`,
                      bearer: process.env.HYPERBEAM_KEY,
                   },
                },
