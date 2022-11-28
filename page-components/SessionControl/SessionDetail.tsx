@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import { XOctagonFill } from 'react-bootstrap-icons'
 import useSWR from 'swr'
-
+import { Suspense } from 'react'
 import {
    Button,
    Container,
@@ -16,16 +16,20 @@ import {
    Table,
    Text,
    TextInput,
+   Box,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 // Users with a higher priority will preempt the control of lower priority users.
-import { IconActivity, IconArrowBack, IconPlus } from '@tabler/icons'
-
+import { IconActivity, IconArrowBack, IconPlus, IconPoint } from '@tabler/icons'
+import { currentUser } from '../../utils/recoil/user'
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import { IPropsSessionData } from '../../types'
+import { useRecoilValue } from 'recoil'
+import { useRouter } from 'next/router'
 const useStyles = createStyles((theme) => ({
    container: {
+      position: 'relative',
       display: 'flex',
       alignItems: 'center',
       margin: '10px,10px,10px,10px',
@@ -69,6 +73,8 @@ const useSessionData = (_id: string) => {
 }
 
 const SessionDetail = ({ sessionID }: IPropsSessionData) => {
+   const router = useRouter()
+   const userEmail = useRecoilValue(currentUser)
    const { data: session, status } = useSession()
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
@@ -183,54 +189,33 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                </SimpleGrid>
             </form>
          </Modal>
-         <Paper
-            shadow="md"
-            p="xl"
-            style={{}}
-            px="xs"
-            className="classes.detail">
-            <Text
-               component="span"
-               variant="gradient"
-               gradient={{ from: 'indigo', to: 'cyan', deg: 45 }}
-               weight={700}
-               style={{
-                  marginTop: '30px',
-                  fontFamily: 'Greycliff CF, sans-serif',
-                  fontSize: '50px',
-               }}>
-               Session Detail
-            </Text>
+
+         <Paper shadow="md" p="xl" style={{}} className="classes.detail">
             {detailData && (
-               <Grid columns={12}>
-                  <Grid.Col span={3}>
-                     <Text size="xl">Name</Text>
-                  </Grid.Col>
-
-                  <Grid.Col span={9}>
-                     <Text size="xl">{detailData.name}</Text>
-                  </Grid.Col>
-                  <Grid.Col span={3}>
-                     <Text size="xl">Description</Text>
-                  </Grid.Col>
-
-                  <Grid.Col span={9}>
-                     <Text size="xl">{detailData.description}</Text>
-                  </Grid.Col>
-
-                  <Grid.Col span={3}>
-                     <Text size="xl">Status</Text>
-                  </Grid.Col>
-                  <Grid.Col span={7}>
-                     {detailData.isActive ? (
-                        <Text size="xl">Active</Text>
-                     ) : (
-                        <Text size="xl">Dead</Text>
-                     )}
-                  </Grid.Col>
-                  <Grid.Col span={2}>
+               <Box
+                  sx={(theme) => ({
+                     display: 'flex',
+                     justifyContent: 'space-between',
+                     align: 'center',
+                     alignItems: 'center',
+                     marginTop: '30px',
+                  })}>
+                  <Text
+                     component="span"
+                     variant="gradient"
+                     gradient={{ from: 'indigo', to: 'green', deg: 0 }}
+                     weight={700}
+                     style={{
+                        fontFamily: 'Greycliff CF, sans-serif',
+                        fontSize: '30px',
+                     }}>
+                     {detailData.name}
+                  </Text>
+                  <Button.Group>
                      {detailData.isActive ? (
                         <Button
+                           compact
+                           size="sm"
                            leftIcon={<IconActivity />}
                            onClick={() => handleKillSession(detailData._id)}
                            color="red">
@@ -239,6 +224,8 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                         </Button>
                      ) : (
                         <Button
+                           compact
+                           size="sm"
                            leftIcon={<IconActivity />}
                            onClick={() =>
                               handleActivateSession(detailData._id)
@@ -247,9 +234,36 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                            Activate
                         </Button>
                      )}
+                     <Button
+                        compact
+                        size="sm"
+                        leftIcon={<IconArrowBack size={18} stroke={1.5} />}
+                        color="orange"
+                        pr={20}
+                        onClick={() => {
+                           router.push('./')
+                        }}>
+                        Back
+                     </Button>
+                  </Button.Group>
+               </Box>
+            )}
+            {detailData && (
+               <Grid columns={12}>
+                  <Grid.Col span={12} fw={700} fs="italic">
+                     <Text size="xl" c="blue">
+                        Description
+                     </Text>
                   </Grid.Col>
-                  <Grid.Col span={10}>
-                     <Text size="xl">Session Users</Text>
+
+                  <Grid.Col span={12}>
+                     <Text size="xl">{detailData.description}</Text>
+                  </Grid.Col>
+
+                  <Grid.Col span={10} fw={700} c="blue">
+                     <Text size="xl" fs="italic">
+                        Allowed Users
+                     </Text>
                   </Grid.Col>
                   <Grid.Col
                      span={2}
@@ -279,15 +293,19 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                   </Grid.Col>
 
                   {detailData.users.length === 0 ? (
-                     <Text size="xl">No Users Available</Text>
+                     <Grid.Col span={12}>
+                        <Text ta="center" size="xl" color="red">
+                           No Users Available
+                        </Text>
+                     </Grid.Col>
                   ) : (
                      <>
                         <Grid.Col span={12} style={{}}>
                            <ScrollArea style={{ height: 450 }}>
-                              <Table withBorder>
+                              <Table withBorder withColumnBorders>
                                  <thead>
                                     <tr>
-                                       <th> Name</th>
+                                       <th> Email</th>
                                        <th> Actions</th>
                                     </tr>
                                  </thead>
@@ -295,10 +313,24 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                                     {detailData.users.map((user, index) => {
                                        // console.log(index, user.email)
                                        // <div key={index}>AAAA</div>
+
                                        return (
                                           <tr key={index}>
                                              <td>
-                                                <Text size="xl">
+                                                <IconPoint
+                                                   color={
+                                                      detailData.participants.find(
+                                                         (o) =>
+                                                            o.email ==
+                                                            user.email
+                                                      )
+                                                         ? 'green'
+                                                         : 'red'
+                                                   }
+                                                   size={24}
+                                                />
+
+                                                <Text size="xl" span>
                                                    {user.email}
                                                 </Text>
                                              </td>
@@ -325,20 +357,6 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                   )}
                </Grid>
             )}
-            <Button
-               size="xl"
-               style={{
-                  position: 'absolute',
-                  right: '20px',
-                  bottom: '60px',
-               }}
-               component="a"
-               href="./"
-               leftIcon={<IconArrowBack size={18} stroke={1.5} />}
-               color="red"
-               pr={20}>
-               Back
-            </Button>
          </Paper>
       </Container>
    )

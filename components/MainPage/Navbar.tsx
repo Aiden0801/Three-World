@@ -173,7 +173,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                description="Additional information"
                active={initialState == 'dashboard' ? true : false}
                onClick={() => {
-                  router.push('./dashboard')
+                  router.push('/dashboard')
                }}
                icon={
                   <IconDashboard size="20" color="royalblue"></IconDashboard>
@@ -192,7 +192,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                onClick={() => {
-                  router.push('./sessions')
+                  router.push('/sessions')
                }}
                active={initialState == 'sessions' ? true : false}
                icon={
@@ -206,7 +206,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                onClick={() => {
-                  router.push('./browsers')
+                  router.push('/browsers')
                }}
                active={initialState == 'browsers' ? true : false}
                icon={<IconScreenShare size="20" color="red"></IconScreenShare>}
@@ -216,7 +216,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                onClick={() => {
-                  router.push('./share')
+                  router.push('/share')
                }}
                active={initialState == 'share' ? true : false}
                icon={<IconShare size="20" color="red"></IconShare>}

@@ -2,20 +2,8 @@ import { Container, Text } from '@mantine/core'
 import { useSession } from 'next-auth/react'
 import React, { useContext, useEffect } from 'react'
 import Link from 'next/link'
-import { SocketContext } from '../../utils/context/socket'
 const Dashboard: React.FC = () => {
    const { data: session, status } = useSession()
-   const socket = useContext(SocketContext)
-   useEffect(() => {
-      console.log('emit')
-      socket.emit('createdMessage', { author: 'hello' })
-      socket.on('newIncomingMessage', (msg) => {
-         console.log('newIncomingMessage', msg)
-      })
-      socket.on('participantsAdded', (msg) => {
-         console.log('participantsAdded', msg)
-      })
-   }, [])
    return (
       // <Suspense fallback={<div>Loading</div>}>
       <Container
