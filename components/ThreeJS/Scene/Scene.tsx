@@ -69,7 +69,7 @@ export default function SpaceScreen() {
                width: '100%',
             }}>
             <animated.perspectiveCamera rotation-y={rotation.y}>
-               {/* <SkyComponent /> */}
+               <SkyComponent />
                <group>
                   <BrowserGroup />
                </group>
