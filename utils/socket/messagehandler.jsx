@@ -2,7 +2,6 @@ const MessageHandler = (io, socket) => {
    console.log('connected')
    const createdMessage = (msg) => {
       console.log('Message Received', msg)
-
       socket.broadcast.emit('newIncomingMessage', msg)
    }
    const participantsAdded = (msg) => {
