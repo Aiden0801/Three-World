@@ -24,6 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          var newParticipant = {
             email: email,
          }
+         const currentSession = Session.findOne({ embed_url: url })
          await Session.findOneAndUpdate(
             { embed_url: url },
             {
@@ -34,7 +35,10 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             {}
          ).clone()
 
-         await socket.emit('participantsAdded', { email: email })
+         await socket.emit('participantsAdded', {
+            email: email,
+            sessionName: currentSession.name,
+         })
          console.log('update success')
          res.status(200).send('success')
       }

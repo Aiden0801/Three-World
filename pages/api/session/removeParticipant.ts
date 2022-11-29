@@ -41,9 +41,12 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                },
                {}
             ).clone()
+            const currentSession = Session.findOne({ embed_url: url })
+            await socket.emit('participantsRemoved', {
+               email: email,
+               sessionName: currentSession.name,
+            })
          }
-
-         await socket.emit('participantsRemoved', { email: email })
 
          console.log('update success')
          res.status(200).send('success')
