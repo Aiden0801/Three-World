@@ -45,7 +45,7 @@ const MessageHandler = (io, socket) => {
    }
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
-      const socket_id = allClients.findIndex((obj) => obj.email == msg.email)
+      const socket_id = allClients.find((obj) => obj.email == msg.email).id
       const clientSocket = io.sockets.sockets.get(socket_id)
       clientSocket.to(msg.sessionName).emit('participantsRemoved', msg)
       clientSocket.leave(msg.sessionName)
