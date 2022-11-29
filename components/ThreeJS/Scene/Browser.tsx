@@ -53,6 +53,7 @@ function Browser(props) {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
       console.log('render')
+      loadBrowser()
       return () => {
          unloadBrowser()
       }

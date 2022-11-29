@@ -24,7 +24,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          var newParticipant = {
             email: email,
          }
-         const currentSession = Session.findOne({ embed_url: url })
+         const currentSession = await Session.findOne({ embed_url: url })
          await Session.findOneAndUpdate(
             { embed_url: url },
             {
