@@ -16,10 +16,10 @@ const MessageHandler = (io, socket) => {
       var clientList = await io.in(msg.sessionName).fetchSockets()
       console.log('clientList', clientList)
       var result = []
-      // clientList.forEach((client) => {
-      //    const item = allClients.find((obj) => obj.id == client.id)
-      //    result.push(item.email)
-      // })
+      clientList.forEach((client) => {
+         const item = allClients.find((obj) => obj.id == client.id)
+         result.push(item.email)
+      })
       socket.emit('getParticipants', result)
       //msg.
    }
