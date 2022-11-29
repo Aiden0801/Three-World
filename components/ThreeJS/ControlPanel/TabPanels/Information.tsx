@@ -65,7 +65,7 @@ export default function Information() {
       socket.emit('getParticipants', { sessionName: userBrowser[Index].name })
    }, [Index, userBrowser])
    useEffect(() => {
-      socket.on('getParticipants', (sessionName: string, lists: []) => {
+      socket.on('getParticipants', (sessionName: string, lists) => {
          if (sessionName == userBrowser[Index].name)
             console.log('getParticipants', lists)
          setData(lists)
