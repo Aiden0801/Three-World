@@ -26,6 +26,7 @@ const MessageHandler = (io, socket) => {
       const socket_id = allClients.find((obj) => obj.email == msg.email).id
       const clientSocket = io.sockets.sockets.get(socket_id)
       clientSocket.join(msg.sessionName)
+      console.log(clientSocket.id)
       const clientList = io.sockets.clients(msg.sessionName)
       console.log('clientList', clientList)
       clientSocket.to(msg.sessionName).emit('participantsAdded', msg)
@@ -47,6 +48,7 @@ const MessageHandler = (io, socket) => {
       console.log('Participants Removed Message ')
       const socket_id = allClients.find((obj) => obj.email == msg.email).id
       const clientSocket = io.sockets.sockets.get(socket_id)
+      console.log(clientSocket.id)
       clientSocket.to(msg.sessionName).emit('participantsRemoved', msg)
       clientSocket.leave(msg.sessionName)
    }
