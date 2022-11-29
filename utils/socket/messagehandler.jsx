@@ -27,8 +27,6 @@ const MessageHandler = (io, socket) => {
       const clientSocket = io.sockets.sockets.get(socket_id)
       clientSocket.join(msg.sessionName)
       console.log(clientSocket.id)
-      const clientList = io.sockets.clients(msg.sessionName)
-      console.log('clientList', clientList)
       clientSocket.to(msg.sessionName).emit('participantsAdded', msg)
    }
    const disconnecting = () => {
