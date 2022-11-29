@@ -2,7 +2,7 @@ import { isEmptyBindingElement } from 'typescript'
 
 let allClients = []
 const MessageHandler = (io, socket) => {
-   console.log('connected')
+   console.log('connected', allClients)
    allClients.push({
       id: socket.id,
       email: '',
@@ -24,6 +24,8 @@ const MessageHandler = (io, socket) => {
    const participantsAdded = (msg) => {
       console.log('Participants Added Received', msg)
       socket.join(msg.sessionName)
+      const clientList = io.sockets.clients(msg.sessionName)
+      console.log(clientList)
       socket.to(msg.sessionName).emit('participantsAdded', msg)
    }
    const disconnecting = () => {

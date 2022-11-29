@@ -52,6 +52,7 @@ export default function Information() {
    const socket = useContext(SocketContext)
    const [data, setData] = useState([])
    useEffect(() => {
+      console.log('informatino', userEmail)
       socket.emit('getParticipants', { email: userEmail })
       socket.on('getParticipants', (msg) => {
          console.log('getParticipants', msg)
