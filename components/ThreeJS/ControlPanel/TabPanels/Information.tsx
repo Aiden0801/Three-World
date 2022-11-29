@@ -76,7 +76,9 @@ export default function Information() {
             color: 'blue',
             autoClose: false,
          })
-         setData((data) => [...data, msg.email])
+         socket.emit('getParticipants', {
+            sessionName: userBrowser[Index].name,
+         })
          // mutate()
       })
       socket.on('participantsRemoved', (msg) => {
@@ -86,6 +88,13 @@ export default function Information() {
             message: `${msg.email} left the session`,
             color: 'red',
             autoClose: false,
+         })
+         socket.emit('getParticipants', {
+            sessionName: userBrowser[Index].name,
+         })
+
+         socket.emit('getParticipants', {
+            sessionName: userBrowser[Index].name,
          })
          var index = data.indexOf(msg.email)
          setData((data) => [...data.slice(0, index), ...data.slice(index + 1)])
