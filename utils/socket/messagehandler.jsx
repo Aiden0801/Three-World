@@ -53,6 +53,13 @@ const MessageHandler = (io, socket) => {
       clientSocket.leave(msg.sessionName)
    }
    const signIn = (msg) => {
+      allClients.forEach((obj, index) => {
+         if (obj.id == socket.id) {
+            obj.email = msg.email
+         } else if (obj.email == msg.email) {
+            allClients.splice(index, 1)
+         } else;
+      })
       let index = allClients.findIndex((obj) => obj.id == socket.id)
       var item = {
          id: socket.id,
