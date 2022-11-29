@@ -2,15 +2,12 @@ import React, { useContext, useEffect, useState } from 'react'
 import { fetcher } from '../../../../lib/fetcher'
 import useSWR from 'swr'
 import { serverURL } from '../../../../config/urlcontrol'
-import {
-   getFocusedBrowser,
-   currentBrowserIndex,
-   currentBrowsers,
-} from '../../../../utils/recoil/browser'
+import { currentUser } from '../../../../utils/recoil/browser'
 import { Text, Container } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { SocketContext } from '../../../../utils/context/socket'
 import { useRecoilValue, waitForAll } from 'recoil'
+import { current } from '@reduxjs/toolkit'
 const fetchParticipantsData = async (url: string, embed_url: string) => {
    console.log('url', embed_url)
    const participantData = await fetcher(
@@ -51,9 +48,14 @@ export default function Information() {
    // const { data, mutate, isError, isLoading } = useParticipants(
    //    browsers[index].url
    // )
+   const userEmail = useRecoilValue(currentUser)
    const socket = useContext(SocketContext)
    const [data, setData] = useState([])
    useEffect(() => {
+      socket.emit('getParticipants', { email: userEmail })
+      socket.on('getParticipants', (msg) => {
+         console.log('getParticipants', msg)
+      })
       socket.on('participantsAdded', (msg) => {
          console.log('par Added', msg)
          showNotification({
@@ -78,6 +80,7 @@ export default function Information() {
          // mutate()
       })
       return () => {
+         socket.off('getParticipants')
          socket.off('participantsAdded')
          socket.off('participantsRemoved')
       }

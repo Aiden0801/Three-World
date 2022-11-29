@@ -11,6 +11,16 @@ const MessageHandler = (io, socket) => {
       console.log('Message Received', msg)
       socket.broadcast.emit('newIncomingMessage', msg)
    }
+   const getParticipants = (msg) => {
+      const clientList = io.sockets.clients(msg.sessionName)
+      const result = []
+      clientList.forEach((client) => {
+         const item = allClients.find((obj) => obj.email == client)
+         result.push(item.email)
+      })
+      socket.emit('getParticipants', result)
+      //msg.
+   }
    const participantsAdded = (msg) => {
       console.log('Participants Added Received', msg)
       socket.join(msg.sessionName)
@@ -43,6 +53,7 @@ const MessageHandler = (io, socket) => {
       allClients[index] = item
       console.log(allClients)
    }
+   socket.on('getParticipants', getParticipants)
    socket.on('signIn', signIn)
    socket.on('participantsAdded', participantsAdded)
    socket.on('participantsRemoved', participantsRemoved)
