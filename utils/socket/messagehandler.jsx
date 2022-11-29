@@ -60,12 +60,6 @@ const MessageHandler = (io, socket) => {
             allClients.splice(index, 1)
          } else;
       })
-      let index = allClients.findIndex((obj) => obj.id == socket.id)
-      var item = {
-         id: socket.id,
-         email: msg.email,
-      }
-      allClients[index] = item
       console.log(allClients)
    }
    socket.on('getParticipants', getParticipants)
