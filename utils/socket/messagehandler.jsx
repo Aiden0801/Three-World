@@ -11,7 +11,7 @@ const MessageHandler = (io, socket) => {
       console.log('Message Received', msg)
       socket.broadcast.emit('newIncomingMessage', msg)
    }
-   const getParticipants = (msg) => {
+   const getParticipants = async (msg) => {
       const clientList = io.sockets.clients(msg.sessionName)
       const result = []
       clientList.forEach((client) => {
@@ -32,8 +32,11 @@ const MessageHandler = (io, socket) => {
          .emit('participantsAdded', msg)
    }
    const disconnecting = () => {
-      let index = allClients.find((obj) => obj.id == socket.id)
-      var item = allClients[index]
+      let item = allClients.find((obj) => obj.id == socket.id)
+      console.log(socket.id)
+      console.log('disconnecting', allClients, index)
+      allClients.splice(index, 1)
+
       const roomset = socket.rooms
       roomset.forEach((room) => {
          socket.to(room).emit({
@@ -41,8 +44,6 @@ const MessageHandler = (io, socket) => {
             sessionName: room,
          })
       })
-      console.log('disconnecting', allClients)
-      allClients.splice(index, 1)
    }
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
