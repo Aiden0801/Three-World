@@ -66,9 +66,8 @@ export default function Information() {
    }, [Index, userBrowser])
    useEffect(() => {
       socket.on('getParticipants', (sessionName: string, lists) => {
-         // if (sessionName == userBrowser[Index].name)
+         if (sessionName == userBrowser[Index].name) setData(lists)
          console.log('getParticipants', sessionName, lists)
-         // setData(lists)
       })
       socket.on('participantsAdded', (msg) => {
          console.log('par Added', msg)
