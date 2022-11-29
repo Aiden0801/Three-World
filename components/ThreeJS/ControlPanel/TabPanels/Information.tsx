@@ -65,8 +65,10 @@ export default function Information() {
       socket.emit('getParticipants', { sessionName: userBrowser[Index].name })
    }, [Index, userBrowser])
    useEffect(() => {
-      socket.on('getParticipants', (msg) => {
-         console.log('getParticipants', msg)
+      socket.on('getParticipants', (sessionName: string, lists: []) => {
+         if (sessionName == userBrowser[Index].name)
+            console.log('getParticipants', lists)
+         setData(lists)
       })
       socket.on('participantsAdded', (msg) => {
          console.log('par Added', msg)
@@ -92,13 +94,6 @@ export default function Information() {
          socket.emit('getParticipants', {
             sessionName: userBrowser[Index].name,
          })
-
-         socket.emit('getParticipants', {
-            sessionName: userBrowser[Index].name,
-         })
-         var index = data.indexOf(msg.email)
-         setData((data) => [...data.slice(0, index), ...data.slice(index + 1)])
-         // mutate()
       })
       return () => {
          socket.off('getParticipants')
@@ -113,7 +108,7 @@ export default function Information() {
                data.length >= 1 &&
                data.map((item, index) => (
                   <Text color="gray" fw="bold" key={index}>
-                     {format(item)}
+                     {format(item.email)}
                   </Text>
                ))}
          </Container>

@@ -20,7 +20,7 @@ const MessageHandler = (io, socket) => {
          const item = allClients.find((obj) => obj.id == client.id)
          result.push(item.email)
       })
-      socket.emit('getParticipants', result)
+      socket.emit('getParticipants', msg.sessionName, result)
       //msg.
    }
    const participantsAdded = (msg) => {
