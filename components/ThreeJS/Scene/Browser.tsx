@@ -117,7 +117,6 @@ function Browser(props) {
       console.log('after ', hb)
    }, [props.bid, userBrowser, userEmail])
    const loadBrowser = useCallback(async () => {
-      if (hb) return
       let embedURL = userBrowser[props.bid].url
       console.log('userBrowser', userBrowser)
       // let embedURL
