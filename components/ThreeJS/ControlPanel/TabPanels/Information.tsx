@@ -2,12 +2,15 @@ import React, { useContext, useEffect, useState } from 'react'
 import { fetcher } from '../../../../lib/fetcher'
 import useSWR from 'swr'
 import { serverURL } from '../../../../config/urlcontrol'
-import { currentUser } from '../../../../utils/recoil/browser'
+import {
+   currentBrowsers,
+   currentUser,
+   currentBrowserIndex,
+} from '../../../../utils/recoil/browser'
 import { Text, Container } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { SocketContext } from '../../../../utils/context/socket'
 import { useRecoilValue, waitForAll } from 'recoil'
-import { current } from '@reduxjs/toolkit'
 const fetchParticipantsData = async (url: string, embed_url: string) => {
    console.log('url', embed_url)
    const participantData = await fetcher(
@@ -48,12 +51,20 @@ export default function Information() {
    // const { data, mutate, isError, isLoading } = useParticipants(
    //    browsers[index].url
    // )
+   const userBrowser = useRecoilValue(currentBrowsers)
+   const Index = useRecoilValue(currentBrowserIndex)
    const userEmail = useRecoilValue(currentUser)
    const socket = useContext(SocketContext)
    const [data, setData] = useState([])
    useEffect(() => {
-      console.log('informatino', userEmail)
-      socket.emit('getParticipants', { email: userEmail })
+      if (
+         userBrowser[Index].url == 'none' ||
+         userBrowser[Index].url == 'No Session'
+      )
+         return
+      socket.emit('getParticipants', { sessionName: userBrowser[Index].name })
+   }, [Index, userBrowser])
+   useEffect(() => {
       socket.on('getParticipants', (msg) => {
          console.log('getParticipants', msg)
       })
