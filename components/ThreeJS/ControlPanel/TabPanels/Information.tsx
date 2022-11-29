@@ -104,13 +104,15 @@ export default function Information() {
    return (
       <>
          <Container>
-            {data &&
-               data.length >= 1 &&
+            {data && data.length >= 1 ? (
                data.map((item, index) => (
                   <Text color="gray" fw="bold" key={index}>
                      {format(item.email)}
                   </Text>
-               ))}
+               ))
+            ) : (
+               <></>
+            )}
          </Container>
       </>
    )
