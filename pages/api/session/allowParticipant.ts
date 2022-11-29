@@ -39,6 +39,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             email: email,
             sessionName: currentSession.name,
          })
+         socket.disconnect()
          console.log('update success')
          res.status(200).send('success')
       }

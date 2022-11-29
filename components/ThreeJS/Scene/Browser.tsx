@@ -114,6 +114,7 @@ function Browser(props) {
       if (hb === undefined) return
 
       hb.destroy()
+      console.log('after ', hb)
    }, [props.bid, userBrowser, userEmail])
    const loadBrowser = useCallback(async () => {
       if (hb) return
