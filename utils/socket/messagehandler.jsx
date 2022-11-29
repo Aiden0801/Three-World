@@ -22,11 +22,13 @@ const MessageHandler = (io, socket) => {
       //msg.
    }
    const participantsAdded = (msg) => {
-      console.log('Participants Added Received', msg, socket.id)
-      socket.join(msg.sessionName)
+      console.log('Participants Added Received', msg)
+      const socket_id = allClients.findIndex((obj) => obj.email == msg.email)
+      const clientSocket = io.sockets.sockets.get(socket_id)
+      clientSocket.join(msg.sessionName)
       const clientList = io.sockets.clients(msg.sessionName)
       console.log('clientList', clientList)
-      socket.to(msg.sessionName).emit('participantsAdded', msg)
+      clientSocket.to(msg.sessionName).emit('participantsAdded', msg)
    }
    const disconnecting = () => {
       let index = allClients.findIndex((obj) => obj.id == socket.id)
@@ -43,8 +45,10 @@ const MessageHandler = (io, socket) => {
    }
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
-      socket.to(msg.sessionName).emit('participantsRemoved', msg)
-      socket.leave(msg.sessionName)
+      const socket_id = allClients.findIndex((obj) => obj.email == msg.email)
+      const clientSocket = io.sockets.sockets.get(socket_id)
+      clientSocket.to(msg.sessionName).emit('participantsRemoved', msg)
+      clientSocket.leave(msg.sessionName)
    }
    const signIn = (msg) => {
       let index = allClients.findIndex((obj) => obj.id == socket.id)
