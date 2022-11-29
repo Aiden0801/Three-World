@@ -13,7 +13,7 @@ const MessageHandler = (io, socket) => {
    }
    const getParticipants = async (msg) => {
       console.log('getParticipants Received', msg)
-      var clientList = io.sockets.adapter.rooms[msg.sessionName].sockets
+      var clientList = await io.in(msg.sessionName).fetchSockets()
       console.log('clientList', clientList)
       var result = []
       clientList.forEach((client) => {
