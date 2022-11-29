@@ -16,7 +16,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    await connectMongo()
    let { email, url } = req.body
    try {
-      var socket = client.connect(`${serverURL}`)
+      // var socket = client.connect(`${serverURL}`)
       let user = await Session.findOne({ embed_url: url })
       if (!user) {
          res.status(200).send('No Session')
@@ -34,12 +34,15 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             },
             {}
          ).clone()
-
-         await socket.emit('participantsAdded', {
+         socket.emit('participantsAdded', {
             email: email,
             sessionName: currentSession.name,
          })
-         socket.disconnect()
+         // await socket.emit('participantsAdded', {
+         //    email: email,
+         //    sessionName: currentSession.name,
+         // })
+         // socket.disconnect()
          console.log('update success')
          res.status(200).send('success')
       }
