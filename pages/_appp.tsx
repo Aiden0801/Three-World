@@ -6,9 +6,10 @@ import {
 import { NotificationsProvider } from '@mantine/notifications'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { RouterTransition } from '../components/Layout/RouterTransition'
+import { SocketContext } from '../utils/context/socket'
 import { currentUser } from '../utils/recoil/browser'
 function MySession({ Component, pageProps: { ...pageProps } }: any) {
    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
@@ -20,9 +21,11 @@ function MySession({ Component, pageProps: { ...pageProps } }: any) {
    const router = useRouter()
    const { data: session, status } = useSession()
 
+   const socket = useContext(SocketContext)
    useEffect(() => {
       if (status === 'authenticated') {
          setCurrentUser(session.user.email)
+         socket.emit('signIn', { email: session.user.email })
       }
    }, [status])
    if (router.pathname !== '/' && router.pathname !== '/login') {
@@ -35,7 +38,6 @@ function MySession({ Component, pageProps: { ...pageProps } }: any) {
          return <p>Access Denied</p>
       }
    }
-
    return (
       <ColorSchemeProvider
          colorScheme={colorScheme}

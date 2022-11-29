@@ -1,6 +1,12 @@
+import { isEmptyBindingElement } from 'typescript'
+
 let allClients = []
 const MessageHandler = (io, socket) => {
    console.log('connected')
+   allClients.push({
+      id: socket.id,
+      email: '',
+   })
    const createdMessage = (msg) => {
       console.log('Message Received', msg)
       socket.broadcast.emit('newIncomingMessage', msg)
@@ -10,17 +16,37 @@ const MessageHandler = (io, socket) => {
       socket.join(msg.sessionName)
       socket.to(msg.sessionName).emit('participantsAdded', msg)
    }
-   const disConnected = () => {
-      console.log('disconnected')
+   const disconnecting = () => {
+      let index = allClients.findIndex((obj) => obj.id == socket.id)
+      var item = allClients[index]
+      const roomset = socket.rooms
+      roomset.forEach((room) => {
+         socket.to(room).emit({
+            email: item.email,
+            sessionName: room,
+         })
+      })
+      console.log('disconnecting', allClients)
+      allClients.splice(index, 1)
    }
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
       socket.to(msg.sessionName).emit('participantsRemoved', msg)
       socket.leave(msg.sessionName)
    }
+   const signIn = (msg) => {
+      let index = allClients.findIndex((obj) => obj.id == socket.id)
+      var item = {
+         id: socket.id,
+         email: msg.email,
+      }
+      allClients[index] = item
+      console.log(allClients)
+   }
+   socket.on('signIn', signIn)
    socket.on('participantsAdded', participantsAdded)
    socket.on('participantsRemoved', participantsRemoved)
    socket.on('createdMessage', createdMessage)
-   socket.on('disconnect', disConnected)
+   socket.on('disconnecting', disconnecting)
 }
 export default MessageHandler

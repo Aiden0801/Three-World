@@ -1,10 +1,4 @@
-import {
-   Box,
-   createStyles,
-   LoadingOverlay,
-   Tabs,
-   Transition,
-} from '@mantine/core'
+import { Box, createStyles, Tabs, Transition } from '@mantine/core'
 import {
    IconInfoCircle,
    IconMessageCircle,
@@ -13,13 +7,11 @@ import {
    IconSettings,
    IconShare,
 } from '@tabler/icons'
-import { useState, useEffect, useContext } from 'react'
-import Control from './TabPanels/Control'
-import Utility from './TabPanels/Utility'
-import Information from './TabPanels/Information'
 import { useSession } from 'next-auth/react'
-import { showNotification } from '@mantine/notifications'
-import { SocketContext } from '../../../utils/context/socket'
+import { useState } from 'react'
+import Control from './TabPanels/Control'
+import Information from './TabPanels/Information'
+import Utility from './TabPanels/Utility'
 const useStyles = createStyles((theme) => ({
    stack: {},
    tablist: {},
@@ -47,33 +39,7 @@ const ControlPanel = () => {
    const [activeTab, setActiveTab] = useState<string | null>('Information')
    const { data: session, status } = useSession()
    const [hidden, setHidden] = useState(false)
-   const [render, renderer] = useState(false)
-   const socket = useContext(SocketContext)
 
-   useEffect(() => {
-      socket.on('participantsAdded', (msg) => {
-         console.log('par Added', msg)
-         showNotification({
-            title: `${msg.sessionName}`,
-            message: `${msg.email} is joining`,
-            color: 'blue',
-            autoClose: false,
-         })
-      })
-      socket.on('participantsRemoved', (msg) => {
-         console.log('par Removed', msg)
-         showNotification({
-            title: `${msg.sessionName}`,
-            message: `${msg.email} left the session`,
-            color: 'red',
-            autoClose: false,
-         })
-      })
-      return () => {
-         socket.off('participantsAdded')
-         socket.off('participantsRemoved')
-      }
-   }, [])
    return (
       <Box
          sx={(theme) => ({
@@ -117,7 +83,7 @@ const ControlPanel = () => {
                   icon={<IconSettings size={24} />}></Tabs.Tab>
             </Tabs.List>
             <Tabs.Panel value="information" pr="xs" className={classes.panel}>
-               <Information update={render} />
+               <Information />
             </Tabs.Panel>
             <Tabs.Panel value="gallery" pr="xs" hidden={true}>
                <Transition
