@@ -14,12 +14,13 @@ const MessageHandler = (io, socket) => {
    const getParticipants = async (msg) => {
       console.log('getParticipants Received', msg)
       var clientList = await io.in(msg.sessionName).fetchSockets()
-      console.log('clientList', clientList)
       var result = []
       clientList.forEach((client) => {
          const item = allClients.find((obj) => obj.id == client.id)
          result.push(item.email)
       })
+      console.log('clientList', result)
+
       socket.emit('getParticipants', msg.sessionName, result)
       //msg.
    }
