@@ -8,14 +8,14 @@ const MessageHandler = (io, socket) => {
    const participantsAdded = (msg) => {
       console.log('Participants Added Received', msg)
       socket.join(msg.sessionName)
-      socket.broadcast.emit('participantsAdded', msg)
+      socket.to(msg.sessionName).emit('participantsAdded', msg)
    }
    const disConnected = () => {
       console.log('disconnected')
    }
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
-      socket.broadcast.emit('participantsRemoved', msg)
+      socket.to(msg.sessionName).emit('participantsRemoved', msg)
       socket.leave(msg.sessionName)
    }
    socket.on('participantsAdded', participantsAdded)
