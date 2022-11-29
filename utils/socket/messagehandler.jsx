@@ -23,7 +23,7 @@ const MessageHandler = (io, socket) => {
    }
    const participantsAdded = (msg) => {
       console.log('Participants Added Received', msg)
-      const socket_id = allClients.findIndex((obj) => obj.email == msg.email)
+      const socket_id = allClients.find((obj) => obj.email == msg.email).id
       const clientSocket = io.sockets.sockets.get(socket_id)
       clientSocket.join(msg.sessionName)
       const clientList = io.sockets.clients(msg.sessionName)
@@ -31,7 +31,7 @@ const MessageHandler = (io, socket) => {
       clientSocket.to(msg.sessionName).emit('participantsAdded', msg)
    }
    const disconnecting = () => {
-      let index = allClients.findIndex((obj) => obj.id == socket.id)
+      let index = allClients.find((obj) => obj.id == socket.id).id
       var item = allClients[index]
       const roomset = socket.rooms
       roomset.forEach((room) => {
