@@ -31,7 +31,7 @@ const MessageHandler = (io, socket) => {
       clientSocket.to(msg.sessionName).emit('participantsAdded', msg)
    }
    const disconnecting = () => {
-      let index = allClients.find((obj) => obj.id == socket.id).id
+      let index = allClients.find((obj) => obj.id == socket.id)
       var item = allClients[index]
       const roomset = socket.rooms
       roomset.forEach((room) => {
