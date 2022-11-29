@@ -12,10 +12,10 @@ const MessageHandler = (io, socket) => {
       socket.broadcast.emit('newIncomingMessage', msg)
    }
    const getParticipants = async (msg) => {
-      const clientList = io.sockets.clients(msg.sessionName)
+      const clientList = io.sockets.adapter.rooms[msg.sessionName].sockets
       const result = []
       clientList.forEach((client) => {
-         const item = allClients.find((obj) => obj.email == client)
+         const item = allClients.find((obj) => obj.id == client.id)
          result.push(item.email)
       })
       socket.emit('getParticipants', result)
