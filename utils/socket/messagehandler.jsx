@@ -21,7 +21,7 @@ const MessageHandler = (io, socket) => {
          result.push(item.email)
       })
       console.log('getParticipants Recieved', msg)
-      socket.emit('getParticipants', result)
+      socket.emit('getParticipants', msg.sessionName, result)
       //msg.
    }
    const participantsAdded = (msg) => {
