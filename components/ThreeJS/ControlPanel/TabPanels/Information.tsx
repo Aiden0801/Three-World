@@ -57,12 +57,14 @@ export default function Information() {
    const socket = useContext(SocketContext)
    const [data, setData] = useState([])
    useEffect(() => {
+      console.log(Index, userBrowser[Index].url)
+      console.log('socket getparticipants calling')
+
       if (
          userBrowser[Index].url == 'none' ||
          userBrowser[Index].url == 'No Session'
       )
          return
-      console.log('socket getparticipants calling')
       socket.emit('getParticipants', { sessionName: userBrowser[Index].name })
    }, [Index, userBrowser])
    useEffect(() => {
@@ -72,7 +74,12 @@ export default function Information() {
          } catch (err) {
             console.log(err)
          }
-         console.log('getParticipants', sessionName, lists)
+         console.log(
+            'getParticipants',
+            sessionName,
+            userBrowser[Index].name,
+            lists
+         )
       })
       socket.on('participantsAdded', (msg) => {
          console.log('par Added', msg)
