@@ -66,7 +66,11 @@ export default function Information() {
    }, [Index, userBrowser])
    useEffect(() => {
       socket.on('getParticipants', (sessionName: string, lists) => {
-         if (sessionName == userBrowser[Index].name) setData(lists)
+         try {
+            if (sessionName == userBrowser[Index].name) setData(lists)
+         } catch (err) {
+            console.log(err)
+         }
          console.log('getParticipants', sessionName, lists)
       })
       socket.on('participantsAdded', (msg) => {
@@ -103,7 +107,7 @@ export default function Information() {
    return (
       <>
          <Container>
-            {data && data.length >= 1 ? (
+            {typeof data != 'undefined' && data != null && data.length >= 1 ? (
                data.map((item, index) => (
                   <Text color="gray" fw="bold" key={index}>
                      {format(item.email)}
