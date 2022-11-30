@@ -30,7 +30,8 @@
       "store/browserSlice.js",
       "api-lib/models/session.js",
       "api-lib/models/session.js",
-      "api-lib/mongodbauth.js"
+      "api-lib/mongodbauth.js",
+      "utils/socket/messagehandler.jsx"
    ],
    "exclude": ["node_modules"]
 }
