@@ -66,11 +66,11 @@ export default function Information() {
    }, [Index, userBrowser])
    useEffect(() => {
       socket.on('getParticipants', (sessionName: string, lists) => {
-         // try {
-         //    if (sessionName == userBrowser[Index].name) setData(lists)
-         // } catch (err) {
-         //    console.log(err)
-         // }
+         try {
+            if (sessionName == userBrowser[Index].name) setData(lists)
+         } catch (err) {
+            console.log(err)
+         }
          console.log('getParticipants', sessionName, lists)
       })
       socket.on('participantsAdded', (msg) => {

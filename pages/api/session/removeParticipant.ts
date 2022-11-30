@@ -13,40 +13,14 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    console.log(req.body)
    try {
       var socket = client.connect(`${serverURL}`)
-      let user = await Session.findOne({ embed_url: url })
-      if (!user) {
+      let currentSession = await Session.findOne({ embed_url: url })
+      if (!currentSession) {
          res.status(200).send('No Session')
       } else {
-         var newParticipant = {
+         await socket.emit('participantsRemoved', {
             email: email,
-         }
-         if (url == 'unknown') {
-            await Session.updateMany(
-               {},
-               {
-                  $pull: {
-                     $pull: {
-                        participants: newParticipant,
-                     },
-                  },
-               }
-            )
-         } else {
-            await Session.findOneAndUpdate(
-               { embed_url: url },
-               {
-                  $pull: {
-                     participants: newParticipant,
-                  },
-               },
-               {}
-            ).clone()
-            const currentSession = await Session.findOne({ embed_url: url })
-            await socket.emit('participantsRemoved', {
-               email: email,
-               sessionName: currentSession.name,
-            })
-         }
+            sessionName: currentSession.name,
+         })
 
          console.log('update success')
          res.status(200).send('success')
