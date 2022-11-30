@@ -1,56 +1,62 @@
+import { isEmptyBindingElement } from 'typescript'
+
 let allClients = []
-
-const participantsAdded = (msg, io) => {
-   console.log('Participants Added Received', msg)
-   const socket_id = allClients.find((obj) => obj.email == msg.email).id
-   io.sockets.sockets.get(socket_id).join(msg.sessionName)
-   io.to(msg.sessionName).emit('participantsAdded', msg)
-}
-
-const participantsRemoved = (msg, io) => {
-   console.log('Participants Removed Message ')
-   const socket_id = allClients.find((obj) => obj.email == msg.email).id
-   // io.sockets.sockets
-   //    .get(socket_id)
-   io.to(msg.sessionName).emit('participantsRemoved', msg)
-   io.sockets.sockets.get(socket_id).leave(msg.sessionName)
-}
 const MessageHandler = (io, socket) => {
-   console.log('connected', allClients)
    allClients.push({
       id: socket.id,
       email: '',
    })
+   console.log('connected', allClients)
    const createdMessage = (msg) => {
       console.log('Message Received', msg)
       socket.broadcast.emit('newIncomingMessage', msg)
    }
-   const getParticipants = async (msg) => {
-      console.log('getParticipants Received', msg)
-      var clientList = await io.in(msg.sessionName).fetchSockets()
-      var result = []
+   const getParticipants = (msg) => {
+      const clientList = io.sockets.clients(msg.sessionName)
+      const result = []
       clientList.forEach((client) => {
-         const item = allClients.find((obj) => obj.id == client.id)
+         const item = allClients.find((obj) => obj.email == client)
          result.push(item.email)
       })
-      console.log('clientList', result)
-
-      socket.emit('getParticipants', msg.sessionName, result)
+      socket.emit('getParticipants', result)
       //msg.
    }
-   const disconnecting = () => {
-      let item = allClients.find((obj) => obj.id == socket.id)
-      console.log(socket.id)
-      console.log('disconnecting', allClients, index)
-      allClients.splice(index, 1)
+   const participantsAdded = (msg) => {
+      console.log('Participants Added Received', msg)
+      const socket_id = allClients.find((obj) => obj.email == msg.email).id
+      io.sockets.sockets.get(socket_id).join(msg.sessionName)
+      socket.emit('messageReceived')
 
+      io.sockets.sockets
+         .get(socket_id)
+         .to(msg.sessionName)
+         .emit('participantsAdded', msg)
+   }
+   const disconnecting = () => {
+      console.log('onDisconnection', socket.id, allClients)
+      let index = allClients.findIndex((obj) => obj.id == socket.id)
+      var item = allClients[index]
+      console.log(index)
+      allClients.splice(index, 1)
+      if (item.email == '') return
       const roomset = socket.rooms
       roomset.forEach((room) => {
-         socket.to(room).emit('participantsRemoved', {
+         socket.to(room).emit({
             email: item.email,
             sessionName: room,
          })
       })
+      console.log('disconnecting', allClients)
+   }
+   const participantsRemoved = (msg) => {
+      console.log('Participants Removed Message ')
+      const socket_id = allClients.find((obj) => obj.email == msg.email).id
+      socket.emit('messageReceived')
+      io.sockets.sockets
+         .get(socket_id)
+         .to(msg.sessionName)
+         .emit('participantsRemoved', msg)
+      clientSocket.leave(msg.sessionName)
    }
    const signIn = (msg) => {
       allClients.forEach((obj, index) => {
@@ -62,17 +68,11 @@ const MessageHandler = (io, socket) => {
       })
       console.log(allClients)
    }
-   const forceDisconnect = (msg) => {
-      let item = allClients.find((obj) => obj.id == socket.id)
-      console.log('forceDisconnecting', socket.id)
-      allClients.splice(index, 1)
-
-      socket.disconnect()
-   }
    socket.on('getParticipants', getParticipants)
    socket.on('signIn', signIn)
+   socket.on('participantsAdded', participantsAdded)
+   socket.on('participantsRemoved', participantsRemoved)
    socket.on('createdMessage', createdMessage)
    socket.on('disconnecting', disconnecting)
-   socket.on('forceDisconnect', forceDisconnect)
 }
-export { participantsAdded, participantsRemoved, MessageHandler }
+export default MessageHandler

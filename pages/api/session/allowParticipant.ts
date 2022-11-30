@@ -1,26 +1,33 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
 import connectMongo from '../../../api-lib/mongodb'
+import { serverURL } from '../../../config/urlcontrol'
 const User = require('../../../api-lib/models/users')
 const Session = require('../../../api-lib/models/session')
-import { participantsAdded } from '../../../utils/socket/messagehandler'
 /**
  * ! should change code URL
  *
  *
  */
-async function handler(req, res) {
+var client = require('socket.io-client')
+async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { email, url } = req.body
    try {
+      var socket = client.connect(`${serverURL}`)
       let currentSession = await Session.findOne({ embed_url: url })
       if (!currentSession) {
          res.status(200).send('No Session')
       } else {
-         participantsAdded(
-            { email: email, sessionName: currentSession.name },
-            res.socket.server.io
-         )
-
+         socket.emit('participantsAdded', {
+            email: email,
+            sessionName: currentSession.name,
+         })
+         socket.on('messageReceived', () => {
+            socket.disconnect()
+         })
+         console.log('update success')
+         // socket.disconnect()
          res.status(200).send('success')
       }
    } catch (err) {

@@ -1,5 +1,5 @@
 import { Server } from 'socket.io'
-import { MessageHandler } from '../../../utils/socket/messagehandler'
+import MessageHandler from '../../../utils/socket/messagehandler'
 const SocketHandler = (req, res) => {
    if (res.socket.server.io) {
       console.log('Socket is already running')
