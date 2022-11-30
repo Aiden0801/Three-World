@@ -12,10 +12,11 @@ const MessageHandler = (io, socket) => {
       socket.broadcast.emit('newIncomingMessage', msg)
    }
    const getParticipants = (msg) => {
+      console.log('getParticipants Recieved', msg)
       const clientList = io.sockets.clients(msg.sessionName)
       const result = []
       clientList.forEach((client) => {
-         const item = allClients.find((obj) => obj.email == client)
+         const item = allClients.find((obj) => obj.email == client.id)
          result.push(item.email)
       })
       socket.emit('getParticipants', result)
@@ -26,11 +27,11 @@ const MessageHandler = (io, socket) => {
       const socket_id = allClients.find((obj) => obj.email == msg.email).id
       io.sockets.sockets.get(socket_id).join(msg.sessionName)
       socket.emit('messageReceived')
-
-      io.sockets.sockets
-         .get(socket_id)
-         .to(msg.sessionName)
-         .emit('participantsAdded', msg)
+      io.to(msg.sessionName).emit('participantsAdded', msg)
+      // io.sockets.sockets
+      //    .get(socket_id)
+      //    .to(msg.sessionName)
+      //    .emit('participantsAdded', msg)
    }
    const disconnecting = () => {
       console.log('onDisconnection', socket.id, allClients)
@@ -56,7 +57,6 @@ const MessageHandler = (io, socket) => {
          .get(socket_id)
          .to(msg.sessionName)
          .emit('participantsRemoved', msg)
-      clientSocket.leave(msg.sessionName)
    }
    const signIn = (msg) => {
       allClients.forEach((obj, index) => {
