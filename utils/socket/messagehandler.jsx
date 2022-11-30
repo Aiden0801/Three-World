@@ -46,7 +46,7 @@ const MessageHandler = (io, socket) => {
 
       const roomset = socket.rooms
       roomset.forEach((room) => {
-         socket.to(room).emit({
+         socket.to(room).emit('participantsRemoved', {
             email: item.email,
             sessionName: room,
          })
