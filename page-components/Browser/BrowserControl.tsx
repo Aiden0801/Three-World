@@ -12,9 +12,11 @@ import { IconGripVertical, IconPoint } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
+import { useSetRecoilState, useRecoilRefresher_UNSTABLE } from 'recoil'
 import useSWR from 'swr'
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
+import { currentBrowsers } from '../../utils/recoil/browser'
 
 const useStyles = createStyles((theme) => ({
    container: {
@@ -88,7 +90,7 @@ export default function BrowserControl() {
    const [isBrowser, setIsBrowser] = useState(false)
 
    const [isHandling, setIsHandling] = useState(false)
-
+   const resetRecoilState = useRecoilRefresher_UNSTABLE(currentBrowsers)
    const {
       data: browser_data,
       mutate: mutateB,
@@ -129,6 +131,7 @@ export default function BrowserControl() {
          }
       )
       mutateB()
+      resetRecoilState()
       console.log(data)
       setIsHandling(false)
    }
