@@ -66,11 +66,15 @@ const MessageHandler = (io, socket) => {
       })
       console.log(allClients)
    }
+   const forceDisconnect = (msg) => {
+      socket.disconnect()
+   }
    socket.on('getParticipants', getParticipants)
    socket.on('signIn', signIn)
    socket.on('participantsAdded', participantsAdded)
    socket.on('participantsRemoved', participantsRemoved)
    socket.on('createdMessage', createdMessage)
    socket.on('disconnecting', disconnecting)
+   socket.on('forceDisconnect', forceDisconnect)
 }
 export default MessageHandler
