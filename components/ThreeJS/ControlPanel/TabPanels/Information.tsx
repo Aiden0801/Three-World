@@ -107,15 +107,12 @@ export default function Information() {
    return (
       <>
          <Container>
-            {typeof data != 'undefined' && data != null && data.length >= 1 ? (
-               data.map((item, index) => (
-                  <Text color="gray" fw="bold" key={index}>
-                     {format(item.email)}
-                  </Text>
-               ))
-            ) : (
-               <></>
-            )}
+            <Text> Participants</Text>
+            {data.map((item, index) => (
+               <Text color="gray" fw="bold" key={index}>
+                  {format(item.email)}
+               </Text>
+            ))}
          </Container>
       </>
    )
