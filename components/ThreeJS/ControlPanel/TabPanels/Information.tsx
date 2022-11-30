@@ -110,7 +110,7 @@ export default function Information() {
             <Text> Participants</Text>
             {data.map((item, index) => (
                <Text color="gray" fw="bold" key={index}>
-                  {format(item.email)}
+                  {format(item)}
                </Text>
             ))}
          </Container>
