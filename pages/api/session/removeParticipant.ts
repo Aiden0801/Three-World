@@ -22,10 +22,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
             sessionName: currentSession.name,
          })
 
+         socket.emit('forceDisconnect', 'discoonect')
          console.log('update success')
          res.status(200).send('success')
-
-         socket.emit('forceDisconnect', 'discoonect')
       }
    } catch (err) {
       console.error(err.message)

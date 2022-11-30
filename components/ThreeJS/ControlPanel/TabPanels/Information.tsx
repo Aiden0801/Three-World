@@ -62,6 +62,7 @@ export default function Information() {
          userBrowser[Index].url == 'No Session'
       )
          return
+      console.log('socket getparticipants calling')
       socket.emit('getParticipants', { sessionName: userBrowser[Index].name })
    }, [Index, userBrowser])
    useEffect(() => {
@@ -76,7 +77,7 @@ export default function Information() {
       socket.on('participantsAdded', (msg) => {
          console.log('par Added', msg)
          showNotification({
-            title: 'Member joining',
+            title: `${msg.sessionName}`,
             message: `${msg.email} is joining`,
             color: 'blue',
             autoClose: false,
@@ -89,7 +90,7 @@ export default function Information() {
       socket.on('participantsRemoved', (msg) => {
          console.log('par Removed', msg)
          showNotification({
-            title: 'Member leaving',
+            title: `${msg.sessionName}`,
             message: `${msg.email} left the session`,
             color: 'red',
             autoClose: false,

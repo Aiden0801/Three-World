@@ -19,13 +19,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       if (!currentSession) {
          res.status(200).send('No Session')
       } else {
-         await socket.emit('participantsAdded', {
+         socket.emit('participantsAdded', {
             email: email,
             sessionName: currentSession.name,
          })
          console.log('update success')
-         res.status(200).send('success')
          socket.emit('forceDisconnect', 'discoonect')
+         res.status(200).send('success')
       }
    } catch (err) {
       console.error(err.message)
