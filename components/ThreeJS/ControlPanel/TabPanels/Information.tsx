@@ -89,9 +89,10 @@ export default function Information() {
             color: 'blue',
             autoClose: false,
          })
-         socket.emit('getParticipants', {
-            sessionName: userBrowser[Index].name,
-         })
+         if (msg.sessionName == userBrowser[Index].name)
+            socket.emit('getParticipants', {
+               sessionName: userBrowser[Index].name,
+            })
          // mutate()
       })
       socket.on('participantsRemoved', (msg) => {
@@ -102,9 +103,10 @@ export default function Information() {
             color: 'red',
             autoClose: false,
          })
-         socket.emit('getParticipants', {
-            sessionName: userBrowser[Index].name,
-         })
+         if (msg.sessionName == userBrowser[Index].name)
+            socket.emit('getParticipants', {
+               sessionName: userBrowser[Index].name,
+            })
       })
       return () => {
          socket.off('getParticipants')
