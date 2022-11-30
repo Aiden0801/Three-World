@@ -4,6 +4,10 @@ const User = require('../../../api-lib/models/users')
 const Session = require('../../../api-lib/models/session')
 // ./api/session/getControlSession
 // Get Sessions created by me
+/**
+ * ! Changes DB
+ *
+ */
 import { serverURL } from '../../../config/urlcontrol'
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
