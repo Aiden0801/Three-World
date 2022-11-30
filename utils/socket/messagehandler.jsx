@@ -11,15 +11,15 @@ const MessageHandler = (io, socket) => {
       console.log('Message Received', msg)
       socket.broadcast.emit('newIncomingMessage', msg)
    }
-   const getParticipants = (msg) => {
+   const getParticipants = async (msg) => {
       console.log('getParticipants Recieved', msg)
-      const clientList = io.sockets.clients(msg.sessionName)
+      const clientList = await io.in(msg.sessionName).fetchSockets()
       const result = []
       console.log('list', clientList, allClients)
-      // clientList.forEach((client) => {
-      //    const item = allClients.find((obj) => obj.id == client.id)
-      //    result.push(item.email)
-      // })
+      clientList.forEach((client) => {
+         const item = allClients.find((obj) => obj.id == client.id)
+         result.push(item.email)
+      })
       console.log('getParticipants Recieved', msg)
       socket.emit('getParticipants', result)
       //msg.
