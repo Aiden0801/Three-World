@@ -15,7 +15,6 @@ const MessageHandler = (io, socket) => {
       console.log('getParticipants Received', msg)
       var clientList = await io.in(msg.sessionName).fetchSockets()
       var result = []
-      console.log(clientList)
       clientList.forEach((client) => {
          const item = allClients.find((obj) => obj.id == client.id)
          result.push(item.email)
@@ -67,6 +66,10 @@ const MessageHandler = (io, socket) => {
       console.log(allClients)
    }
    const forceDisconnect = (msg) => {
+      let item = allClients.find((obj) => obj.id == socket.id)
+      console.log('forceDisconnecting', socket.id)
+      allClients.splice(index, 1)
+
       socket.disconnect()
    }
    socket.on('getParticipants', getParticipants)
