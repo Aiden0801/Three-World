@@ -30,10 +30,9 @@ const MessageHandler = (io, socket) => {
       const socket_id = allClients.find((obj) => obj.email == msg.email).id
       io.sockets.sockets.get(socket_id).join(msg.sessionName)
 
-      io.sockets.sockets
-         .get(socket_id)
-         .to(msg.sessionName)
-         .emit('participantsAdded', msg)
+      // io.sockets.sockets
+      //    .get(socket_id)
+      io.to(msg.sessionName).emit('participantsAdded', msg)
    }
    const disconnecting = () => {
       let item = allClients.find((obj) => obj.id == socket.id)
@@ -52,10 +51,9 @@ const MessageHandler = (io, socket) => {
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
       const socket_id = allClients.find((obj) => obj.email == msg.email).id
-      io.sockets.sockets
-         .get(socket_id)
-         .to(msg.sessionName)
-         .emit('participantsRemoved', msg)
+      // io.sockets.sockets
+      //    .get(socket_id)
+      io.to(msg.sessionName).emit('participantsRemoved', msg)
       io.sockets.sockets.get(socket_id).leave(msg.sessionName)
    }
    const signIn = (msg) => {
