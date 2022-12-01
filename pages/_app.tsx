@@ -7,7 +7,7 @@ import { useState } from 'react'
 import { RecoilRoot } from 'recoil'
 import { wrapper } from '../store/store'
 import MySession from './_appp'
-
+import { SocketContext, socket } from '../utils/context/socket'
 const root =
    typeof window !== 'undefined' && window?.document?.querySelector('#__next')
 function MyApp({
@@ -20,10 +20,13 @@ function MyApp({
    const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
    const toggleColorScheme = (value?: ColorScheme) =>
       setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
+
    return (
       <SessionProvider session={pageProps.session}>
          <RecoilRoot>
-            <MySession Component={Component} pageProps={{ ...pageProps }} />
+            <SocketContext.Provider value={socket}>
+               <MySession Component={Component} pageProps={{ ...pageProps }} />
+            </SocketContext.Provider>
          </RecoilRoot>
       </SessionProvider>
    )

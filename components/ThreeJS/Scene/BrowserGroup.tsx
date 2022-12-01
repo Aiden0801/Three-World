@@ -17,7 +17,7 @@ function BrowserGroup() {
             rotation={new THREE.Euler(0, 0, 0)}
          />
          <Browser
-            bid={1}
+            bid={3}
             position={new THREE.Vector3(-5, 0, 0)}
             rotation={new THREE.Euler(0, Math.PI / 2, 0)}
          />
@@ -27,7 +27,7 @@ function BrowserGroup() {
             rotation={new THREE.Euler(0, Math.PI, 0)}
          />
          <Browser
-            bid={3}
+            bid={1}
             position={new THREE.Vector3(5, 0, 0)}
             rotation={new THREE.Euler(0, -Math.PI / 2, 0)}
          />

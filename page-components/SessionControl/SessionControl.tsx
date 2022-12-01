@@ -23,8 +23,9 @@ import {
    IconSearch,
 } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
-import { XOctagonFill } from 'react-bootstrap-icons'
+import { Router, XOctagonFill } from 'react-bootstrap-icons'
 import useSWR from 'swr'
 
 import { fetcher } from '../../lib/fetcher'
@@ -73,6 +74,7 @@ const useControlSession = (email: string) => {
 }
 
 const SessionControl = () => {
+   const router = useRouter()
    const { data: session, status } = useSession()
    const [opened, setOpened] = useState(false)
    const [isHandling, setIsHandling] = useState(false)
@@ -331,8 +333,12 @@ const SessionControl = () => {
                                        <Button
                                           color="indigo"
                                           component="a"
-                                          href={`./sessions/${session._id}`}
-                                          variant="subtle">
+                                          variant="subtle"
+                                          onClick={() => {
+                                             router.push(
+                                                `/sessions/${session._id}`
+                                             )
+                                          }}>
                                           <IconListDetails />
                                        </Button>
 

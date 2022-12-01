@@ -1,10 +1,4 @@
-import {
-   Box,
-   createStyles,
-   LoadingOverlay,
-   Tabs,
-   Transition,
-} from '@mantine/core'
+import { Box, createStyles, Tabs, Transition } from '@mantine/core'
 import {
    IconInfoCircle,
    IconMessageCircle,
@@ -13,20 +7,12 @@ import {
    IconSettings,
    IconShare,
 } from '@tabler/icons'
+import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import Control from './TabPanels/Control'
+import Information from './TabPanels/Information'
 import Utility from './TabPanels/Utility'
-import { useSession } from 'next-auth/react'
 const useStyles = createStyles((theme) => ({
-   card: {
-      height: 440,
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start',
-      backgroundSize: 'cover',
-      backgroundPosition: 'center',
-   },
    stack: {},
    tablist: {},
    tabs: {
@@ -34,23 +20,11 @@ const useStyles = createStyles((theme) => ({
       backgroundColor: theme.colors.gray[1],
       marginBottom: 30,
    },
-   title: {
-      fontFamily: `Greycliff CF, ${theme.fontFamily}`,
-      fontWeight: 900,
-      color: theme.white,
-      lineHeight: 1.2,
-      fontSize: 32,
-      marginTop: theme.spacing.xs,
-   },
-
-   category: {
-      color: theme.white,
-      opacity: 0.7,
-      fontWeight: 700,
-      textTransform: 'uppercase',
-   },
-   drawer: {
-      backgroundColor: 'grey',
+   panel: {
+      // backgroundColor: theme.colors.gray[1],
+      width: '200px',
+      opacity: 1,
+      transition: 'visible 0s, linear 0s,opacity 1000ms',
    },
 }))
 const scaleX = {
@@ -61,25 +35,23 @@ const scaleX = {
 }
 const ControlPanel = () => {
    const [opened, setOpened] = useState(false)
-   const [isHandling, setIsHandling] = useState(false)
    const { classes, cx } = useStyles()
    const [activeTab, setActiveTab] = useState<string | null>('Information')
    const { data: session, status } = useSession()
    const [hidden, setHidden] = useState(false)
+
    return (
       <Box
          sx={(theme) => ({
-            backgroundColor: 'rgba(255,0,0,0)',
             position: 'absolute',
             right: 20,
             top: 80,
             zIndex: 45,
          })}>
-         <LoadingOverlay visible={isHandling} overlayBlur={2} />
          <Tabs
             orientation="vertical"
             defaultValue="information"
-            placement="right"
+            placement="left"
             variant="pills"
             className={classes.tablist}
             onTabChange={setActiveTab}>
@@ -110,12 +82,29 @@ const ControlPanel = () => {
                   className={classes.tabs}
                   icon={<IconSettings size={24} />}></Tabs.Tab>
             </Tabs.List>
-
-            <Tabs.Panel value="gallery" pl="xs" hidden={true}>
+            <Tabs.Panel value="information" pr="xs" className={classes.panel}>
+               <Information />
+            </Tabs.Panel>
+            <Tabs.Panel value="gallery" pr="xs" hidden={true}>
                <Transition
                   mounted={activeTab == 'gallery' ? true : false}
-                  transition="fade"
-                  duration={4000}
+                  transition="scale-x"
+                  duration={4000}>
+                  {(styles) => (
+                     <Box
+                        style={{
+                           ...styles,
+                        }}>
+                        <Utility />
+                     </Box>
+                  )}
+               </Transition>
+            </Tabs.Panel>
+            <Tabs.Panel value="messages" pr="xs">
+               <Transition
+                  mounted={activeTab == 'messages' ? true : false}
+                  transition="scale-x"
+                  duration={1000}
                   timingFunction="ease">
                   {(styles) => (
                      <Box
@@ -127,10 +116,7 @@ const ControlPanel = () => {
                   )}
                </Transition>
             </Tabs.Panel>
-            <Tabs.Panel value="messages" pl="xs">
-               <Utility />
-            </Tabs.Panel>
-            <Tabs.Panel value="settings" pl="xs">
+            <Tabs.Panel value="settings" pr="xs">
                <Control />
             </Tabs.Panel>
          </Tabs>

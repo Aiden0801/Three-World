@@ -4,7 +4,11 @@ const User = require('../../../api-lib/models/users')
 const Session = require('../../../api-lib/models/session')
 // ./api/session/getControlSession
 // Get Sessions created by me
-
+/**
+ * ! Changes DB
+ *
+ */
+import { serverURL } from '../../../config/urlcontrol'
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
@@ -37,6 +41,13 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                profile: {
                   load: session.session_id,
                   save: true,
+               },
+               auth: {
+                  type: 'webhook',
+                  value: {
+                     url: `${serverURL}/api/hyperbeam/allow`,
+                     bearer: process.env.HYPERBEAM_KEY,
+                  },
                },
             }
             const resp = await axios.post(

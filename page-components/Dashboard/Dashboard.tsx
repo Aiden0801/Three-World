@@ -1,6 +1,6 @@
 import { Container, Text } from '@mantine/core'
 import { useSession } from 'next-auth/react'
-import React from 'react'
+import React, { useContext, useEffect } from 'react'
 import Link from 'next/link'
 const Dashboard: React.FC = () => {
    const { data: session, status } = useSession()

@@ -42,7 +42,7 @@ export default function SpaceScreen() {
       x: (toogle * Math.PI) / 2,
       y: (toogle * Math.PI) / 2,
       z: (toogle * Math.PI) / 2,
-      config: config.wobbly,
+      config: config.default,
    })
    useHotkeys([
       [
@@ -69,7 +69,7 @@ export default function SpaceScreen() {
                width: '100%',
             }}>
             <animated.perspectiveCamera rotation-y={rotation.y}>
-               <SkyComponent />
+               {/* <SkyComponent /> */}
                <group>
                   <BrowserGroup />
                </group>

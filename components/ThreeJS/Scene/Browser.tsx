@@ -13,6 +13,8 @@ import {
    currentBrowsers,
    currentUser,
 } from '../../../utils/recoil/browser'
+import { fetcher } from '../../../lib/fetcher'
+import { serverURL } from '../../../config/urlcontrol'
 // const TvComponent = lazy(() => import('./TVModel'))
 // import display from './assets/tv_screen.glb';
 let hb: HyperbeamEmbed | undefined
@@ -51,12 +53,14 @@ function Browser(props) {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
       console.log('render')
-
       loadBrowser()
       return () => {
-         if (hb) hb.destroy()
+         unloadBrowser()
       }
    }, [])
+   useEffect(() => {
+      loadBrowser()
+   }, [userBrowser])
    useEffect(() => {
       if (hb) {
          if (curIndex == props.bid) hb.videoPaused = false
@@ -88,11 +92,36 @@ function Browser(props) {
          event.preventDefault()
       }
    })
+   const unloadBrowser = useCallback(async () => {
+      console.log('lol')
+      console.log(userBrowser[props.bid].url)
+      if (
+         userBrowser[props.bid].url == 'none' ||
+         userBrowser[props.bid].url == 'No Session'
+      )
+         return
+      const response = await fetcher(
+         `${serverURL}/api/session/removeParticipant`,
+         {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               email: userEmail,
+               url: userBrowser[props.bid].url,
+            }),
+         }
+      )
+      if (hb === undefined) return
+
+      hb.destroy()
+      console.log('after ', hb)
+   }, [props.bid, userBrowser, userEmail])
    const loadBrowser = useCallback(async () => {
       let embedURL = userBrowser[props.bid].url
       console.log('userBrowser', userBrowser)
       // let embedURL
-      if (embedURL == null || embedURL == 'none') return
+      if (embedURL == null || embedURL == 'none' || embedURL == 'No Session')
+         return
       try {
          hb = await Hyperbeam(hbContainer, embedURL, {
             delegateKeyboard: false,
@@ -129,7 +158,6 @@ function Browser(props) {
 
    const handleMouseEvent = useCallback((e) => {
       let point = e.point
-      console.log(e.type)
       let eventtype
       switch (e.type) {
          case 'pointermove':

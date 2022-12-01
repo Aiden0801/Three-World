@@ -23,6 +23,7 @@ import {
    IconUserPlus,
 } from '@tabler/icons'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
    return {
@@ -131,7 +132,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
    const { colorScheme, toggleColorScheme } = useMantineColorScheme()
    const theme = useMantineTheme()
    const { classes, cx } = useStyles()
-
+   const router = useRouter()
    return (
       <Navbar p="md" className={classes.container} {...props}>
          <Group className={classes.header} position="apart">
@@ -171,11 +172,12 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                active={initialState == 'dashboard' ? true : false}
+               onClick={() => {
+                  router.push('/dashboard')
+               }}
                icon={
                   <IconDashboard size="20" color="royalblue"></IconDashboard>
-               }>
-               <Link href="/dashboard">Dashboard</Link>
-            </NavLink>
+               }></NavLink>
             <NavLink
                className={classes.link}
                label="Bot Settings"
@@ -186,11 +188,12 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                }
             />
             <NavLink
-               component="a"
                label="Session"
                className={classes.link}
                description="Additional information"
-               href="/sessions"
+               onClick={() => {
+                  router.push('/sessions')
+               }}
                active={initialState == 'sessions' ? true : false}
                icon={
                   <IconDatabaseImport
@@ -199,20 +202,22 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                }
             />
             <NavLink
-               component="a"
                label="Browser"
                className={classes.link}
                description="Additional information"
-               href="/browsers"
+               onClick={() => {
+                  router.push('/browsers')
+               }}
                active={initialState == 'browsers' ? true : false}
                icon={<IconScreenShare size="20" color="red"></IconScreenShare>}
             />
             <NavLink
-               component="a"
                label="Launch"
                className={classes.link}
                description="Additional information"
-               href="/share"
+               onClick={() => {
+                  router.push('/share')
+               }}
                active={initialState == 'share' ? true : false}
                icon={<IconShare size="20" color="red"></IconShare>}
             />
