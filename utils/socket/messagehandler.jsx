@@ -7,10 +7,6 @@ const MessageHandler = (io, socket) => {
       email: '',
    })
    console.log('connected', allClients)
-   const createdMessage = (msg) => {
-      console.log('Message Received', msg)
-      socket.broadcast.emit('newIncomingMessage', msg)
-   }
    const getParticipants = async (msg) => {
       console.log('getParticipants Recieved', msg)
       const clientList = await io.in(msg.sessionName).fetchSockets()
@@ -74,7 +70,6 @@ const MessageHandler = (io, socket) => {
    socket.on('signIn', signIn)
    socket.on('participantsAdded', participantsAdded)
    socket.on('participantsRemoved', participantsRemoved)
-   socket.on('createdMessage', createdMessage)
    socket.on('disconnecting', disconnecting)
 }
 export default MessageHandler

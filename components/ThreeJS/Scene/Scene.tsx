@@ -35,8 +35,11 @@ export default function SpaceScreen() {
    const [toogle, setToogle] = useState(0)
    useEffect(() => {
       console.log(previousValue, curIndex)
-      if (toogle != curIndex)
-         setToogle((toogle) => toogle + (curIndex - previousValue))
+      let move = 0
+      if (curIndex - previousValue == -3) move = 1
+      if (curIndex - previousValue == 3) move = -1
+      else move = curIndex - previousValue
+      setToogle((toogle) => toogle + move)
    }, [curIndex])
    const rotation = useSpring({
       x: (toogle * Math.PI) / 2,
