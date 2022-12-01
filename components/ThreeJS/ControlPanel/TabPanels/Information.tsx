@@ -32,7 +32,7 @@ export default function Information() {
    const Index = useRecoilValue(currentBrowserIndex)
    const userEmail = useRecoilValue(currentUser)
    const socket = useContext(SocketContext)
-   const [data, setData] = useState()
+   const [data, setData] = useState([])
    useEffect(() => {
       console.log(Index, userBrowser[Index].url)
       console.log('socket getparticipants calling')
