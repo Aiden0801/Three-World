@@ -15,6 +15,7 @@ import {
 } from '../../../utils/recoil/browser'
 import { fetcher } from '../../../lib/fetcher'
 import { serverURL } from '../../../config/urlcontrol'
+import { showNotification } from '@mantine/notifications'
 // const TvComponent = lazy(() => import('./TVModel'))
 // import display from './assets/tv_screen.glb';
 let hb: HyperbeamEmbed | undefined
@@ -151,11 +152,34 @@ function Browser(props) {
          })
 
          console.log('hyperbeam')
-      } catch (err) {
-         console.log(err.message)
+      } catch (e) {
+         switch (e.name) {
+            case 'TimedOutError':
+               console.log('Request to load the embed URL timed out', e.message)
+               break
+            case 'TypeError':
+               console.log(
+                  'Invalid options passed into the Hyperbeam constructor',
+                  e.message
+               )
+               break
+            case 'SessionTerminatedError':
+               handleOnSessionTerminated()
+               console.log('Session has already been terminated', e.message)
+               break
+         }
       }
    }, [gl, hbContainer, props.bid, texture, userBrowser])
-
+   const handleOnSessionTerminated = useCallback(() => {
+      showNotification({
+         title: `Session Ended`,
+         message: `${
+            userBrowser[props.bid].name
+         } is Terminated! Contact the creator to activate it`,
+         color: 'yellow',
+         autoClose: false,
+      })
+   }, [])
    const handleMouseEvent = useCallback((e) => {
       let point = e.point
       let eventtype
