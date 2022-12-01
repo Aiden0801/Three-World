@@ -11,7 +11,6 @@ const MessageHandler = (io, socket) => {
       console.log('getParticipants Recieved', msg)
       const clientList = await io.in(msg.sessionName).fetchSockets()
       const result = []
-      console.log('list', clientList, allClients)
       clientList.forEach((client) => {
          const item = allClients.find((obj) => obj.id == client.id)
          result.push(item.email)

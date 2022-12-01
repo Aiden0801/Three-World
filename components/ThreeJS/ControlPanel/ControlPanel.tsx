@@ -1,4 +1,16 @@
-import { Box, createStyles, Tabs, Transition } from '@mantine/core'
+import {
+   Box,
+   createStyles,
+   Tabs,
+   Transition,
+   Button,
+   UnstyledButton,
+} from '@mantine/core'
+
+import { ThemeIcon } from '@mantine/core'
+import { useViewportSize } from '@mantine/hooks'
+import { IconKeyboardHide } from '@tabler/icons'
+import { HeaderHeight, FooterHeight } from '../../../config/themeConfig'
 import {
    IconInfoCircle,
    IconMessageCircle,
@@ -14,18 +26,28 @@ import Information from './TabPanels/Information'
 import Utility from './TabPanels/Utility'
 const useStyles = createStyles((theme) => ({
    stack: {},
-   tablist: {},
+   tabctrl: { paddingLeft: theme.spacing.sm },
+   tablist: {
+      marginTop: '80px',
+   },
    tabs: {
       color: 'black',
+      marginLeft: theme.spacing.sm,
       backgroundColor: theme.colors.gray[1],
       marginBottom: 30,
    },
    panel: {
       // backgroundColor: theme.colors.gray[1],
+      paddingTop: HeaderHeight,
+      paddingLeft: theme.spacing.xs,
       width: '200px',
+      height: '100vh',
+      bottom: 0,
+      backgroundColor: theme.colors.gray[8],
       opacity: 1,
       transition: 'visible 0s, linear 0s,opacity 1000ms',
    },
+   hoverButton: { position: 'absolute', top: '50%', left: '-5px' },
 }))
 const scaleX = {
    in: { opacity: 1, transform: 'translateX(0)' },
@@ -34,6 +56,7 @@ const scaleX = {
    transitionProperty: 'transform, opacity',
 }
 const ControlPanel = () => {
+   const { height, width } = useViewportSize()
    const [opened, setOpened] = useState(false)
    const { classes, cx } = useStyles()
    const [activeTab, setActiveTab] = useState<string | null>('Information')
@@ -44,18 +67,19 @@ const ControlPanel = () => {
       <Box
          sx={(theme) => ({
             position: 'absolute',
-            right: 20,
-            top: 80,
+            right: theme.spacing.md,
+            top: 0,
+            bottom: 0,
             zIndex: 45,
          })}>
          <Tabs
             orientation="vertical"
             defaultValue="information"
-            placement="left"
+            placement="right"
             variant="pills"
-            className={classes.tablist}
-            onTabChange={setActiveTab}>
-            <Tabs.List>
+            onTabChange={setActiveTab}
+            className={classes.tabctrl}>
+            <Tabs.List className={classes.tablist}>
                {/* <Burger opened={opened} title={title} /> */}
                <Tabs.Tab
                   value="information"
@@ -81,12 +105,20 @@ const ControlPanel = () => {
                   value="settings"
                   className={classes.tabs}
                   icon={<IconSettings size={24} />}></Tabs.Tab>
+               <UnstyledButton className={classes.hoverButton}>
+                  <ThemeIcon
+                     size="lg"
+                     variant="gradient"
+                     gradient={{ from: 'indigo', to: 'cyan' }}>
+                     <IconKeyboardHide />
+                  </ThemeIcon>
+               </UnstyledButton>
             </Tabs.List>
             <Tabs.Panel value="information" pr="xs" className={classes.panel}>
                <Information />
             </Tabs.Panel>
-            <Tabs.Panel value="gallery" pr="xs" hidden={true}>
-               <Transition
+            <Tabs.Panel value="gallery" pr="xs" className={classes.panel}>
+               {/* <Transition
                   mounted={activeTab == 'gallery' ? true : false}
                   transition="scale-x"
                   duration={4000}>
@@ -94,29 +126,16 @@ const ControlPanel = () => {
                      <Box
                         style={{
                            ...styles,
-                        }}>
-                        <Utility />
-                     </Box>
-                  )}
-               </Transition>
+                        }}> */}
+               <Utility />
+               {/* </Box>
+                  )} */}
+               {/* </Transition> */}
             </Tabs.Panel>
-            <Tabs.Panel value="messages" pr="xs">
-               <Transition
-                  mounted={activeTab == 'messages' ? true : false}
-                  transition="scale-x"
-                  duration={1000}
-                  timingFunction="ease">
-                  {(styles) => (
-                     <Box
-                        style={{
-                           ...styles,
-                        }}>
-                        <Utility />
-                     </Box>
-                  )}
-               </Transition>
+            <Tabs.Panel value="messages" pr="xs" className={classes.panel}>
+               Chatting
             </Tabs.Panel>
-            <Tabs.Panel value="settings" pr="xs">
+            <Tabs.Panel value="settings" pr="xs" className={classes.panel}>
                <Control />
             </Tabs.Panel>
          </Tabs>
