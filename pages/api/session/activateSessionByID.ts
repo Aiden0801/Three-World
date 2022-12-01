@@ -10,7 +10,10 @@ const Session = require('../../../api-lib/models/session')
  */
 import { serverURL } from '../../../config/urlcontrol'
 import type { NextApiRequest, NextApiResponse } from 'next'
-async function handler(req: NextApiRequest, res: NextApiResponse) {
+async function handler(
+   req: NextApiRequest,
+   res: NextApiResponse
+): Promise<void> {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
    let { creator, _id } = req.body
