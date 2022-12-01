@@ -32,7 +32,7 @@ export default function Information() {
    const Index = useRecoilValue(currentBrowserIndex)
    const userEmail = useRecoilValue(currentUser)
    const socket = useContext(SocketContext)
-   const [data, setData] = useState(['asf@gmail.com', 'google@gmail.com'])
+   const [data, setData] = useState()
    useEffect(() => {
       console.log(Index, userBrowser[Index].url)
       console.log('socket getparticipants calling')
@@ -46,11 +46,11 @@ export default function Information() {
    }, [Index, userBrowser])
    useEffect(() => {
       socket.on('getParticipants', (sessionName: string, lists) => {
-         // try {
-         //    if (sessionName == userBrowser[Index].name) setData(lists)
-         // } catch (err) {
-         //    console.log(err)
-         // }
+         try {
+            if (sessionName == userBrowser[Index].name) setData(lists)
+         } catch (err) {
+            console.log(err)
+         }
          console.log(
             'getParticipants',
             sessionName,

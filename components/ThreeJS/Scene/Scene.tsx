@@ -77,12 +77,12 @@ export default function SpaceScreen() {
             </animated.perspectiveCamera>
 
             <ambientLight color={0xff4040} />
-            {/* <pointLight
+            <pointLight
                distance={10}
                intensity={10}
                color="white"
                position={[0, 0, 0]}
-            /> */}
+            />
          </Canvas>
       </div>
    )
