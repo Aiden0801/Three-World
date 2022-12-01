@@ -11,7 +11,7 @@ export default function ShareScreen() {
          <Suspense fallback={<LoadingOverlay visible={true} overlayBlur={2} />}>
             {/* <Space /> */}
             <ControlPanel />
-            {/* <Scene /> */}
+            <Scene />
          </Suspense>
       </>
    )
