@@ -143,7 +143,11 @@ export default function HeaderMenu() {
 
                <>
                   <Group className={classes.hiddenMobile}>
-                     <Button className={classes.button}>Log in</Button>
+                     <Button
+                        className={classes.button}
+                        onClick={() => router.push('/login')}>
+                        Log in
+                     </Button>
                   </Group>
                </>
 
@@ -174,8 +178,6 @@ export default function HeaderMenu() {
                            </a>
 
                            <Button
-                              component="a"
-                              href="/login"
                               variant="default"
                               className={classes.button}
                               onClick={() => {

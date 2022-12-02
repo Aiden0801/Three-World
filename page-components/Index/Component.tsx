@@ -30,8 +30,12 @@ const Index: React.FC = () => {
          <LandingCard />
          <FeaturesCards />
          <FaqWithBg />
-         <ContactUs />
+         {/* <ContactUs /> */}
       </div>
    )
 }
+/**
+ *
+ * TODO Contact Us part removed
+ */
 export default Index
