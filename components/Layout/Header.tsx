@@ -11,7 +11,7 @@ import {
 } from '@mantine/core'
 import { useDisclosure } from '@mantine/hooks'
 import Image from 'next/image'
-
+import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
 const useStyles = createStyles((theme) => ({
    link: {
@@ -103,6 +103,7 @@ export default function HeaderMenu() {
    const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false)
    const { classes, theme } = useStyles()
    const { data: session, status } = useSession()
+   const router = useRouter()
    return (
       <Box
          pb={20}
@@ -142,13 +143,7 @@ export default function HeaderMenu() {
 
                <>
                   <Group className={classes.hiddenMobile}>
-                     {/* <Button component="a" href="/auth/login" variant="default" className={classes.button}>Log in</Button> */}
-                     <Button
-                        component="a"
-                        href="/login"
-                        className={classes.button}>
-                        Log in
-                     </Button>
+                     <Button className={classes.button}>Log in</Button>
                   </Group>
                </>
 
@@ -182,7 +177,10 @@ export default function HeaderMenu() {
                               component="a"
                               href="/login"
                               variant="default"
-                              className={classes.button}>
+                              className={classes.button}
+                              onClick={() => {
+                                 router.push('/login')
+                              }}>
                               Log in
                            </Button>
                         </Stack>

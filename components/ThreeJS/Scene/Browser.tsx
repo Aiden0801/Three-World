@@ -6,7 +6,11 @@ import { useWindowEvent } from '@mantine/hooks'
 import { useTexture } from '@react-three/drei'
 import { useThree } from '@react-three/fiber'
 import React, { lazy, useCallback, useEffect, useRef, useState } from 'react'
-import { useRecoilValue, useRecoilState } from 'recoil'
+import {
+   useRecoilValue,
+   useRecoilState,
+   useRecoilRefresher_UNSTABLE,
+} from 'recoil'
 import { Object3D } from 'three'
 import {
    currentBrowserIndex,
@@ -49,12 +53,13 @@ function Browser(props) {
 
    const userBrowser = useRecoilValue(currentBrowsers)
    const userEmail = useRecoilValue(currentUser)
+   const refreshRecoilState = useRecoilRefresher_UNSTABLE(currentBrowsers)
    const [curIndex, setCurIndex] = useRecoilState(currentBrowserIndex)
    useEffect(() => {
       material.side = THREE.DoubleSide
       defMaterial.side = THREE.DoubleSide
       console.log('render')
-      loadBrowser()
+      refreshRecoilState()
       return () => {
          unloadBrowser()
       }
@@ -115,7 +120,6 @@ function Browser(props) {
       if (hb === undefined) return
 
       hb.destroy()
-      console.log('after ', hb)
    }, [props.bid, userBrowser, userEmail])
    const loadBrowser = useCallback(async () => {
       let embedURL = userBrowser[props.bid].url

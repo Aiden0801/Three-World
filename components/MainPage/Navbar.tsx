@@ -223,10 +223,8 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
             />
             <NavLink
                className={classes.link}
-               component="a"
                label="UserManagement"
                description="Additional information"
-               href="/user"
                active={initialState == 'user' ? true : false}
                icon={<IconUserPlus size="20" color="blue"></IconUserPlus>}
             />

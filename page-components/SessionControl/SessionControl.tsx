@@ -337,7 +337,6 @@ const SessionControl = () => {
                                        </Button>
                                        <Button
                                           color="indigo"
-                                          component="a"
                                           variant="subtle"
                                           onClick={() => {
                                              router.push(
