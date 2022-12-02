@@ -8,8 +8,15 @@ interface IButtonProps extends ButtonProps {
 
 const useStyles = createStyles((theme) => ({
    button: {
-      width: '400px',
+      width: '350px',
       height: '50px',
+
+      [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+         maxWidth: '80%',
+         maxHeight: '60%',
+         fontSize: '15px',
+         size: 'md',
+      },
    },
 }))
 export function GoogleButton(props: IButtonProps) {
