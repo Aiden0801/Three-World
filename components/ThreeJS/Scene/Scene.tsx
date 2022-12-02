@@ -7,7 +7,10 @@ import { currentBrowserIndex } from '../../../utils/recoil/browser'
 import BrowserGroup from './BrowserGroup'
 const SkyComponent = lazy(() => import('./Sky'))
 
+import { useViewportSize } from '@mantine/hooks'
+import { HeaderHeight, FooterHeight } from '../../../config/themeConfig'
 export default function SpaceScreen() {
+   const { height, width } = useViewportSize()
    const curIndex = useRecoilValue(currentBrowserIndex)
    const previousValue = usePrevious(curIndex)
    const [toogle, setToogle] = useState(0)
@@ -37,15 +40,18 @@ export default function SpaceScreen() {
       <div
          style={{
             position: 'relative',
-            width: '100%',
             height: '100%',
+            width: '100%',
          }}>
          <Canvas
             camera={{
-               fov: 40,
+               fov: 45,
             }}
             style={{
                width: '100%',
+               height: height - HeaderHeight - FooterHeight,
+               paddingTop: '50px',
+               bottom: 0,
             }}>
             <animated.perspectiveCamera rotation-y={rotation.y}>
                {/* <SkyComponent /> */}
