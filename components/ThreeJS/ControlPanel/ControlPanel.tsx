@@ -47,22 +47,23 @@ const useStyles = createStyles(
       },
       panel: {
          // backgroundColor: theme.colors.gray[1],
-         //         display: toogle ? 'none' : 'block',
+         display: toogle ? 'none' : 'block',
+
          paddingTop: HeaderHeight,
          paddingLeft: theme.spacing.xs,
-         display: toogle ? 'none' : 'block',
          width: '200px',
-         bottom: 0,
          backgroundColor: theme.colors.gray[8],
          opacity: 1,
          transition: 'visible 0s, linear 0s,opacity 1000ms',
       },
       toogleButton: {
-         position: 'absolute',
+         // position: 'static',
          left: width,
          top: '50%',
       },
       toogleIcon: {
+         marginLeft: '5px',
+         bottom: '50px',
          '&:hover': {
             backgroundColor: theme.colors.gray[9],
          },
@@ -105,6 +106,7 @@ const ControlPanel = () => {
             className={classes.tabctrl}>
             <Tabs.List className={classes.tablist}>
                {/* <Burger opened={opened} title={title} /> */}
+
                <Tabs.Tab
                   value="information"
                   className={classes.tabs}
@@ -129,16 +131,21 @@ const ControlPanel = () => {
                   value="settings"
                   className={classes.tabs}
                   icon={<IconSettings size={24} />}></Tabs.Tab>
+
                <UnstyledButton
                   className={classes.toogleButton}
                   onClick={() => {
                      setToogle((o) => !o)
                   }}>
-                  <ThemeIcon size="md" className={classes.toogleIcon}>
+                  <ThemeIcon
+                     variant="light"
+                     size="xl"
+                     color="green"
+                     className={classes.toogleIcon}>
                      {toogle ? (
-                        <ChevronRight size={30} />
+                        <ChevronRight size={50} />
                      ) : (
-                        <ChevronLeft size={30} />
+                        <ChevronLeft size={50} />
                      )}
                   </ThemeIcon>
                </UnstyledButton>
