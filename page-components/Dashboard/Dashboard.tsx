@@ -5,9 +5,12 @@ import {
    Checkbox,
    NumberInput,
    NativeSelect,
+   Button,
+   Code,
+   Select,
 } from '@mantine/core'
 import { useSession } from 'next-auth/react'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import {
@@ -16,7 +19,9 @@ import {
    Draft07,
    Draft,
    JSONError,
+   JSONSchema as jsSchema,
 } from 'json-schema-library'
+import { useForm } from '@mantine/form'
 const mySchema: JSONSchema = {
    $schema: 'http://json-schema.org/draft-07/schema#',
    defaultProperties: [],
@@ -170,93 +175,178 @@ const mySchema: JSONSchema = {
          title: 'trigger',
          type: 'string',
       },
+      TSlideDirection: {
+         enum: ['center', 'down', 'left', 'right', 'up'],
+         title: 'TSlideDirection',
+         type: 'string',
+      },
    },
    required: ['slides'],
    type: 'object',
 }
 
+const CreateForm = ({ schema }) => {
+   const jsonSchema = useMemo(() => new Draft07(schema), [schema])
+   const myData = useMemo(() => jsonSchema.getTemplate(), [jsonSchema])
+   const form = useForm({
+      initialValues: myData,
+   })
+   const [submittedValues, setSubmittedValues] = useState('')
+   return (
+      <>
+         <form
+            onSubmit={form.onSubmit((values) =>
+               setSubmittedValues(JSON.stringify(values, null, 2))
+            )}>
+            {Parse(schema, schema, form, '')}
+            <Button type="submit" mt="md">
+               Submit
+            </Button>
+         </form>
+         {submittedValues && <Code block>{submittedValues}</Code>}
+      </>
+   )
+}
+const Parse = (schema, currentSchema, form, dataposition?: string) => {
+   const switching = () => {
+      console.log(currentSchema)
+      // if (currentSchema['$ref']) {
+      //    return parse(schema, refs.get(currentSchema['$ref']), form)
+      // }
+      if (currentSchema.hasOwnProperty('enum')) {
+         return (
+            <NativeSelect
+               data={currentSchema.enum}
+               label={currentSchema.title}
+               description={dataposition}
+               {...form.getInputProps(currentSchema.title)}
+               onChange={(event) =>
+                  form.setFieldValue(dataposition, event.currentTarget.value)
+               }
+            />
+         )
+      }
+      switch (currentSchema.type) {
+         case 'string':
+            return (
+               <TextInput
+                  label={dataposition}
+                  description={undefined}
+                  placeholder={currentSchema.title}
+                  {...form.getInputProps(dataposition)}
+               />
+            )
+         case 'number':
+            return (
+               <NumberInput
+                  label={dataposition}
+                  placeholder={dataposition}
+                  withAsterisk
+                  {...form.getInputProps(dataposition)}
+               />
+            )
+         case 'boolean':
+            return (
+               <Checkbox
+                  label={currentSchema.title}
+                  {...form.getInputProps(currentSchema.title)}
+               />
+            )
+
+         case 'array':
+            const Handle = () => {
+               return (
+                  <>
+                     <Button
+                        onClick={() => {
+                           const jsonSchema = new Draft07(currentSchema.items)
+                           const myData = jsonSchema.getTemplate()
+                           console.log(dataposition + 'A', myData)
+                           form.insertListItem(dataposition, myData)
+                        }}>
+                        Add
+                        {dataposition}
+                     </Button>
+                     {form.values[`${dataposition}`] &&
+                        form.values[`${dataposition}`].map((value, index) => {
+                           return Parse(
+                              schema,
+                              currentSchema.items,
+                              form,
+                              dataposition + `.${index}`
+                           )
+                        })}
+                  </>
+               )
+            }
+            if (
+               currentSchema.minItems &&
+               currentSchema.minItems == currentSchema.maxItems
+            )
+               return currentSchema.items.map((value, index) => {
+                  return Parse(
+                     schema,
+                     currentSchema.items[`${index}`],
+                     form,
+                     dataposition + `.${index}`
+                  )
+               })
+            return (
+               <>
+                  <Handle />
+               </>
+            )
+         case 'object':
+            return (
+               <>
+                  {currentSchema.description ? (
+                     <Text>{currentSchema.description}</Text>
+                  ) : (
+                     <></>
+                  )}
+                  {Object.keys(currentSchema.properties).map((value, index) => {
+                     ;<Text key={index}></Text>
+                     return Parse(
+                        schema,
+                        currentSchema.properties[`${value}`],
+                        form,
+                        schema == currentSchema
+                           ? dataposition + `${value}`
+                           : dataposition + `.${value}`
+                     )
+                  })}
+               </>
+            )
+         default:
+            return <Text>Unknow Types Comming Soon</Text>
+      }
+   }
+   return (
+      <>
+         {/* <Text>{currentSchema.title}</Text> */}
+         {switching()}
+      </>
+   )
+}
 const Dashboard: React.FC = () => {
    const { data: session, status } = useSession()
    const [refs, setRefs] = useState<$RefParser.$Refs>(null)
+
+   const [schema, setSchema] = useState<JSONSchema>()
+   const [loaded, setLoaded] = useState(false)
    useEffect(() => {
       console.log(mySchema)
       test()
    }, [])
    const test = async () => {
-      let $refs = await $RefParser.resolve(mySchema)
+      let test = await $RefParser.dereference(mySchema)
+      let $refs = await $RefParser.resolve(test)
       setRefs($refs)
-      let name = $refs.get('#/definitions/TSlideDirection')
-      console.log('helo', name, $refs)
-      const jsonSchema = new Draft07(mySchema)
-
-      const myData = jsonSchema.getTemplate()
-      console.log(myData)
+      setSchema(test)
+      console.log(test)
+      setLoaded((o) => true)
    }
-   const parse = useCallback((schema, currentSchema, currentKey?: String) => {
-      const switching = () => {
-         if (currentSchema['$ref']) {
-            return parse(schema, refs.get(currentSchema['$ref']))
-         }
-         if (currentSchema.enum) {
-            return (
-               <NativeSelect
-                  data={currentSchema.enum}
-                  label="Select your favorite framework/library"
-                  description="This is anonymous"
-                  withAsterisk
-               />
-            )
-         }
-         switch (currentSchema.type) {
-            case 'string':
-               return <TextInput description={undefined} />
-            case 'number':
-               return <NumberInput placeholder="Input number" withAsterisk />
-            case 'array':
-               if (currentSchema.items.$ref) {
-                  return parse(schema, refs.get(currentSchema.items['$ref']))
-               }
-               return (
-                  <>
-                     {currentSchema.items.map((item, index) => {
-                        // console.log(item)
-                        return parse(schema, item)
-                     })}
-                  </>
-               )
-            case 'boolean':
-               return <Checkbox label="I agree to sell my privacy" />
-            case 'object':
-               return (
-                  <>
-                     {currentSchema.description ? (
-                        <Text>{currentSchema.description}</Text>
-                     ) : (
-                        <></>
-                     )}
-                     {Object.keys(currentSchema.properties).map(
-                        (value, index) => {
-                           ;<Text key={index}></Text>
-                           return parse(
-                              schema,
-                              currentSchema.properties[`${value}`]
-                           )
-                        }
-                     )}
-                  </>
-               )
-            default:
-               return <Text>Unknow Types Comming Soon</Text>
-         }
-      }
-      return (
-         <>
-            <Text>{currentSchema.title}</Text>
 
-            {switching()}
-         </>
-      )
-   }, [])
    return (
       // <Suspense fallback={<div>Loading</div>}>
       <Container
@@ -275,7 +365,7 @@ const Dashboard: React.FC = () => {
             inherit>
             Coming Soon
          </Text>
-         {refs && parse(mySchema, mySchema)}
+         {loaded && <CreateForm schema={schema} />}
       </Container>
       // </Suspense>
    )
