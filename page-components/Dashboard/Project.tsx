@@ -1,9 +1,9 @@
-import { Box, Button, Container, Text } from '@mantine/core'
+import { Box, Button, Container, Skeleton, Text } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconArrowBack, IconCheck } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import CreateForm from '../../components/Form/CreateForm'
 import { LandingPageSchema } from '../../config/2DLangingPageSchema'
@@ -80,6 +80,7 @@ const ProjectCofig = ({ projectName }) => {
    }
    return (
       // <Suspense fallback={<div>Loading</div>}>
+
       <Container
          style={{
             display: 'flex',
@@ -117,12 +118,15 @@ const ProjectCofig = ({ projectName }) => {
                Back
             </Button>
          </Box>
-         {loaded && !isLoading && (
+         {projectData && (
             <CreateForm
                schema={LandingPageSchema}
                initialData={projectData}
                handleOnSubmit={handleOnSubmit}
             />
+         )}
+         {projectData == undefined && (
+            <Skeleton visible={true} height={500}></Skeleton>
          )}
       </Container>
       // </Suspense>

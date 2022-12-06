@@ -28,6 +28,7 @@ import { LandingPageSchema } from '../../config/2DLangingPageSchema'
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import CreateForm from '../../components/Form/CreateForm'
+import FadeIn from '../../utils/spring/FadeIn'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
@@ -143,26 +144,31 @@ const Dashboard: React.FC = () => {
                <IconPlus size={20} stroke={1.5} />
             </Button>
          </Box>
-         <Skeleton height={500} visible={isLoading}>
+
+         <Skeleton
+            height={500}
+            visible={projectData == undefined ? true : false}>
             {projectData &&
                projectData.map((item, index) => (
-                  <Card withBorder shadow="sm" key={index} mt="sm">
-                     <Badge>Name</Badge>
-                     <Flex justify="space-between" align="center">
-                        <Text>{item.name}</Text>
-                        <Button
-                           variant="light"
-                           color="blue"
-                           mt="md"
-                           size="xs"
-                           radius="md"
-                           onClick={() => {
-                              router.push(`/dashboard/${item.name}`)
-                           }}>
-                           Edit now
-                        </Button>
-                     </Flex>
-                  </Card>
+                  <FadeIn key={index} delayTime={index * 300} from="right">
+                     <Card withBorder shadow="sm" key={index} mt="sm">
+                        <Badge>Name</Badge>
+                        <Flex justify="space-between" align="center">
+                           <Text>{item.name}</Text>
+                           <Button
+                              variant="light"
+                              color="blue"
+                              mt="md"
+                              size="xs"
+                              radius="md"
+                              onClick={() => {
+                                 router.push(`/dashboard/${item.name}`)
+                              }}>
+                              Edit now
+                           </Button>
+                        </Flex>
+                     </Card>
+                  </FadeIn>
                ))}
          </Skeleton>
       </Container>
