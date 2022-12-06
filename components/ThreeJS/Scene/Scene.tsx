@@ -1,47 +1,29 @@
-import React from 'react'
+import { useHotkeys, usePrevious } from '@mantine/hooks'
+import { animated, config, useSpring } from '@react-spring/three'
 import { Canvas } from '@react-three/fiber'
-import { lazy, Suspense } from 'react'
+import { lazy, useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { currentBrowserIndex } from '../../../utils/recoil/browser'
 import BrowserGroup from './BrowserGroup'
-import { useState, useEffect } from 'react'
-import { useSpring, animated, config } from '@react-spring/three'
-import { useSession } from 'next-auth/react'
-import { useHotkeys } from '@mantine/hooks'
 const SkyComponent = lazy(() => import('./Sky'))
-import * as THREE from 'three'
-import { AmbientLight, AnimationLoader, PointLight } from 'three'
-import { useRecoilState, useRecoilValue } from 'recoil'
-import { currentBrowserIndex, currentUser } from '../../../utils/recoil/browser'
-import { usePrevious } from '@mantine/hooks'
-const from = new THREE.Euler(0, 0, 0)
-const to = new THREE.Euler(-Math.PI, 0, 0)
 
+import { useViewportSize } from '@mantine/hooks'
+import { HeaderHeight, FooterHeight } from '../../../config/themeConfig'
 export default function SpaceScreen() {
-   const [isBrowser, setIsBrowser] = useState(true)
-
-   const { data: session, status } = useSession()
-   const [useEmail, setUserEmail] = useRecoilState(currentUser)
-
-   useEffect(() => {
-      if (typeof window !== 'undefined') {
-         {
-            setIsBrowser(true)
-         }
-      }
-      setUserEmail(session.user.email)
-   }, [])
-
+   const { height, width } = useViewportSize()
    const curIndex = useRecoilValue(currentBrowserIndex)
    const previousValue = usePrevious(curIndex)
    const [toogle, setToogle] = useState(0)
    useEffect(() => {
       console.log(previousValue, curIndex)
-      if (toogle != curIndex)
-         setToogle((toogle) => toogle + (curIndex - previousValue))
+      var move = 0
+      if (curIndex - previousValue == 3) move = -1
+      else if (curIndex - previousValue == -3) move = 1
+      else move = curIndex - previousValue
+      if (toogle != curIndex) setToogle((toogle) => toogle + move)
    }, [curIndex])
    const rotation = useSpring({
-      x: (toogle * Math.PI) / 2,
       y: (toogle * Math.PI) / 2,
-      z: (toogle * Math.PI) / 2,
       config: config.default,
    })
    useHotkeys([
@@ -58,15 +40,18 @@ export default function SpaceScreen() {
       <div
          style={{
             position: 'relative',
-            width: '100%',
             height: '100%',
+            width: '100%',
          }}>
          <Canvas
             camera={{
-               fov: 40,
+               fov: 45,
             }}
             style={{
                width: '100%',
+               height: height - HeaderHeight - FooterHeight,
+               paddingTop: '50px',
+               bottom: 0,
             }}>
             <animated.perspectiveCamera rotation-y={rotation.y}>
                {/* <SkyComponent /> */}

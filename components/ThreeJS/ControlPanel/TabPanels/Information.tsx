@@ -1,56 +1,33 @@
-import React, { useContext, useEffect, useState } from 'react'
-import { fetcher } from '../../../../lib/fetcher'
-import useSWR from 'swr'
-import { serverURL } from '../../../../config/urlcontrol'
 import {
+   createStyles,
+   Box,
+   Container,
+   Divider,
+   Text,
+   Group,
+   Avatar,
+} from '@mantine/core'
+import { showNotification } from '@mantine/notifications'
+import { useContext, useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { SocketContext } from '../../../../utils/context/socket'
+import {
+   currentBrowserIndex,
    currentBrowsers,
    currentUser,
-   currentBrowserIndex,
 } from '../../../../utils/recoil/browser'
-import { Text, Container } from '@mantine/core'
-import { showNotification } from '@mantine/notifications'
-import { SocketContext } from '../../../../utils/context/socket'
-import { useRecoilValue, waitForAll } from 'recoil'
-const fetchParticipantsData = async (url: string, embed_url: string) => {
-   console.log('url', embed_url)
-   const participantData = await fetcher(
-      `${serverURL}/api/session/getParticipantsByEmbedURL`,
-      {
-         method: 'POST',
-         headers: { 'Content-Type': 'application/json' },
-         body: JSON.stringify({
-            embed_url: embed_url,
-         }),
-      }
-   )
-   console.log(participantData)
-   return participantData ? participantData.participants : []
-}
-const useParticipants = (url: string) => {
-   const { data, mutate, error, isValidating } = useSWR(
-      ['browser', url],
-      fetchParticipantsData,
-      { revalidateOnFocus: false }
-   )
-   return {
-      data: data,
-      isLoading: (!error && !data) || isValidating,
-      isError: error,
-      mutate: mutate,
-   }
-}
+
+const useStyles = createStyles((theme) => ({
+   users: {
+      marginBottom: theme.spacing.sm,
+   },
+}))
 const format = (str: string) => {
-   if (str.length < 15) return str
-   return str.substring(0, 5) + '...'
+   if (str.length < 13) return str
+   return str.substring(0, 5) + '...' + str.slice(-5)
 }
 export default function Information() {
-   // const [index, browsers] = useRecoilValue(
-   //    waitForAll([currentBrowserIndex, currentBrowsers])
-   // )
-   // const browser = useRecoilValue(getFocusedBrowser)
-   // const { data, mutate, isError, isLoading } = useParticipants(
-   //    browsers[index].url
-   // )
+   const { classes, cx } = useStyles()
    const userBrowser = useRecoilValue(currentBrowsers)
    const Index = useRecoilValue(currentBrowserIndex)
    const userEmail = useRecoilValue(currentUser)
@@ -117,11 +94,36 @@ export default function Information() {
    return (
       <>
          <Container>
-            <Text> Participants</Text>
-            {data.map((item, index) => (
-               <Text color="gray" fw="bold" key={index}>
-                  {format(item)}
+            {userBrowser.length == 4 && (
+               <Text fz="xl" c="teal.4" fw={700} align="center">
+                  {userBrowser[Index].name}
                </Text>
+            )}
+            <Divider
+               my="xs"
+               variant="dashed"
+               labelPosition="center"
+               label={
+                  <>
+                     <Box ml={5}>Participants</Box>
+                  </>
+               }
+            />
+
+            {data.map((item, index) => (
+               <Group key={index} className={classes.users}>
+                  <Avatar
+                     size="sm"
+                     src={null}
+                     alt="no image here"
+                     color="indigo"
+                  />
+                  <div>
+                     <Text color="gray" fw="bold" span>
+                        {format(item)}
+                     </Text>
+                  </div>
+               </Group>
             ))}
          </Container>
       </>

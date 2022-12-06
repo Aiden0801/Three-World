@@ -7,15 +7,10 @@ const MessageHandler = (io, socket) => {
       email: '',
    })
    console.log('connected', allClients)
-   const createdMessage = (msg) => {
-      console.log('Message Received', msg)
-      socket.broadcast.emit('newIncomingMessage', msg)
-   }
    const getParticipants = async (msg) => {
       console.log('getParticipants Recieved', msg)
       const clientList = await io.in(msg.sessionName).fetchSockets()
       const result = []
-      console.log('list', clientList, allClients)
       clientList.forEach((client) => {
          const item = allClients.find((obj) => obj.id == client.id)
          result.push(item.email)
@@ -54,6 +49,7 @@ const MessageHandler = (io, socket) => {
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
       const socket_id = allClients.find((obj) => obj.email == msg.email).id
+      allClients.filter((obj) => obj.email != msg.email)
       socket.emit('messageReceived')
       io.sockets.sockets
          .get(socket_id)
@@ -74,7 +70,6 @@ const MessageHandler = (io, socket) => {
    socket.on('signIn', signIn)
    socket.on('participantsAdded', participantsAdded)
    socket.on('participantsRemoved', participantsRemoved)
-   socket.on('createdMessage', createdMessage)
    socket.on('disconnecting', disconnecting)
 }
 export default MessageHandler

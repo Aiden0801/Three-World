@@ -31,7 +31,6 @@ import { useRecoilValue, useRecoilState } from 'recoil'
 import {
    currentBrowserIndex,
    currentBrowsers,
-   getFocusedBrowser,
 } from '../../../../utils/recoil/browser'
 const useStyles = createStyles((theme) => ({
    stack: {},
@@ -40,8 +39,8 @@ export default function Control() {
    const { classes, cx } = useStyles()
 
    const [index, setIndex] = useRecoilState(currentBrowserIndex)
-   const browser = useRecoilValue(getFocusedBrowser)
-
+   // userBrowsers
+   const ub = useRecoilValue(currentBrowsers)
    const handleCommand = async (type) => {
       setIndex((index) => (index + type + 4) % 4)
    }
@@ -64,10 +63,10 @@ export default function Control() {
             weight={700}
             style={{ fontFamily: 'Greycliff CF, sans-serif' }}>
             Screen {index}
-            {browser && browser.url == 'none' && (
+            {ub[index] && ub[index].url == 'none' && (
                <IconActivity color="red" size={15} />
             )}{' '}
-            {browser && browser.url != 'none' && (
+            {ub[index] && ub[index].url != 'none' && (
                <IconActivity color="green" size={15} />
             )}
          </Text>

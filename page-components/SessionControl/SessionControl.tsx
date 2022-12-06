@@ -26,9 +26,11 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useState } from 'react'
 import { Router, XOctagonFill } from 'react-bootstrap-icons'
+import { useRecoilRefresher_UNSTABLE } from 'recoil'
 import useSWR from 'swr'
 
 import { fetcher } from '../../lib/fetcher'
+import { currentBrowsers } from '../../utils/recoil/browser'
 const BREAKPOINT = '@media (max-width: 755px)'
 const useStyles = createStyles((theme) => ({
    container: {
@@ -82,6 +84,7 @@ const SessionControl = () => {
    const { data, isLoading, isError, mutate } = useControlSession(
       session.user.email
    )
+   const resetRecoilState = useRecoilRefresher_UNSTABLE(currentBrowsers)
 
    const form = useForm({
       initialValues: {
@@ -113,6 +116,7 @@ const SessionControl = () => {
             }),
          })
          mutate()
+         resetRecoilState()
          setIsHandling(false)
       },
       [mutate]
@@ -130,6 +134,7 @@ const SessionControl = () => {
             }),
          })
          mutate()
+         resetRecoilState()
          setIsHandling(false)
       },
       [mutate]
@@ -332,7 +337,6 @@ const SessionControl = () => {
                                        </Button>
                                        <Button
                                           color="indigo"
-                                          component="a"
                                           variant="subtle"
                                           onClick={() => {
                                              router.push(

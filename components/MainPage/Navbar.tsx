@@ -32,16 +32,11 @@ const useStyles = createStyles((theme, _params, getRef) => {
             theme.colorScheme === 'dark'
                ? theme.colors.dark[6]
                : theme.colors.gray[0],
-         boxShadow: `3px 0px 5px ${theme.colors.gray[1]}`,
+         // boxShadow: `3px 0px 5px ${theme.colors.gray[1]}`,
       },
       header: {
          paddingBottom: theme.spacing.md,
          marginBottom: theme.spacing.md * 1.5,
-         borderBottom: `1px solid ${
-            theme.colorScheme === 'dark'
-               ? theme.colors.dark[4]
-               : theme.colors.gray[2]
-         }`,
       },
       section: {
          marginLeft: -theme.spacing.md,
@@ -228,10 +223,8 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
             />
             <NavLink
                className={classes.link}
-               component="a"
                label="UserManagement"
                description="Additional information"
-               href="/user"
                active={initialState == 'user' ? true : false}
                icon={<IconUserPlus size="20" color="blue"></IconUserPlus>}
             />
