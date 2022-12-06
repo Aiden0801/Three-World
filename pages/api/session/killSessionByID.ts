@@ -12,6 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    await connectMongo()
    let { _id } = req.body
    try {
+      console.log(_id)
       let session = await Session.findOne({
          _id: _id,
       })

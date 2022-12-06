@@ -25,7 +25,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    try {
       let user = await Session.find({ creator }).select('name isActive users')
       if (!user || user.length == 0) {
-         res.status(200).send('No Session created by this user')
+         res.status(200).json('No Session created by this user')
       } else {
          // for (const session of user) {
          //    console.log('getControlSession Sessions', session)

@@ -17,7 +17,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       var socket = client.connect(`${serverURL}`)
       let currentSession = await Session.findOne({ embed_url: url })
       if (!currentSession) {
-         res.status(200).send('No Session')
+         res.status(200).json('No Session')
       } else {
          socket.emit('participantsAdded', {
             email: email,
@@ -28,11 +28,11 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
          })
          console.log('update success')
          // socket.disconnect()
-         res.status(200).send('success')
+         res.status(200).json('success')
       }
    } catch (err) {
       console.error(err.message)
-      res.status(500).send('Server error')
+      res.status(500).json('Server error')
    }
 }
 

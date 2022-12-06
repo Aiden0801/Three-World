@@ -78,7 +78,7 @@ async function handler(
                   }
                }
             ).clone()
-            res.status(200).send('Sucess')
+            res.status(200).json('Sucess')
          } else {
             console.log('Session is still running')
             res.status(200).send({ session })

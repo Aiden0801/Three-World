@@ -10,7 +10,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    try {
       let user = await Session.findOne({ _id })
       if (!user) {
-         res.status(200).send('No Session')
+         res.status(200).json('No Session')
       } else {
          console.log(user.creator)
          if (user.creator !== creator) res.status(200).send('Access is denied')
@@ -27,7 +27,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                }
             ).clone()
             console.log('update success')
-            res.status(200).send('success')
+            res.status(200).json('success')
          }
       }
    } catch (err) {
