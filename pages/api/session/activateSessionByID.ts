@@ -25,7 +25,7 @@ async function handler(
       })
       //.select('name session_id isActive');
       if (!session || session.length == 0) {
-         res.status(200).send('no Session or Access is denied')
+         res.status(200).json('no Session or Access is denied')
       } else {
          const resp = await axios.get(
             `https://engine.hyperbeam.com/v0/vm/{${session.session_id}}`,
