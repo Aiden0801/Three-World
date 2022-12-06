@@ -1,4 +1,5 @@
 import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
+import { showNotification } from '@mantine/notifications'
 import {
    Badge,
    Box,
@@ -18,7 +19,7 @@ import {
    TextInput,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-import { IconPlus, IconTrash } from '@tabler/icons'
+import { IconPlus, IconTrash, IconCheck } from '@tabler/icons'
 import { Draft07 } from 'json-schema-library'
 import { useRouter } from 'next/router'
 import React, { useEffect, useMemo, useState } from 'react'
@@ -59,27 +60,15 @@ const useProjectData = () => {
 
 const Dashboard: React.FC = () => {
    const { data: projectData, isLoading, isError, mutate } = useProjectData()
-   // const [refs, setRefs] = useState<$RefParser.$Refs>(null)
-   // const [schema, setSchema] = useState<JSONSchema>()
-   // const [loaded, setLoaded] = useState(false)
    const [opened, setOpened] = useState(false)
    const { classes, theme } = useStyles()
    const router = useRouter()
    useEffect(() => {
-      // console.log(LandingPageSchema)
       console.log(projectData)
-      // test()
    }, [])
-   // const test = async () => {
-   //    let test = await $RefParser.dereference(LandingPageSchema)
-   //    let $refs = await $RefParser.resolve(test)
-   //    setRefs($refs)
-   //    setSchema(test)
-   //    setLoaded((o) => true)
-   // }
    const handleOnSubmit = async (values) => {
-      const newData = await fetcher(
-         'http://localhost:3000/api/projects/createProject',
+      const response = await fetcher(
+         `${serverURL}/api/projects/createProject`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -88,6 +77,18 @@ const Dashboard: React.FC = () => {
             }),
          }
       )
+      if (response == 'Success') {
+         showNotification({
+            title: 'Success',
+            autoClose: 2000,
+            color: 'teal',
+            icon: <IconCheck size={16} />,
+            message: 'New Project Created🤥',
+         })
+         setOpened(false)
+      }
+
+      console.log(response)
    }
 
    return (

@@ -1,5 +1,6 @@
 import { Box, Button, Container, Text } from '@mantine/core'
-import { IconArrowBack } from '@tabler/icons'
+import { showNotification } from '@mantine/notifications'
+import { IconArrowBack, IconCheck } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
@@ -57,8 +58,8 @@ const ProjectCofig = ({ projectName }) => {
    }
    const handleOnSubmit = async (values) => {
       console.log('handleOnSubmit', values)
-      const newData = await fetcher(
-         'http://localhost:3000/api/projects/updateProject',
+      const response = await fetcher(
+         `${serverURL}/api/projects/updateProject`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -67,6 +68,15 @@ const ProjectCofig = ({ projectName }) => {
             }),
          }
       )
+      if (response == 'Success') {
+         showNotification({
+            title: 'Success',
+            autoClose: 2000,
+            color: 'teal',
+            icon: <IconCheck size={16} />,
+            message: 'Project Configuration Updated🤥',
+         })
+      }
    }
    return (
       // <Suspense fallback={<div>Loading</div>}>

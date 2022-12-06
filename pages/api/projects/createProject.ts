@@ -12,7 +12,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    try {
       let project = new Config(data)
       await project.save()
-      res.status(200).send(data)
+      res.status(200).json('Success')
    } catch (err) {
       console.error(err.message)
       res.status(500).send('Server error')

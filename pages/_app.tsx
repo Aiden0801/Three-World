@@ -8,6 +8,8 @@ import { RecoilRoot } from 'recoil'
 import { wrapper } from '../store/store'
 import MySession from './_appp'
 import { SocketContext, socket } from '../utils/context/socket'
+
+import { serverURL } from '../config/urlcontrol'
 const root =
    typeof window !== 'undefined' && window?.document?.querySelector('#__next')
 function MyApp({
