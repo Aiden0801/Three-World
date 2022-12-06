@@ -1,73 +1,48 @@
-import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import {
-   Box,
-   Button,
-   Checkbox,
-   Code,
    Container,
-   NativeSelect,
-   NumberInput,
-   Select,
    Text,
    TextInput,
-   Table,
-   List,
-   Skeleton,
-   Card,
-   Group,
-   Flex,
-   Badge,
-   createStyles,
-   Modal,
+   Checkbox,
+   NumberInput,
+   NativeSelect,
+   Button,
+   Code,
+   Select,
+   Box,
 } from '@mantine/core'
-import { openConfirmModal } from '@mantine/modals'
-import { useForm } from '@mantine/form'
-import { IconTrash, IconPlus } from '@tabler/icons'
-import { Draft07 } from 'json-schema-library'
+import { IconTrash } from '@tabler/icons'
 import { useSession } from 'next-auth/react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import Link from 'next/link'
-import React, { useEffect, useMemo, useState } from 'react'
+import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
+import {
+   Draft04,
+   Draft06,
+   Draft07,
+   Draft,
+   JSONError,
+   JSONSchema as jsSchema,
+} from 'json-schema-library'
+import { useForm } from '@mantine/form'
 import { LandingPageSchema } from '../../config/2DLangingPageSchema'
-import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import useSWR from 'swr'
+import { IconArrowBack } from '@tabler/icons'
 import { useRouter } from 'next/router'
-
-const useStyles = createStyles((theme) => ({
-   container: {
-      position: 'relative',
-      margin: '10px,10px,10px,10px',
-      display: 'flex',
-      flexDirection: 'column',
-   },
-}))
-const CreateForm = ({ schema }) => {
+const CreateForm = ({ schema, initialData, handleOnSubmit }) => {
    const jsonSchema = useMemo(() => new Draft07(schema), [schema])
    const myData = useMemo(() => jsonSchema.getTemplate(), [jsonSchema])
    const form = useForm({
-      initialValues: myData,
+      initialValues: initialData ? initialData : myData,
    })
    const [submittedValues, setSubmittedValues] = useState('')
-   const createProject = async (data) => {
-      console.log(data)
-      const newData = await fetcher(
-         'http://localhost:3000/api/projects/createProject',
-         {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-               data: data,
-            }),
-         }
-      )
-   }
    return (
       <>
          <form
             onSubmit={form.onSubmit((values) => {
                console.log(values)
                setSubmittedValues(JSON.stringify(values, null, 2))
-               createProject(values)
+               handleOnSubmit(values)
             })}>
             {Parse(schema, schema, form, '')}
             <Button type="submit" mt="md">
@@ -267,9 +242,10 @@ const Parse = (schema, currentSchema, form, dataposition?: string) => {
    )
 }
 
-const fetchProjects = async (url: string, email: string) => {
+const fetchProjects = async (url: string, name: string) => {
+   console.log('fetch', name)
    const data = await fetcher(
-      `http://localhost:3000/api/projects/getProjects`,
+      `http://localhost:3000/api/projects/${name}/websiteconfig`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -277,9 +253,10 @@ const fetchProjects = async (url: string, email: string) => {
    )
    return data ? data : []
 }
-const useProjectData = () => {
+const useProjectData = (projectName) => {
+   console.log('use', projectName)
    const { data, mutate, error, isValidating } = useSWR(
-      ['api/projects/getProjects'],
+      ['api/projects/getProjects', projectName],
       fetchProjects,
       { revalidateOnFocus: false }
    )
@@ -290,104 +267,93 @@ const useProjectData = () => {
       mutate: mutate,
    }
 }
-
-const Dashboard: React.FC = () => {
-   const { data: projectData, isLoading, isError, mutate } = useProjectData()
-   const [refs, setRefs] = useState<$RefParser.$Refs>(null)
+const ProjectCofig = ({ projectName }) => {
+   const { data: session, status } = useSession()
+   //    const [refs, setRefs] = useState<$RefParser.$Refs>(null)
 
    const [schema, setSchema] = useState<JSONSchema>()
    const [loaded, setLoaded] = useState(false)
-   const [opened, setOpened] = useState(false)
-   const { classes, theme } = useStyles()
    const router = useRouter()
+   const {
+      data: projectData,
+      isLoading,
+      isError,
+      mutate,
+   } = useProjectData(projectName)
    useEffect(() => {
-      // console.log(LandingPageSchema)
-      console.log(projectData)
+      console.log(LandingPageSchema)
       test()
    }, [])
    const test = async () => {
       let test = await $RefParser.dereference(LandingPageSchema)
-      let $refs = await $RefParser.resolve(test)
-      setRefs($refs)
+      //   let $refs = await $RefParser.resolve(test)
+      //   setRefs($refs)
       setSchema(test)
+      console.log(test)
       setLoaded((o) => true)
    }
-
+   const handleOnSubmit = async (values) => {
+      console.log('handleOnSubmit', values)
+      const newData = await fetcher(
+         'http://localhost:3000/api/projects/updateProject',
+         {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               data: values,
+            }),
+         }
+      )
+   }
    return (
       // <Suspense fallback={<div>Loading</div>}>
       <Container
-         mt="xl"
          style={{
             display: 'flex',
             justifyContent: 'center',
             flexDirection: 'column',
          }}>
-         <Modal
-            transition="fade"
-            transitionDuration={600}
-            size="80%"
-            opened={opened}
-            title="Create Project"
-            onClose={() => {
-               console.log('onClose')
-               setOpened(false)
-            }}>
-            {loaded && <CreateForm schema={schema} />}
-         </Modal>
          <Box
             sx={(theme) => ({
                display: 'flex',
                justifyContent: 'space-between',
                align: 'center',
                alignItems: 'center',
-               marginBottom: '20px',
+               marginTop: '30px',
             })}>
-            <Text>Projects</Text>
-
+            <Text
+               component="span"
+               variant="gradient"
+               gradient={{ from: 'indigo', to: 'green', deg: 0 }}
+               weight={700}
+               style={{
+                  fontFamily: 'Greycliff CF, sans-serif',
+                  fontSize: '30px',
+               }}>
+               Edit Project
+            </Text>
             <Button
                compact
+               size="sm"
+               leftIcon={<IconArrowBack size={18} stroke={1.5} />}
+               color="orange"
+               pr={20}
                onClick={() => {
-                  setOpened(true)
-               }}
-               color="blue"
-               pr={12}>
-               <Text
-                  sx={{
-                     [theme.fn.smallerThan('md')]: {
-                        display: 'none',
-                     },
-                  }}>
-                  New
-               </Text>
-               <IconPlus size={20} stroke={1.5} />
+                  router.push('./')
+               }}>
+               Back
             </Button>
          </Box>
-         <Skeleton height={500} visible={isLoading}>
-            {projectData &&
-               projectData.map((item, index) => (
-                  <Card withBorder shadow="sm" key={index} mt="sm">
-                     <Badge>Name</Badge>
-                     <Flex justify="space-between" align="center">
-                        <Text>{item.name}</Text>
-                        <Button
-                           variant="light"
-                           color="blue"
-                           mt="md"
-                           size="xs"
-                           radius="md"
-                           onClick={() => {
-                              router.push(`/dashboard/${item.name}`)
-                           }}>
-                           Edit now
-                        </Button>
-                     </Flex>
-                  </Card>
-               ))}
-         </Skeleton>
-         {/* {loaded && <CreateForm schema={schema} />} */}
+         {loaded && !isLoading && (
+            <CreateForm
+               schema={schema}
+               initialData={projectData}
+               handleOnSubmit={handleOnSubmit}
+            />
+         )}
       </Container>
       // </Suspense>
    )
 }
 
-export default Dashboard
+export default ProjectCofig
