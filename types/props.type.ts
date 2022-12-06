@@ -5,3 +5,8 @@ export interface IPropsSessionData {
 export interface IPropsProjectPgae {
    name: string
 }
+export interface IPropsCreateForm {
+   schema: any
+   initialData?: object
+   handleOnSubmit: Function
+}
