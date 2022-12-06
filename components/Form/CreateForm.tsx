@@ -14,6 +14,13 @@ import { IconTrash } from '@tabler/icons'
 import { Draft07 } from 'json-schema-library'
 import { useMemo, useState } from 'react'
 import { IPropsCreateForm } from '../../types'
+/**
+ *
+ * @param schema Schema needed for creating form
+ * @param initialData data for init maybe loaded from DB or create template from schema
+ * @param handleOnSubmit calls on submit button
+ * @returns
+ */
 const CreateForm = ({
    schema,
    initialData,
@@ -74,6 +81,14 @@ const HandleAnyOf = ({ schema, currentSchema, form, dataposition }) => {
       </>
    )
 }
+/**
+ * @function Parse recusive function for parsing Schema
+ * @param schema
+ * @param currentSchema
+ * @param form
+ * @param dataposition
+ * @returns
+ */
 const Parse = (schema, currentSchema, form, dataposition?: string) => {
    const Switching = () => {
       // if (currentSchema['$ref']) {
