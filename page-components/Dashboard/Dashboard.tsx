@@ -172,7 +172,6 @@ const Dashboard: React.FC = () => {
                ))}
          </Skeleton>
       </Container>
-      // </Suspense>
    )
 }
 
