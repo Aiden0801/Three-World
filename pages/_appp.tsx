@@ -11,12 +11,15 @@ import { useSetRecoilState } from 'recoil'
 import { RouterTransition } from '../components/Layout/RouterTransition'
 import { SocketContext } from '../utils/context/socket'
 import { currentUser } from '../utils/recoil/browser'
+import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 function MySession({ Component, pageProps: { ...pageProps } }: any) {
-   const [colorScheme, setColorScheme] = useState<ColorScheme>('light')
-   const toggleColorScheme = (value?: ColorScheme) => {
-      console.log('_appp', value)
+   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+      key: 'mantine-color-scheme',
+      defaultValue: 'light',
+      getInitialValueInEffect: true,
+   })
+   const toggleColorScheme = (value?: ColorScheme) =>
       setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
-   }
    const setCurrentUser = useSetRecoilState(currentUser)
    const router = useRouter()
    const { data: session, status } = useSession()
