@@ -1,33 +1,26 @@
-import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
-import { showNotification } from '@mantine/notifications'
+import { openConfirmModal } from '@mantine/modals'
+
 import {
    Badge,
    Box,
    Button,
    Card,
-   Checkbox,
-   Code,
    Container,
    createStyles,
    Flex,
    Modal,
-   NativeSelect,
-   NumberInput,
-   Select,
    Skeleton,
    Text,
-   TextInput,
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
-import { IconPlus, IconTrash, IconCheck } from '@tabler/icons'
-import { Draft07 } from 'json-schema-library'
+import { showNotification } from '@mantine/notifications'
+import { IconCheck, IconPlus } from '@tabler/icons'
 import { useRouter } from 'next/router'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
+import CreateForm from '../../components/Form/CreateForm'
 import { LandingPageSchema } from '../../config/2DLangingPageSchema'
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
-import CreateForm from '../../components/Form/CreateForm'
 import FadeIn from '../../utils/spring/FadeIn'
 const useStyles = createStyles((theme) => ({
    container: {
@@ -91,7 +84,30 @@ const Dashboard: React.FC = () => {
 
       console.log(response)
    }
-
+   const openDeleteModal = useCallback(() => {
+      openConfirmModal({
+         title: 'Delete your project',
+         centered: true,
+         children: (
+            <Text size="sm">
+               Are you sure you want to delete your project? This action is
+               destructive and you will have to contact support to restore your
+               data.
+            </Text>
+         ),
+         labels: { confirm: 'Delete account', cancel: "No don't delete it" },
+         confirmProps: { color: 'red' },
+         onCancel: () => {
+            showNotification({
+               title: 'Alert',
+               autoClose: 2000,
+               color: 'cyan',
+               message: 'Cancled Project delete',
+            })
+         },
+         onConfirm: () => console.log('Confirmed'),
+      })
+   }, [])
    return (
       // <Suspense fallback={<div>Loading</div>}>
       <Container
@@ -155,17 +171,28 @@ const Dashboard: React.FC = () => {
                         <Badge>Name</Badge>
                         <Flex justify="space-between" align="center">
                            <Text>{item.name}</Text>
-                           <Button
-                              variant="light"
-                              color="blue"
-                              mt="md"
-                              size="xs"
-                              radius="md"
-                              onClick={() => {
-                                 router.push(`/dashboard/${item.name}`)
-                              }}>
-                              Edit now
-                           </Button>
+                           <Button.Group>
+                              <Button
+                                 variant="light"
+                                 color="blue"
+                                 mt="md"
+                                 size="xs"
+                                 radius="md"
+                                 onClick={() => {
+                                    router.push(`/dashboard/${item.name}`)
+                                 }}>
+                                 Edit now
+                              </Button>
+                              <Button
+                                 variant="light"
+                                 color="red"
+                                 mt="md"
+                                 size="xs"
+                                 radius="md"
+                                 onClick={openDeleteModal}>
+                                 Delete
+                              </Button>
+                           </Button.Group>
                         </Flex>
                      </Card>
                   </FadeIn>

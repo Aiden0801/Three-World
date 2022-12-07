@@ -4,6 +4,7 @@ import {
    MantineProvider,
 } from '@mantine/core'
 import { NotificationsProvider } from '@mantine/notifications'
+import { ModalsProvider } from '@mantine/modals'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
@@ -50,8 +51,10 @@ function MySession({ Component, pageProps: { ...pageProps } }: any) {
             withNormalizeCSS
             theme={{ loader: 'bars', colorScheme }}>
             <NotificationsProvider>
-               <RouterTransition />
-               <Component {...pageProps} />
+               <ModalsProvider>
+                  <RouterTransition />
+                  <Component {...pageProps} />
+               </ModalsProvider>
             </NotificationsProvider>
          </MantineProvider>
       </ColorSchemeProvider>
