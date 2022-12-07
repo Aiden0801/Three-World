@@ -84,7 +84,36 @@ const Dashboard: React.FC = () => {
 
       console.log(response)
    }
-   const openDeleteModal = useCallback(() => {
+   const handleDeleteProject = useCallback(async (name: string) => {
+      const response = await fetcher(
+         `${serverURL}/api/projects/deleteProject`,
+         {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               name: name,
+            }),
+         }
+      )
+      if (response == 'Success') {
+         showNotification({
+            title: 'Success',
+            autoClose: 2000,
+            color: 'teal',
+            icon: <IconCheck size={16} />,
+            message: 'Project Deleted🤥',
+         })
+         mutate()
+      } else
+         showNotification({
+            title: 'Failed',
+            autoClose: 2000,
+            color: 'red',
+            icon: <IconCheck size={16} />,
+            message: 'Project Deletion Cancled🤥',
+         })
+   }, [])
+   const openDeleteModal = useCallback((name) => {
       openConfirmModal({
          title: 'Delete your project',
          centered: true,
@@ -95,7 +124,7 @@ const Dashboard: React.FC = () => {
                data.
             </Text>
          ),
-         labels: { confirm: 'Delete account', cancel: "No don't delete it" },
+         labels: { confirm: 'Delete Project', cancel: "No don't delete it" },
          confirmProps: { color: 'red' },
          onCancel: () => {
             showNotification({
@@ -105,7 +134,7 @@ const Dashboard: React.FC = () => {
                message: 'Cancled Project delete',
             })
          },
-         onConfirm: () => console.log('Confirmed'),
+         onConfirm: () => handleDeleteProject(name),
       })
    }, [])
    return (
@@ -181,7 +210,7 @@ const Dashboard: React.FC = () => {
                                  onClick={() => {
                                     router.push(`/dashboard/${item.name}`)
                                  }}>
-                                 Edit now
+                                 {`Edit `}
                               </Button>
                               <Button
                                  variant="light"
@@ -189,7 +218,7 @@ const Dashboard: React.FC = () => {
                                  mt="md"
                                  size="xs"
                                  radius="md"
-                                 onClick={openDeleteModal}>
+                                 onClick={() => openDeleteModal(item.name)}>
                                  Delete
                               </Button>
                            </Button.Group>
