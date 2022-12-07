@@ -37,12 +37,7 @@ export default function SpaceScreen() {
       ],
    ])
    return (
-      <div
-         style={{
-            position: 'relative',
-            height: '100%',
-            width: '100%',
-         }}>
+      <>
          <Canvas
             camera={{
                fov: 45,
@@ -68,7 +63,7 @@ export default function SpaceScreen() {
                position={[0, 0, 0]}
             />
          </Canvas>
-      </div>
+      </>
    )
 }
 
