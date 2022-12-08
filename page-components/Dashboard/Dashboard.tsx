@@ -18,7 +18,10 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
 import CreateForm from '../../components/Form/CreateForm'
-import { LandingPageSchema } from '../../config/2DLangingPageSchema'
+import {
+   LandingPageSchema,
+   TwoDLandingPageSchema,
+} from '../../config/2DLangingPageSchema'
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import FadeIn from '../../utils/spring/FadeIn'
@@ -61,6 +64,7 @@ const Dashboard: React.FC = () => {
       console.log(projectData)
    }, [])
    const handleOnSubmit = async (values) => {
+      return
       const response = await fetcher(
          `${serverURL}/api/projects/createProject`,
          {

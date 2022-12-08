@@ -10,9 +10,11 @@ import { useRouter } from 'next/router'
 import { useContext, useEffect, useState } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { RouterTransition } from '../components/Layout/RouterTransition'
-import { SocketContext } from '../utils/context/socket'
 import { currentUser } from '../utils/recoil/browser'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
+
+import { SocketContext, socket } from '../utils/context/socket'
+
 function MySession({ Component, pageProps: { ...pageProps } }: any) {
    const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
       key: 'mantine-color-scheme',
@@ -25,7 +27,6 @@ function MySession({ Component, pageProps: { ...pageProps } }: any) {
    const router = useRouter()
    const { data: session, status } = useSession()
 
-   const socket = useContext(SocketContext)
    useEffect(() => {
       if (status === 'authenticated') {
          setCurrentUser(session.user.email)
@@ -43,21 +44,23 @@ function MySession({ Component, pageProps: { ...pageProps } }: any) {
       }
    }
    return (
-      <ColorSchemeProvider
-         colorScheme={colorScheme}
-         toggleColorScheme={toggleColorScheme}>
-         <MantineProvider
-            withGlobalStyles
-            withNormalizeCSS
-            theme={{ loader: 'bars', colorScheme }}>
-            <NotificationsProvider>
-               <ModalsProvider>
-                  <RouterTransition />
-                  <Component {...pageProps} />
-               </ModalsProvider>
-            </NotificationsProvider>
-         </MantineProvider>
-      </ColorSchemeProvider>
+      <SocketContext.Provider value={socket}>
+         <ColorSchemeProvider
+            colorScheme={colorScheme}
+            toggleColorScheme={toggleColorScheme}>
+            <MantineProvider
+               withGlobalStyles
+               withNormalizeCSS
+               theme={{ loader: 'bars', colorScheme }}>
+               <NotificationsProvider>
+                  <ModalsProvider>
+                     <RouterTransition />
+                     <Component {...pageProps} />
+                  </ModalsProvider>
+               </NotificationsProvider>
+            </MantineProvider>
+         </ColorSchemeProvider>
+      </SocketContext.Provider>
    )
 }
 export default MySession

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
 import { signOut } from 'next-auth/react'
 import {
    UnstyledButton,
@@ -9,7 +9,10 @@ import {
 } from '@mantine/core'
 import { IconLogout, IconSettings } from '@tabler/icons'
 import { serverURL } from '../../../config/urlcontrol'
+
+import { SocketContext } from '../../../utils/context/socket'
 export default function UserAvatar({ img }) {
+   const socket = useContext(SocketContext)
    const [opened, setOpened] = useState(false)
    return (
       <Popover opened={opened} onChange={setOpened}>
@@ -38,6 +41,7 @@ export default function UserAvatar({ img }) {
                      redirect: false,
                      callbackUrl: `${serverURL}`,
                   })
+                  socket.disconnect()
                }}>
                Logout
             </Button>

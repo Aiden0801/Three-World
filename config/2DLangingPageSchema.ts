@@ -280,134 +280,126 @@ export const LandingPageSchema: JSONSchema = {
 }
 export const TwoDLandingPageSchema: JSONSchema = {
    $schema: 'http://json-schema.org/draft-07/schema#',
-   definitions: {
-      FeatureSection: {
-         description: 'Feature',
-         properties: {
-            description: {
-               description: 'Description for the section',
-               type: 'string',
-            },
-            featureCard: {
-               description: 'Feature Cards',
-               items: {
-                  properties: {
-                     description: {
-                        description: 'feature description',
-                        type: 'string',
-                     },
-                     image: {
-                        description: 'url Image of Feature Image',
-                        type: 'string',
-                     },
-                     title: {
-                        description: 'feature title',
-                        type: 'string',
-                     },
-                  },
-                  type: 'object',
-               },
-               type: 'array',
-            },
-            title: {
-               type: 'string',
-            },
-         },
-         type: 'object',
-      },
-      HeroSection: {
-         description: 'Hero',
-         properties: {
-            backgrondImage: {
-               description: 'url of the baackground Image',
-               type: 'string',
-            },
-            ctaTarget: {
-               description: 'Cta button target',
-               type: 'string',
-            },
-            ctaText: {
-               description: 'Cta button text',
-               type: 'string',
-            },
-            description: {
-               description: 'Description for the section',
-               type: 'string',
-            },
-            title: {
-               description: 'name for the section',
-               type: 'string',
-            },
-         },
-         type: 'object',
-      },
-      ThemeCustomization: {
-         properties: {
-            colorScheme: {
-               description: 'color theme',
-               enum: ['dark', 'light'],
-               type: 'string',
-            },
-            primaryColor: {
-               description: 'primary Color',
-               type: 'string',
-            },
-         },
-         type: 'object',
-      },
-   },
    properties: {
-      website: {
-         description: 'website config',
-         title: 'Website',
-         properties: {
-            description: {
-               title: 'Description',
-               description: 'page description',
-               type: 'string',
-            },
-            // sections: {
-            //    description: 'secions',
-            //    items: {
-            //       description: 'sections types',
-            //       type: 'string',
-            //    },
-            //    type: 'array',
-            // },
-            title: {
-               title: 'Title',
-               description: 'page title',
-               type: 'string',
-            },
-            url: {
-               title: 'URL',
-               description: 'deployment URL',
-               type: 'string',
-            },
-         },
-         type: 'object',
-      },
       sections: {
          description: 'dynamic sections configuration',
          items: {
             anyOf: [
                {
-                  title: 'HeroSection',
-                  $ref: '#/definitions/HeroSection',
+                  properties: {
+                     backgrondImage: {
+                        description: 'url of the baackground Image',
+                        title: 'backgrondImage',
+                        type: 'string',
+                     },
+                     ctaTarget: {
+                        description: 'Cta button target',
+                        title: 'ctaTarget',
+                        type: 'string',
+                     },
+                     ctaText: {
+                        title: 'ctaText',
+                        type: 'string',
+                     },
+                     description: {
+                        description: 'Description for the section',
+                        title: 'description',
+                        type: 'string',
+                     },
+                     title: {
+                        description: 'name for the section',
+                        title: 'title',
+                        type: 'string',
+                     },
+                  },
+                  description: 'HeroSection',
+                  title: 'Hero',
+                  type: 'object',
                },
                {
-                  title: 'FeatureSection',
-                  $ref: '#/definitions/FeatureSection',
+                  description: 'FeatureSection',
+                  properties: {
+                     description: {
+                        title: 'description',
+                        type: 'string',
+                     },
+                     // featureCard: {
+                     //    description: 'Feature Cards',
+                     //    items: {
+                     //       properties: {
+                     //          description: {
+                     //             description: 'feature description',
+                     //             title: 'description',
+                     //             type: 'string',
+                     //          },
+                     //          image: {
+                     //             description: 'url Image of Feature Image',
+                     //             title: 'image',
+                     //             type: 'string',
+                     //          },
+                     //          title: {
+                     //             description: 'feature title',
+                     //             title: 'title',
+                     //             type: 'string',
+                     //          },
+                     //       },
+                     //       type: 'object',
+                     //    },
+                     //    title: 'featureCard',
+                     //    type: 'array',
+                     // },
+                     title: {
+                        title: 'title',
+                        type: 'string',
+                     },
+                  },
+                  title: 'Feature',
+                  type: 'object',
                },
             ],
          },
-         title: 'Section',
+         title: 'sections',
          type: 'array',
       },
       theme: {
-         $ref: '#/definitions/ThemeCustomization',
          description: 'theme customization',
-         title: 'Theme',
+         properties: {
+            colorScheme: {
+               description: 'color theme',
+               enum: ['dark', 'light'],
+               title: 'colorScheme',
+               type: 'string',
+            },
+            primaryColor: {
+               description: 'primary Color',
+               title: 'primaryColor',
+               type: 'string',
+            },
+         },
+         title: 'theme',
+         type: 'object',
+      },
+      website: {
+         description: 'website config',
+         properties: {
+            description: {
+               description: 'page description',
+               title: 'description',
+               type: 'string',
+            },
+            title: {
+               description: 'page title',
+               title: 'title',
+               type: 'string',
+            },
+            url: {
+               description: 'deployment URL',
+               title: 'url',
+               type: 'string',
+            },
+         },
+         title: 'website',
+         type: 'object',
       },
    },
    type: 'object',
