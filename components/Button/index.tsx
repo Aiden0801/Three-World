@@ -1,7 +1,9 @@
 import { createStyles } from '@mantine/core'
-import { Button, ButtonProps } from '@mantine/core'
+import { Button, ButtonProps, Tooltip } from '@mantine/core'
+import { TablerIconProps } from '@tabler/icons'
 import { GithubIcon, DiscordIcon } from '@mantine/ds'
 import Image from 'next/image'
+import { forwardRef } from 'react'
 interface IButtonProps extends ButtonProps {
    onClick?: () => void
 }
@@ -83,3 +85,17 @@ export function GithubButton(props: IButtonProps) {
       />
    )
 }
+export type IPropsToolTipButton = ButtonProps & {
+   description?: string
+   onClick?: () => void
+}
+export const ToolTipButton = forwardRef<HTMLButtonElement, IPropsToolTipButton>(
+   ({ description, ...props }, _ref) => {
+      return (
+         <Tooltip label={description}>
+            <Button {...props} />
+         </Tooltip>
+      )
+   }
+)
+ToolTipButton.displayName = 'ToolTipButton'
