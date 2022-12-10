@@ -1,6 +1,6 @@
 import { useMantineColorScheme, ActionIcon, Group } from '@mantine/core'
 import { IconSun, IconMoonStars } from '@tabler/icons'
-
+import { MantineColor } from '@mantine/core'
 export default function ActionToggle() {
    const { colorScheme, toggleColorScheme } = useMantineColorScheme()
    return (
