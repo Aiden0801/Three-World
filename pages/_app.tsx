@@ -22,7 +22,7 @@ function MyApp({
       setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'))
 
    return (
-      <SessionProvider session={pageProps.session}>
+      <SessionProvider session={pageProps.session} refetchInterval={5 * 60}>
          <RecoilRoot>
             <MySession Component={Component} pageProps={{ ...pageProps }} />
          </RecoilRoot>

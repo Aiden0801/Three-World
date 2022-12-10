@@ -12,19 +12,25 @@ import {
    Skeleton,
    Text,
 } from '@mantine/core'
+import { clientAppURL } from '../../config/urlcontrol'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons'
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import useSWR from 'swr'
-import CreateForm from '../../components/Form/CreateForm'
+import { CreateFormFromConfigObject } from '../../components/Form/CreateForm'
 import {
    LandingPageSchema,
    TwoDLandingPageSchema,
 } from '../../config/2DLangingPageSchema'
+import { IPropsschemaObject } from '../../utils/parser/schma_parser'
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import FadeIn from '../../utils/spring/FadeIn'
+import { useGlobalConfig } from '../../utils/parser/globalconfig'
+import { useTemplateConfig } from '../../utils/parser/templateconfig'
+import $RefParser from '@apidevtools/json-schema-ref-parser'
+import { HTMLAttributeAnchorTarget } from 'react'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
@@ -54,15 +60,20 @@ const useProjectData = () => {
       mutate: mutate,
    }
 }
-
 const Dashboard: React.FC = () => {
    const { data: projectData, isLoading, isError, mutate } = useProjectData()
    const [opened, setOpened] = useState(false)
    const { classes, theme } = useStyles()
    const router = useRouter()
+   // const templateConfig = useTemplateConfig('AAA', 'BBB')
+   // const globalConfig = useGlobalConfig('A')
    useEffect(() => {
-      console.log(projectData)
+      // test()
    }, [])
+   const test = async () => {
+      // let schema = await $RefParser.dereference(figma)
+      // console.log(schema)
+   }
    const handleOnSubmit = async (values) => {
       return
       const response = await fetcher(
@@ -160,10 +171,10 @@ const Dashboard: React.FC = () => {
                console.log('onClose')
                setOpened(false)
             }}>
-            <CreateForm
-               schema={LandingPageSchema}
-               handleOnSubmit={handleOnSubmit}
-            />
+            {/* {globalConfig && (
+               <CreateFormFromConfigObject object={globalConfig} />
+            )} */}
+            {<CreateFormFromConfigObject url={clientAppURL} />}
          </Modal>
          <Box
             sx={(theme) => ({

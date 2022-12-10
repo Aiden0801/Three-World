@@ -3,17 +3,29 @@ import {
    Button,
    Checkbox,
    Code,
+   ColorPicker,
    NativeSelect,
    NumberInput,
    Select,
    Text,
    TextInput,
 } from '@mantine/core'
-import { useForm } from '@mantine/form'
+import { useEffect, useMemo, useState, useCallback } from 'react'
+import { useForm, FORM_INDEX } from '@mantine/form'
 import { IconTrash } from '@tabler/icons'
 import { Draft07 } from 'json-schema-library'
-import { useMemo, useState } from 'react'
 import { IPropsCreateForm } from '../../types'
+import {
+   IPropsschemaObject,
+   getInitialValue,
+} from '../../utils/parser/schma_parser'
+import { fetcher } from '../../lib/fetcher'
+import { serverURL } from '../../config/urlcontrol'
+import { IconCheck } from '@tabler/icons'
+import { showNotification } from '@mantine/notifications'
+import { useTemplateConfig } from '../../utils/parser/templateconfig'
+import { useGlobalConfig } from '../../utils/parser/globalconfig'
+
 /**
  *
  * @param schema Schema needed for creating form
@@ -21,26 +33,58 @@ import { IPropsCreateForm } from '../../types'
  * @param handleOnSubmit calls on submit button
  * @returns
  */
-const CreateForm = ({
-   schema,
-   initialData,
-   handleOnSubmit,
-}: IPropsCreateForm) => {
-   const jsonSchema = useMemo(() => new Draft07(schema), [schema])
-   const myData = useMemo(() => jsonSchema.getTemplate(), [jsonSchema])
+
+export const CreateFormFromConfigObject = ({ url }) => {
+   const [global, initGlobal] = useGlobalConfig(url)
+   const [template, initTemplate] = useTemplateConfig(url, 'figma')
+   // const initGlobal = useMemo(() => getInitialValue(global), [global])
+   // const initTemplate = useMemo(() => getInitialValue(template), [template])
    const form = useForm({
-      initialValues: initialData ? initialData : myData,
+      initialValues: {
+         global: initGlobal,
+         template: initTemplate,
+      },
    })
+   useEffect(() => {
+      form.setFieldValue('global', initGlobal)
+   }, [initGlobal])
+   useEffect(() => {
+      form.setFieldValue('template', initTemplate)
+   }, [initTemplate])
+   // console.log(global, initialValue)
    const [submittedValues, setSubmittedValues] = useState('')
+   const handleOnSubmit = useCallback(async (values) => {
+      const response = await fetcher(
+         `${serverURL}/api/projects/createProject`,
+         {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+               data: values,
+            }),
+         }
+      )
+      if (response == 'Success') {
+         showNotification({
+            title: 'Success',
+            autoClose: 2000,
+            color: 'teal',
+            icon: <IconCheck size={16} />,
+            message: 'New Project Created🤥',
+         })
+      }
+   }, [])
    return (
       <>
          <form
             onSubmit={form.onSubmit((values) => {
-               console.log(values)
                setSubmittedValues(JSON.stringify(values, null, 2))
                handleOnSubmit(values)
             })}>
-            {Parse(schema, schema, form, '')}
+            {!global && <div>Parsing Global</div>}
+            {!template && <div>Parsing Template</div>}
+            {form.values.global && ParseObject(global, form, 'global')}
+            {form.values.template && ParseObject(template, form, 'template')}
             <Button type="submit" mt="md">
                Submit
             </Button>
@@ -49,122 +93,67 @@ const CreateForm = ({
       </>
    )
 }
-
-const HandleAnyOf = ({ schema, currentSchema, form, dataposition }) => {
-   const selectiveData = () => {
-      let result = []
-      currentSchema.anyOf.forEach((value, index) => {
-         result.push(`${value.description} Section`)
-      })
-      return result
-   }
-   const selectData = selectiveData()
-   const [index, setIndex] = useState(-1)
-   return (
-      <>
-         <Select
-            data={selectData}
-            label="Select "
-            onChange={(event) => {
-               const newIndex = selectData.indexOf(event)
-
-               const jsonSchema = new Draft07(
-                  currentSchema.anyOf[`${newIndex}`]
-               )
-               const myData = jsonSchema.getTemplate()
-               setIndex(newIndex)
-               form.setFieldValue(dataposition, myData)
-            }}
-         />
-         {(index == 1 || index == 0) &&
-            Parse(schema, currentSchema.anyOf[`${index}`], form, dataposition)}
-      </>
-   )
-}
-/**
- * @function Parse recusive function for parsing Schema
- * @param schema
- * @param currentSchema
- * @param form
- * @param dataposition
- * @returns
+/***
+ * ! get Initival Value from the config object
+ * @dev should add default value LATER
  */
-const Parse = (schema, currentSchema, form, dataposition?: string) => {
-   const Switching = () => {
-      // if (currentSchema['$ref']) {
-      //    return parse(schema, refs.get(currentSchema['$ref']), form)
-      // }
-      const level = 5 - dataposition.split('.').length
-      if (currentSchema.hasOwnProperty('anyOf')) {
-         return (
-            <HandleAnyOf
-               schema={schema}
-               currentSchema={currentSchema}
-               form={form}
-               dataposition={dataposition}
-            />
-         )
-      }
-      if (currentSchema.hasOwnProperty('enum')) {
-         return (
-            <NativeSelect
-               data={currentSchema.enum}
-               label={currentSchema.title}
-               description={currentSchema.description}
-               {...form.getInputProps(currentSchema.title)}
-               onChange={(event) =>
-                  form.setFieldValue(dataposition, event.currentTarget.value)
-               }
-            />
-         )
-      }
-      switch (currentSchema.type) {
-         case 'string':
+
+const ParseObject = (
+   object: IPropsschemaObject,
+   form,
+   dataposition?: string
+) => {
+   const Parse = () => {
+      // form.setFieldvalue(dataposition + object.title, {})
+      switch (object.type) {
+         case 'color':
             return (
-               <TextInput
-                  key={dataposition}
-                  label={currentSchema.title}
-                  description={undefined}
-                  placeholder={currentSchema.description}
+               <ColorPicker
+                  swatches={[
+                     '#25262b',
+                     '#868e96',
+                     '#fa5252',
+                     '#e64980',
+                     '#be4bdb',
+                     '#7950f2',
+                     '#4c6ef5',
+                     '#228be6',
+                     '#15aabf',
+                     '#12b886',
+                     '#40c057',
+                     '#82c91e',
+                     '#fab005',
+                     '#fd7e14',
+                  ]}
                   {...form.getInputProps(dataposition)}
                />
             )
-         case 'number':
+         case 'select':
             return (
-               <NumberInput
-                  label={currentSchema.title}
-                  placeholder={dataposition}
-                  withAsterisk
+               <Select
+                  label={object.title}
+                  data={object.data}
                   {...form.getInputProps(dataposition)}
                />
             )
          case 'boolean':
             return (
                <Checkbox
-                  label={dataposition}
-                  {...form.getInputProps(dataposition, { type: 'checkbox' })}
+                  label={object.title}
+                  {...form.getInputProps(dataposition)}
                />
             )
-
-         case 'array':
-            if (
-               currentSchema.minItems &&
-               currentSchema.minItems == currentSchema.maxItems
+         case 'string':
+         case 'number':
+            console.log('parsing', dataposition, form.values)
+            return (
+               <TextInput
+                  label={object.title}
+                  placeholder={dataposition}
+                  {...form.getInputProps(dataposition)}
+               />
             )
-               return currentSchema.items.map((value, index) => {
-                  return (
-                     <>
-                        <Box key={index}>
-                           {Parse(
-                              schema,
-                              currentSchema.items[`${index}`],
-                              form,
-                              dataposition + `.${index}`
-                           )}
-                        </Box>
-                     </>
-                  )
-               })
+         case 'array':
             const formObject = () => {
                let current = form.values
                dataposition.split('.').forEach((value, index) => {
@@ -174,24 +163,17 @@ const Parse = (schema, currentSchema, form, dataposition?: string) => {
             }
             return (
                <>
-                  <Text color="teal" size={level * 15}>
-                     {currentSchema.title}
-                  </Text>
                   <Button
                      onClick={() => {
-                        const jsonSchema = new Draft07(currentSchema.items)
-                        const myData = jsonSchema.getTemplate()
-                        form.insertListItem(dataposition, myData)
-                     }}
-                     compact>
-                     {`New ${currentSchema.title}`}
-                  </Button>
-                  {formObject().map((value, index) => (
+                        const temp = getInitialValue(object.item)
+                        console.log(temp)
+                        form.insertListItem(dataposition, temp)
+                     }}>{`New ${object.title}`}</Button>
+                  {formObject().map((item, index) => (
                      <>
                         <Box key={dataposition}>
-                           {Parse(
-                              schema,
-                              currentSchema.items,
+                           {ParseObject(
+                              object.item,
                               form,
                               dataposition + `.${index}`
                            )}
@@ -208,26 +190,19 @@ const Parse = (schema, currentSchema, form, dataposition?: string) => {
                   ))}
                </>
             )
-         case 'object':
+         case 'group':
             return (
                <>
-                  <Text color="teal" size={level * 15}>
-                     {currentSchema.title}
-                  </Text>
-                  {Object.keys(currentSchema.properties).map((value, index) => {
+                  <Text color="red">{object.title}</Text>
+                  {object.fields.map((item, index) => {
                      return (
-                        <Box
-                           key={index}
-                           sx={(theme) => ({
-                              marginBottom: level * 5,
-                           })}>
-                           {Parse(
-                              schema,
-                              currentSchema.properties[`${value}`],
+                        <Box key={index}>
+                           {ParseObject(
+                              item,
                               form,
-                              schema == currentSchema
-                                 ? dataposition + `${value}`
-                                 : dataposition + `.${value}`
+                              dataposition == ''
+                                 ? dataposition + `${item.title}`
+                                 : dataposition + `.${item.title}`
                            )}
                         </Box>
                      )
@@ -235,9 +210,9 @@ const Parse = (schema, currentSchema, form, dataposition?: string) => {
                </>
             )
          default:
-            return <Text>Unknow Types Comming Soon</Text>
+            return <Text>Unknow Type</Text>
       }
+      return <Text>ParseA</Text>
    }
-   return <>{Switching()}</>
+   return <>{Parse()}</>
 }
-export default CreateForm
