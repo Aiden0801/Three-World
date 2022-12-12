@@ -58,7 +58,6 @@ export const CreateFormFromConfigObject = ({ url }) => {
    // console.log(global, initialValue)
    const [submittedValues, setSubmittedValues] = useState('')
    const handleOnSubmit = useCallback(async (values) => {
-      return
       const response = await fetcher(
          `${serverURL}/api/projects/createProject`,
          {
