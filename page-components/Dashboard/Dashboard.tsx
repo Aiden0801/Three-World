@@ -77,7 +77,6 @@ const Dashboard: React.FC = () => {
       // console.log(schema)
    }
    const handleOnSubmit = async (values) => {
-      return
       const response = await fetcher(
          `${serverURL}/api/projects/createProject`,
          {
@@ -99,6 +98,7 @@ const Dashboard: React.FC = () => {
          setOpened(false)
       }
 
+      mutate()
       console.log(response)
    }
    const handleDeleteProject = useCallback(async (name: string) => {
@@ -176,7 +176,12 @@ const Dashboard: React.FC = () => {
             {/* {globalConfig && (
                <CreateFormFromConfigObject object={globalConfig} />
             )} */}
-            {<CreateFormFromConfigObject url={clientAppURL} />}
+            {
+               <CreateFormFromConfigObject
+                  url={clientAppURL}
+                  handleOnSubmit={handleOnSubmit}
+               />
+            }
          </Modal>
          <Box
             sx={(theme) => ({

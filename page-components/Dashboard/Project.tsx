@@ -107,7 +107,7 @@ const ProjectCofig = ({ projectName }) => {
                      fontFamily: 'Greycliff CF, sans-serif',
                      fontSize: '30px',
                   }}>
-                  Edit Project
+                  {projectName}
                </Text>
                <LinkButton
                   compact
@@ -124,6 +124,7 @@ const ProjectCofig = ({ projectName }) => {
                <CreateFormFromConfigObject
                   url={clientAppURL}
                   savedData={projectData}
+                  handleOnSubmit={handleOnSubmit}
                />
             )}
             {projectData == undefined && (

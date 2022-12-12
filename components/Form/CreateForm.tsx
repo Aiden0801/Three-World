@@ -36,6 +36,7 @@ import { useGlobalConfig } from '../../utils/parser/globalconfig'
 export const CreateFormFromConfigObject = ({
    url,
    savedData,
+   handleOnSubmit,
 }: IPropsCreateForm) => {
    const [global, initGlobal] = useGlobalConfig(url)
    const [templateName, setTemplateName] = useState(null)
@@ -64,27 +65,27 @@ export const CreateFormFromConfigObject = ({
    }, [form.values.global])
    // console.log(global, initialValue)
    const [submittedValues, setSubmittedValues] = useState('')
-   const handleOnSubmit = useCallback(async (values) => {
-      const response = await fetcher(
-         `${serverURL}/api/projects/createProject`,
-         {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-               data: values,
-            }),
-         }
-      )
-      if (response == 'Success') {
-         showNotification({
-            title: 'Success',
-            autoClose: 2000,
-            color: 'teal',
-            icon: <IconCheck size={16} />,
-            message: 'New Project Created🤥',
-         })
-      }
-   }, [])
+   // const handleOnSubmit = useCallback(async (values) => {
+   //    const response = await fetcher(
+   //       `${serverURL}/api/projects/createProject`,
+   //       {
+   //          method: 'POST',
+   //          headers: { 'Content-Type': 'application/json' },
+   //          body: JSON.stringify({
+   //             data: values,
+   //          }),
+   //       }
+   //    )
+   //    if (response == 'Success') {
+   //       showNotification({
+   //          title: 'Success',
+   //          autoClose: 2000,
+   //          color: 'teal',
+   //          icon: <IconCheck size={16} />,
+   //          message: 'Operation Completed🤥',
+   //       })
+   //    }
+   // }, [])
    return (
       <>
          <form
@@ -92,11 +93,16 @@ export const CreateFormFromConfigObject = ({
                setSubmittedValues(JSON.stringify(values, null, 2))
                handleOnSubmit(values)
             })}>
-            <TextInput
-               required
-               label="Business Name"
-               {...form.getInputProps('name')}
-            />
+            {savedData ? (
+               <></>
+            ) : (
+               <TextInput
+                  required
+                  disabled={savedData ? true : false}
+                  label="Business Name"
+                  {...form.getInputProps('name')}
+               />
+            )}
             {!global && <div>Parsing Global</div>}
             {templateName && !template && <div>Parsing {templateName}</div>}
             {form.values.global &&

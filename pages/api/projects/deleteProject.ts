@@ -1,5 +1,5 @@
 import connectMongo from '../../../api-lib/mongodb'
-const Config = require('../../../api-lib/models/twoconfig')
+const Config = require('../../../api-lib/models/websiteconfig')
 
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
