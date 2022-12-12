@@ -19,18 +19,11 @@ import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import useSWR from 'swr'
 import { CreateFormFromConfigObject } from '../../components/Form/CreateForm'
-import {
-   LandingPageSchema,
-   TwoDLandingPageSchema,
-} from '../../config/2DLangingPageSchema'
-import { IPropsschemaObject } from '../../utils/parser/schma_parser'
+
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import FadeIn from '../../utils/spring/FadeIn'
-import { useGlobalConfig } from '../../utils/parser/globalconfig'
-import { useTemplateConfig } from '../../utils/parser/templateconfig'
-import $RefParser from '@apidevtools/json-schema-ref-parser'
-import { HTMLAttributeAnchorTarget } from 'react'
+
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',

@@ -18,7 +18,7 @@ import { IPropsCreateForm } from '../../types'
 import {
    IPropsschemaObject,
    getInitialValue,
-} from '../../utils/parser/schma_parser'
+} from '../../utils/parser/schema_parser'
 import { fetcher } from '../../lib/fetcher'
 import { serverURL } from '../../config/urlcontrol'
 import { IconCheck } from '@tabler/icons'
