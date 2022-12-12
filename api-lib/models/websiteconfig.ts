@@ -2,6 +2,7 @@ import mongoose from 'mongoose'
 import { Scene } from '../../components/ThreeJS/Scene'
 var Schema = mongoose.Schema
 const WebsiteConfig = new mongoose.Schema({
+   name: { type: String },
    global: {
       title: { type: String },
       description: { type: String },
