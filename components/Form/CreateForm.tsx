@@ -33,27 +33,32 @@ import { useGlobalConfig } from '../../utils/parser/globalconfig'
  * @param handleOnSubmit calls on submit button
  * @returns
  */
-
 export const CreateFormFromConfigObject = ({ url }) => {
    const [global, initGlobal] = useGlobalConfig(url)
-   const [template, initTemplate] = useTemplateConfig(url, 'figma')
-   // const initGlobal = useMemo(() => getInitialValue(global), [global])
-   // const initTemplate = useMemo(() => getInitialValue(template), [template])
+   const [templateName, setTemplateName] = useState(null)
+   const [template, initTemplate] = useTemplateConfig(url, templateName)
    const form = useForm({
       initialValues: {
-         global: initGlobal,
-         template: initTemplate,
+         global: {},
+         template: {},
       },
    })
    useEffect(() => {
-      form.setFieldValue('global', initGlobal)
+      if (initGlobal != null) form.setFieldValue('global', initGlobal)
    }, [initGlobal])
    useEffect(() => {
       form.setFieldValue('template', initTemplate)
    }, [initTemplate])
+   useEffect(() => {
+      if (form.values.global.hasOwnProperty('template')) {
+         console.log(form.values.global['template'])
+         setTemplateName(form.values.global['template'])
+      }
+   }, [form.values.global])
    // console.log(global, initialValue)
    const [submittedValues, setSubmittedValues] = useState('')
    const handleOnSubmit = useCallback(async (values) => {
+      return
       const response = await fetcher(
          `${serverURL}/api/projects/createProject`,
          {
@@ -82,9 +87,13 @@ export const CreateFormFromConfigObject = ({ url }) => {
                handleOnSubmit(values)
             })}>
             {!global && <div>Parsing Global</div>}
-            {!template && <div>Parsing Template</div>}
-            {form.values.global && ParseObject(global, form, 'global')}
-            {form.values.template && ParseObject(template, form, 'template')}
+            {templateName && !template && <div>Parsing {templateName}</div>}
+            {form.values.global &&
+               global &&
+               ParseObject(global, form, 'global')}
+            {templateName &&
+               form.values.template &&
+               ParseObject(template, form, 'template')}
             <Button type="submit" mt="md">
                Submit
             </Button>
@@ -145,11 +154,17 @@ const ParseObject = (
             )
          case 'string':
          case 'number':
-            console.log('parsing', dataposition, form.values)
             return (
                <TextInput
                   label={object.title}
-                  placeholder={dataposition}
+                  placeholder={object.description}
+                  onChange={() => {
+                     // form.setFieldValue('global', {
+                     //    description: 'A',
+                     //    template: 'B',
+                     //    title: 'C',
+                     // })
+                  }}
                   {...form.getInputProps(dataposition)}
                />
             )

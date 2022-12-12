@@ -97,6 +97,7 @@ export const authOptions: NextAuthOptions = {
          account,
          profile,
       }: IProps): Promise<string | boolean> {
+         console.log('signIn')
          if (user) {
             console.log('next_auth', user)
             const response = await fetcher(`${serverURL}/api/users`, {

@@ -1231,9 +1231,10 @@ export const useTemplateConfig = (
    const [templateConfig, setTemplateConfig] = useState(null)
    const [initTemplate, setInitTemplate] = useState(null)
    useEffect(() => {
-      getTemplateConfig()
-   }, [])
+      if (template_name != '' && template_name != null) getTemplateConfig()
+   }, [template_name])
    const getTemplateConfig = async () => {
+      console.log('getTemplateConfig')
       let schema = await $RefParser.dereference(
          `${website_url}/api/config/template/${template_name}`
       )
