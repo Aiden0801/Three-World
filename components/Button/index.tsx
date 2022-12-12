@@ -103,3 +103,14 @@ ToolTipButton.displayName = 'ToolTipButton'
 export type IPropsLinkButton = ButtonProps & {
    href?: string
 }
+export const LinkButton = forwardRef<HTMLButtonElement, IPropsLinkButton>(
+   ({ href, ...props }, _ref) => {
+      return (
+         <Link href={href} passHref>
+            <Button {...props} />
+         </Link>
+      )
+   }
+)
+
+LinkButton.displayName = 'LinkButton'

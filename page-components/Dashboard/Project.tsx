@@ -5,10 +5,12 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { Suspense, useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { CreateForm } from '../../components/Form/CreateForm'
+import { CreateFormFromConfigObject } from '../../components/Form/CreateForm'
+import { LinkButton } from '../../components/Button'
 import { LandingPageSchema } from '../../config/2DLangingPageSchema'
 import { serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
+import { clientAppURL } from '../../config/urlcontrol'
 const fetchProjects = async (url: string, name: string) => {
    console.log('fetch', name)
    const data = await fetcher(
@@ -87,47 +89,47 @@ const ProjectCofig = ({ projectName }) => {
             justifyContent: 'center',
             flexDirection: 'column',
          }}>
-         <Box
-            sx={(theme) => ({
-               display: 'flex',
-               justifyContent: 'space-between',
-               align: 'center',
-               alignItems: 'center',
-               marginTop: '30px',
-            })}>
-            <Text
-               component="span"
-               variant="gradient"
-               gradient={{ from: 'indigo', to: 'green', deg: 0 }}
-               weight={700}
-               style={{
-                  fontFamily: 'Greycliff CF, sans-serif',
-                  fontSize: '30px',
-               }}>
-               Edit Project
-            </Text>
-            <Button
-               compact
-               size="sm"
-               leftIcon={<IconArrowBack size={18} stroke={1.5} />}
-               color="orange"
-               pr={20}
-               onClick={() => {
-                  router.push('./')
-               }}>
-               Back
-            </Button>
-         </Box>
-         {projectData && (
-            <CreateForm
-               schema={LandingPageSchema}
-               initialData={projectData}
-               handleOnSubmit={handleOnSubmit}
-            />
-         )}
-         {projectData == undefined && (
-            <Skeleton visible={true} height={500}></Skeleton>
-         )}
+         <>
+            <Box
+               sx={(theme) => ({
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  align: 'center',
+                  alignItems: 'center',
+                  marginTop: '30px',
+               })}>
+               <Text
+                  component="span"
+                  variant="gradient"
+                  gradient={{ from: 'indigo', to: 'green', deg: 0 }}
+                  weight={700}
+                  style={{
+                     fontFamily: 'Greycliff CF, sans-serif',
+                     fontSize: '30px',
+                  }}>
+                  Edit Project
+               </Text>
+               <LinkButton
+                  compact
+                  size="sm"
+                  leftIcon={<IconArrowBack size={18} stroke={1.5} />}
+                  color="orange"
+                  pr={20}
+                  href="./">
+                  Back
+               </LinkButton>
+            </Box>
+            {console.log('data', projectData)}
+            {projectData && (
+               <CreateFormFromConfigObject
+                  url={clientAppURL}
+                  savedData={projectData}
+               />
+            )}
+            {projectData == undefined && (
+               <Skeleton visible={true} height={500}></Skeleton>
+            )}
+         </>
       </Container>
       // </Suspense>
    )

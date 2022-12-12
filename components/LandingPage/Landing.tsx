@@ -3,6 +3,7 @@ import { GithubIcon } from '@mantine/ds'
 import React from 'react'
 import { FeaturesCards } from '../../components/LandingPage/Features'
 import Link from 'next/link'
+import { LinkButton } from '../Button'
 const BREAKPOINT = '@media (max-width: 755px)'
 
 const useStyles = createStyles((theme) => ({
@@ -84,15 +85,14 @@ const LandingCard: React.FC = () => {
          </Text>
 
          <Group className={classes.controls}>
-            <Button
-               component={Link}
+            <LinkButton
                size="xl"
                className={classes.control}
                variant="gradient"
                gradient={{ from: 'blue', to: 'cyan' }}
                href="/login">
                Get started
-            </Button>
+            </LinkButton>
 
             <Button
                component="a"

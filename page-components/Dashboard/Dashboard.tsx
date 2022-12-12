@@ -32,6 +32,7 @@ import { useTemplateConfig } from '../../utils/parser/templateconfig'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
 import { HTMLAttributeAnchorTarget } from 'react'
 import Link from 'next/link'
+import { LinkButton } from '../../components/Button'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
@@ -217,16 +218,15 @@ const Dashboard: React.FC = () => {
                         <Flex justify="space-between" align="center">
                            <Text>{item.name}</Text>
                            <Button.Group>
-                              <Button
-                                 component={Link}
+                              <LinkButton
                                  variant="light"
                                  color="blue"
                                  mt="md"
                                  size="xs"
                                  radius="md"
                                  href={`/dashboard/${item.name}`}>
-                                 {`Edit `}
-                              </Button>
+                                 Edit
+                              </LinkButton>
                               <Button
                                  variant="light"
                                  color="red"

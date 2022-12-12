@@ -33,21 +33,28 @@ import { useGlobalConfig } from '../../utils/parser/globalconfig'
  * @param handleOnSubmit calls on submit button
  * @returns
  */
-export const CreateFormFromConfigObject = ({ url }) => {
+export const CreateFormFromConfigObject = ({
+   url,
+   savedData,
+}: IPropsCreateForm) => {
    const [global, initGlobal] = useGlobalConfig(url)
    const [templateName, setTemplateName] = useState(null)
    const [template, initTemplate] = useTemplateConfig(url, templateName)
+   // console.log('saved', savedGlobal, savedTemplate)
    const form = useForm({
       initialValues: {
-         global: {},
-         template: {},
+         name: savedData ? savedData.name : '',
+         global: savedData ? savedData.global : {},
+         template: savedData ? savedData.template : {},
       },
    })
+   console.log(form.values)
    useEffect(() => {
-      if (initGlobal != null) form.setFieldValue('global', initGlobal)
+      if (initGlobal != null && savedData == undefined)
+         form.setFieldValue('global', initGlobal)
    }, [initGlobal])
    useEffect(() => {
-      form.setFieldValue('template', initTemplate)
+      if (savedData == undefined) form.setFieldValue('template', initTemplate)
    }, [initTemplate])
    useEffect(() => {
       if (form.values.global.hasOwnProperty('template')) {
@@ -85,12 +92,18 @@ export const CreateFormFromConfigObject = ({ url }) => {
                setSubmittedValues(JSON.stringify(values, null, 2))
                handleOnSubmit(values)
             })}>
+            <TextInput
+               required
+               label="Business Name"
+               {...form.getInputProps('name')}
+            />
             {!global && <div>Parsing Global</div>}
             {templateName && !template && <div>Parsing {templateName}</div>}
             {form.values.global &&
                global &&
                ParseObject(global, form, 'global')}
             {templateName &&
+               template &&
                form.values.template &&
                ParseObject(template, form, 'template')}
             <Button type="submit" mt="md">

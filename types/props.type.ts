@@ -6,7 +6,11 @@ export interface IPropsProjectPgae {
    name: string
 }
 export interface IPropsCreateForm {
-   schema: any
-   initialData?: object
-   handleOnSubmit: Function
+   url?: string
+   savedData?: {
+      name: string
+      global: object
+      template: object
+   }
+   handleOnSubmit?: Function
 }
