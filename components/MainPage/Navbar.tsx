@@ -23,7 +23,7 @@ import {
    IconUserPlus,
 } from '@tabler/icons'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
+import Router from 'next/router'
 const useStyles = createStyles((theme, _params, getRef) => {
    const icon = getRef('icon')
    return {
@@ -127,7 +127,6 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
    const { colorScheme, toggleColorScheme } = useMantineColorScheme()
    const theme = useMantineTheme()
    const { classes, cx } = useStyles()
-   const router = useRouter()
    return (
       <Navbar p="md" className={classes.container} {...props}>
          <Group className={classes.header} position="apart">
@@ -168,7 +167,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                description="Additional information"
                active={initialState == 'dashboard' ? true : false}
                onClick={() => {
-                  router.push('/dashboard')
+                  Router.push('/dashboard')
                }}
                icon={
                   <IconDashboard size="20" color="royalblue"></IconDashboard>
@@ -187,7 +186,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                onClick={() => {
-                  router.push('/sessions')
+                  Router.push('/sessions')
                }}
                active={initialState == 'sessions' ? true : false}
                icon={
@@ -201,7 +200,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                onClick={() => {
-                  router.push('/browsers')
+                  Router.push('/browsers')
                }}
                active={initialState == 'browsers' ? true : false}
                icon={<IconScreenShare size="20" color="red"></IconScreenShare>}
@@ -211,7 +210,7 @@ const UserMenu: React.FC<INavbarProps> = ({ initialState, ...props }) => {
                className={classes.link}
                description="Additional information"
                onClick={() => {
-                  router.push('/share')
+                  Router.push('/share')
                }}
                active={initialState == 'share' ? true : false}
                icon={<IconShare size="20" color="red"></IconShare>}

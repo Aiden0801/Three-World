@@ -2,7 +2,7 @@ import { Button, Container, createStyles, Group, Text } from '@mantine/core'
 import { GithubIcon } from '@mantine/ds'
 import React from 'react'
 import { FeaturesCards } from '../../components/LandingPage/Features'
-import { useRouter } from 'next/router'
+import Link from 'next/link'
 const BREAKPOINT = '@media (max-width: 755px)'
 
 const useStyles = createStyles((theme) => ({
@@ -65,7 +65,6 @@ const useStyles = createStyles((theme) => ({
 
 const LandingCard: React.FC = () => {
    const { classes } = useStyles()
-   const router = useRouter()
    return (
       <Container size={700} className={classes.inner}>
          <h1 className={classes.title}>
@@ -86,13 +85,12 @@ const LandingCard: React.FC = () => {
 
          <Group className={classes.controls}>
             <Button
+               component={Link}
                size="xl"
                className={classes.control}
                variant="gradient"
                gradient={{ from: 'blue', to: 'cyan' }}
-               onClick={() => {
-                  router.push('/login')
-               }}>
+               href="/login">
                Get started
             </Button>
 

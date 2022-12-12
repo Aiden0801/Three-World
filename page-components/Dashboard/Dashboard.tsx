@@ -31,6 +31,7 @@ import { useGlobalConfig } from '../../utils/parser/globalconfig'
 import { useTemplateConfig } from '../../utils/parser/templateconfig'
 import $RefParser from '@apidevtools/json-schema-ref-parser'
 import { HTMLAttributeAnchorTarget } from 'react'
+import Link from 'next/link'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
@@ -217,14 +218,13 @@ const Dashboard: React.FC = () => {
                            <Text>{item.name}</Text>
                            <Button.Group>
                               <Button
+                                 component={Link}
                                  variant="light"
                                  color="blue"
                                  mt="md"
                                  size="xs"
                                  radius="md"
-                                 onClick={() => {
-                                    router.push(`/dashboard/${item.name}`)
-                                 }}>
+                                 href={`/dashboard/${item.name}`}>
                                  {`Edit `}
                               </Button>
                               <Button

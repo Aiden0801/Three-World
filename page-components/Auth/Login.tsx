@@ -49,6 +49,7 @@ export default function Login() {
    const { data: session, status } = useSession()
    const { classes } = useStyles()
    console.log(status)
+   const router = useRotuer()
    useEffect(() => {
       console.log(status)
       if (status === 'authenticated') {
