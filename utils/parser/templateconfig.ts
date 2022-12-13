@@ -1,9 +1,13 @@
 import { useState, useEffect } from 'react'
-import $RefParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
+import $RefParser from '@apidevtools/json-schema-ref-parser'
 
 import { getInitialValue, ParseSchema } from './schema_parser'
-// import { clientAppURL } from '../../config/urlcontrol'
 
+/**
+ * @deprecated
+ * @param website_url base url of the server
+ * @param template_name template name
+ */
 export const useTemplateConfig = (
   website_url: string,
   template_name: string
@@ -14,7 +18,7 @@ export const useTemplateConfig = (
     if (template_name != '' && template_name != null) getTemplateConfig()
   }, [template_name])
   const getTemplateConfig = async () => {
-    console.log('getTemplateConfig')
+    console.log(`fetching template ${template_name} config...`)
     let schema = await $RefParser.dereference(
       `${website_url}/api/config/template/${template_name}`
     )
