@@ -4,27 +4,24 @@ import {
    Checkbox,
    Code,
    ColorPicker,
-   NativeSelect,
-   NumberInput,
+   ColorSwatch,
    Select,
    Text,
    TextInput,
+   Group,
 } from '@mantine/core'
-import { useEffect, useMemo, useState, useCallback } from 'react'
-import { useForm, FORM_INDEX } from '@mantine/form'
+import { forwardRef } from 'react'
+import { useForm } from '@mantine/form'
 import { IconTrash } from '@tabler/icons'
-import { Draft07 } from 'json-schema-library'
+import { useEffect, useState } from 'react'
 import { IPropsCreateForm } from '../../types'
-import {
-   IPropsschemaObject,
-   getInitialValue,
-} from '../../utils/parser/schma_parser'
-import { fetcher } from '../../lib/fetcher'
-import { serverURL } from '../../config/urlcontrol'
-import { IconCheck } from '@tabler/icons'
-import { showNotification } from '@mantine/notifications'
-import { useTemplateConfig } from '../../utils/parser/templateconfig'
+import { useMantineTheme } from '@mantine/core'
 import { useGlobalConfig } from '../../utils/parser/globalconfig'
+import {
+   getInitialValue,
+   IPropsschemaObject,
+} from '../../utils/parser/schma_parser'
+import { useTemplateConfig } from '../../utils/parser/templateconfig'
 
 /**
  *
@@ -38,6 +35,7 @@ export const CreateFormFromConfigObject = ({
    savedData,
    handleOnSubmit,
 }: IPropsCreateForm) => {
+   const theme = useMantineTheme()
    const [global, initGlobal] = useGlobalConfig(url)
    const [templateName, setTemplateName] = useState(null)
    const [template, initTemplate] = useTemplateConfig(url, templateName)
@@ -63,35 +61,13 @@ export const CreateFormFromConfigObject = ({
          setTemplateName(form.values.global['template'])
       }
    }, [form.values.global])
-   // console.log(global, initialValue)
    const [submittedValues, setSubmittedValues] = useState('')
-   // const handleOnSubmit = useCallback(async (values) => {
-   //    const response = await fetcher(
-   //       `${serverURL}/api/projects/createProject`,
-   //       {
-   //          method: 'POST',
-   //          headers: { 'Content-Type': 'application/json' },
-   //          body: JSON.stringify({
-   //             data: values,
-   //          }),
-   //       }
-   //    )
-   //    if (response == 'Success') {
-   //       showNotification({
-   //          title: 'Success',
-   //          autoClose: 2000,
-   //          color: 'teal',
-   //          icon: <IconCheck size={16} />,
-   //          message: 'Operation Completed🤥',
-   //       })
-   //    }
-   // }, [])
    return (
       <>
          <form
             onSubmit={form.onSubmit((values) => {
                setSubmittedValues(JSON.stringify(values, null, 2))
-               handleOnSubmit(values)
+               // handleOnSubmit(values)
             })}>
             {savedData ? (
                <></>
@@ -125,6 +101,25 @@ export const CreateFormFromConfigObject = ({
  * @dev should add default value LATER
  */
 
+interface ItemProps extends React.ComponentPropsWithoutRef<'div'> {
+   color?: string
+}
+
+const SelectItem = forwardRef<HTMLDivElement, ItemProps>(
+   ({ color, ...others }: ItemProps, ref) => {
+      const theme = useMantineTheme()
+      return (
+         <div ref={ref} {...others}>
+            <Group noWrap>
+               <ColorSwatch color={theme.colors[`${color}`][6]} />
+
+               <Text size="sm">{color}</Text>
+            </Group>
+         </div>
+      )
+   }
+)
+SelectItem.displayName = 'SelectItem'
 const ParseObject = (
    object: IPropsschemaObject,
    form,
@@ -135,23 +130,24 @@ const ParseObject = (
       switch (object.type) {
          case 'color':
             return (
-               <ColorPicker
-                  swatches={[
-                     '#25262b',
-                     '#868e96',
-                     '#fa5252',
-                     '#e64980',
-                     '#be4bdb',
-                     '#7950f2',
-                     '#4c6ef5',
-                     '#228be6',
-                     '#15aabf',
-                     '#12b886',
-                     '#40c057',
-                     '#82c91e',
-                     '#fab005',
-                     '#fd7e14',
+               <Select
+                  data={[
+                     { color: 'blue', value: 'blue', label: 'Blue' },
+                     { color: 'cyan', value: 'cyan', label: 'Cyan' },
+                     { color: 'dark', value: 'dark', label: 'Dark' },
+                     { color: 'grape', value: 'grape', label: 'Grape' },
+                     { color: 'gray', value: 'gray', label: 'Gray' },
+                     { color: 'green', value: 'green', label: 'Green' },
+                     { color: 'indigo', value: 'indigo', label: 'Indigo' },
+                     { color: 'lime', value: 'lime', label: 'Lime' },
+                     { color: 'orange', value: 'orange', label: 'Orange' },
+                     { color: 'pink', value: 'pink', label: 'Pink' },
+                     { color: 'red', value: 'red', label: 'Red' },
+                     { color: 'teal', value: 'teal', label: 'Teal' },
+                     { color: 'violet', value: 'violet', label: 'Violet' },
+                     { color: 'yellow', value: 'yellow', label: 'Yellow' },
                   ]}
+                  itemComponent={SelectItem}
                   {...form.getInputProps(dataposition)}
                />
             )
