@@ -32,7 +32,7 @@ const useStyles = createStyles((theme) => ({
 }))
 
 const fetchProjects = async (url: string, email: string) => {
-   const data = await fetcher(`${serverURL}/api/projects/getProjects`, {
+   const data = await fetcher(`${serverURL}/api/projects`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
    })
@@ -40,7 +40,7 @@ const fetchProjects = async (url: string, email: string) => {
 }
 const useProjectData = () => {
    const { data, mutate, error, isValidating } = useSWR(
-      ['api/projects/getProjects'],
+      ['api/projects'],
       fetchProjects,
       { revalidateOnFocus: false }
    )
