@@ -173,9 +173,6 @@ const Dashboard: React.FC = () => {
                console.log('onClose')
                setOpened(false)
             }}>
-            {/* {globalConfig && (
-               <CreateFormFromConfigObject object={globalConfig} />
-            )} */}
             {
                <CreateFormFromConfigObject
                   url={clientAppURL}
