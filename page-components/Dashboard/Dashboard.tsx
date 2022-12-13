@@ -12,27 +12,16 @@ import {
    Skeleton,
    Text,
 } from '@mantine/core'
-import { clientAppURL } from '../../config/urlcontrol'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons'
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
+import { LinkButton } from '../../components/Button'
 import { CreateFormFromConfigObject } from '../../components/Form/CreateForm'
-import {
-   LandingPageSchema,
-   TwoDLandingPageSchema,
-} from '../../config/2DLangingPageSchema'
-import { IPropsschemaObject } from '../../utils/parser/schma_parser'
-import { serverURL } from '../../config/urlcontrol'
+import { clientAppURL, serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import FadeIn from '../../utils/spring/FadeIn'
-import { useGlobalConfig } from '../../utils/parser/globalconfig'
-import { useTemplateConfig } from '../../utils/parser/templateconfig'
-import $RefParser from '@apidevtools/json-schema-ref-parser'
-import { HTMLAttributeAnchorTarget } from 'react'
-import Link from 'next/link'
-import { LinkButton } from '../../components/Button'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
@@ -67,15 +56,7 @@ const Dashboard: React.FC = () => {
    const [opened, setOpened] = useState(false)
    const { classes, theme } = useStyles()
    const router = useRouter()
-   // const templateConfig = useTemplateConfig('AAA', 'BBB')
-   // const globalConfig = useGlobalConfig('A')
-   useEffect(() => {
-      // test()
-   }, [])
-   const test = async () => {
-      // let schema = await $RefParser.dereference(figma)
-      // console.log(schema)
-   }
+
    const handleOnSubmit = async (values) => {
       const response = await fetcher(
          `${serverURL}/api/projects/createProject`,
