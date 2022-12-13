@@ -13,7 +13,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    try {
       let project = await Config.findOne({ name: projectName }).select()
       console.log(project)
-      res.status(200).send(project)
+      let result = []
+      for (const [key, value] of Object.entries(project.template.sections)) {
+         result.push({
+            component: key,
+            props: value,
+         })
+      }
+      res.status(200).send({
+         global: project.global,
+         template: {
+            theme: project.template.theme,
+            sections: result,
+         },
+      })
    } catch (err) {
       console.error(err.message)
       res.status(500).send('Server error')
