@@ -67,7 +67,7 @@ export const CreateFormFromConfigObject = ({
          <form
             onSubmit={form.onSubmit((values) => {
                setSubmittedValues(JSON.stringify(values, null, 2))
-               // handleOnSubmit(values)
+               handleOnSubmit(values)
             })}>
             {savedData ? (
                <></>
