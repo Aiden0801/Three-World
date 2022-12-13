@@ -30,6 +30,9 @@ export const authOptions: NextAuthOptions = {
       GoogleProvider({
          clientId: process.env.GOOGLE_ID,
          clientSecret: process.env.GOOGLE_SECRET,
+         httpOptions: {
+            timeout: 40000,
+         },
       }),
       DiscordProvider({
          clientId: process.env.DISCORD_ID,

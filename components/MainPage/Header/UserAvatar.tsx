@@ -18,9 +18,9 @@ export default function UserAvatar({ img }) {
       <Popover opened={opened} onChange={setOpened}>
          <Popover.Target>
             <UnstyledButton onClick={() => setOpened((o) => !o)}>
-               <Indicator>
-                  <Avatar radius="xl" size={35} src={img} alt="img" />
-               </Indicator>
+               {/* <Indicator> */}
+               <Avatar radius="xl" size={35} src={img} alt="img" />
+               {/* </Indicator> */}
             </UnstyledButton>
          </Popover.Target>
          <Popover.Dropdown>

@@ -9,10 +9,12 @@ import {
    Stack,
    Transition,
 } from '@mantine/core'
+import Link from 'next/link'
 import { useDisclosure } from '@mantine/hooks'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { useSession } from 'next-auth/react'
+import { LinkButton } from '../Button'
 const useStyles = createStyles((theme) => ({
    link: {
       display: 'flex',
@@ -143,11 +145,7 @@ export default function HeaderMenu() {
 
                <>
                   <Group className={classes.hiddenMobile}>
-                     <Button
-                        className={classes.button}
-                        onClick={() => router.push('/login')}>
-                        Log in
-                     </Button>
+                     <LinkButton href="/login">Log In</LinkButton>
                   </Group>
                </>
 
@@ -177,14 +175,12 @@ export default function HeaderMenu() {
                               Contact US
                            </a>
 
-                           <Button
+                           <LinkButton
                               variant="default"
                               className={classes.button}
-                              onClick={() => {
-                                 router.push('/login')
-                              }}>
+                              href="/login">
                               Log in
-                           </Button>
+                           </LinkButton>
                         </Stack>
                      </Paper>
                   )}

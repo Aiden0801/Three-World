@@ -12,18 +12,16 @@ import {
    Skeleton,
    Text,
 } from '@mantine/core'
-import { clientAppURL } from '../../config/urlcontrol'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons'
 import { useRouter } from 'next/router'
-import React, { useCallback, useEffect, useState, useMemo } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
+import { LinkButton } from '../../components/Button'
 import { CreateFormFromConfigObject } from '../../components/Form/CreateForm'
-
-import { serverURL } from '../../config/urlcontrol'
+import { clientAppURL, serverURL } from '../../config/urlcontrol'
 import { fetcher } from '../../lib/fetcher'
 import FadeIn from '../../utils/spring/FadeIn'
-
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
@@ -58,17 +56,8 @@ const Dashboard: React.FC = () => {
    const [opened, setOpened] = useState(false)
    const { classes, theme } = useStyles()
    const router = useRouter()
-   // const templateConfig = useTemplateConfig('AAA', 'BBB')
-   // const globalConfig = useGlobalConfig('A')
-   useEffect(() => {
-      // test()
-   }, [])
-   const test = async () => {
-      // let schema = await $RefParser.dereference(figma)
-      // console.log(schema)
-   }
+
    const handleOnSubmit = async (values) => {
-      return
       const response = await fetcher(
          `${serverURL}/api/projects/createProject`,
          {
@@ -90,6 +79,7 @@ const Dashboard: React.FC = () => {
          setOpened(false)
       }
 
+      mutate()
       console.log(response)
    }
    const handleDeleteProject = useCallback(async (name: string) => {
@@ -164,10 +154,12 @@ const Dashboard: React.FC = () => {
                console.log('onClose')
                setOpened(false)
             }}>
-            {/* {globalConfig && (
-               <CreateFormFromConfigObject object={globalConfig} />
-            )} */}
-            {<CreateFormFromConfigObject url={clientAppURL} />}
+            {
+               <CreateFormFromConfigObject
+                  url={clientAppURL}
+                  handleOnSubmit={handleOnSubmit}
+               />
+            }
          </Modal>
          <Box
             sx={(theme) => ({
@@ -209,17 +201,15 @@ const Dashboard: React.FC = () => {
                         <Flex justify="space-between" align="center">
                            <Text>{item.name}</Text>
                            <Button.Group>
-                              <Button
+                              <LinkButton
                                  variant="light"
                                  color="blue"
                                  mt="md"
                                  size="xs"
                                  radius="md"
-                                 onClick={() => {
-                                    router.push(`/dashboard/${item.name}`)
-                                 }}>
-                                 {`Edit `}
-                              </Button>
+                                 href={`/dashboard/${item.name}`}>
+                                 Edit
+                              </LinkButton>
                               <Button
                                  variant="light"
                                  color="red"

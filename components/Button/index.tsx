@@ -4,6 +4,7 @@ import { TablerIconProps } from '@tabler/icons'
 import { GithubIcon, DiscordIcon } from '@mantine/ds'
 import Image from 'next/image'
 import { forwardRef } from 'react'
+import Link from 'next/link'
 interface IButtonProps extends ButtonProps {
    onClick?: () => void
 }
@@ -99,3 +100,17 @@ export const ToolTipButton = forwardRef<HTMLButtonElement, IPropsToolTipButton>(
    }
 )
 ToolTipButton.displayName = 'ToolTipButton'
+export type IPropsLinkButton = ButtonProps & {
+   href?: string
+}
+export const LinkButton = forwardRef<HTMLButtonElement, IPropsLinkButton>(
+   ({ href, ...props }, _ref) => {
+      return (
+         <Link href={href} passHref>
+            <Button {...props} />
+         </Link>
+      )
+   }
+)
+
+LinkButton.displayName = 'LinkButton'

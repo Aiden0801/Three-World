@@ -46,11 +46,10 @@ const useStyles = createStyles((theme) => ({
    },
 }))
 export default function Login() {
-   const router = useRouter()
-
    const { data: session, status } = useSession()
    const { classes } = useStyles()
    console.log(status)
+   const router = useRouter()
    useEffect(() => {
       console.log(status)
       if (status === 'authenticated') {
