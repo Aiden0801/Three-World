@@ -16,14 +16,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       let result = []
       for (const [key, value] of Object.entries(project.template.sections)) {
          result.push({
-            sectionName: key,
+            component: key,
             props: value,
          })
       }
       res.status(200).send({
          global: project.global,
-         sections: result,
-         theme: project.template.theme,
+         template: {
+            theme: project.template.theme,
+            sections: result,
+         },
       })
    } catch (err) {
       console.error(err.message)
