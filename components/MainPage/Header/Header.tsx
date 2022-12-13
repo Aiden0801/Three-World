@@ -96,9 +96,9 @@ const HeaderComponent = ({ handlenavtoogle }) => {
                {/* {session && ( */}
                <>
                   <ActionToggle />
-                  <Indicator withBorder color="pink" mt="sm">
+                  {/* <Indicator withBorder color="pink" mt="sm">
                      <IconBell size={20} color="white" />
-                  </Indicator>
+                  </Indicator> */}
                   <UserAvatar img={session.user.image} />
                </>
                {/* )} */}
