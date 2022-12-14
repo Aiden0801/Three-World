@@ -13,6 +13,8 @@ import {
   IconAlarm,
   IconBrandDiscord,
   IconBrandGithub,
+  IconLayoutDashboard,
+  IconFolders,
 } from '@tabler/icons'
 import type { NavItem } from '../types/navbar.item.type'
 export type { NavItem }
@@ -42,6 +44,19 @@ const collaborateMenu: NavItem[] = [
     icon: IconShare,
     href: '/share',
     match: 'share',
+  },
+]
+/**
+ * Sub menu for the businesses management.
+ *
+ */
+const businessesMenu: NavItem[] = [
+  {
+    label: 'Your Landing Pages',
+    description: 'Configure your landing pages',
+    icon: IconDashboard,
+    href: '/dashboard',
+    match: 'dashboard',
   },
 ]
 /**
@@ -80,11 +95,18 @@ const comingSoonMenu: NavItem[] = [
  */
 export const navItems: NavItem[] = [
   {
-    label: 'Your Landing Pages',
-    description: 'Configure your landing pages',
-    icon: IconDashboard,
+    label: 'Dashboard',
+    // description: 'Your ',
+    icon: IconLayoutDashboard,
     href: '/dashboard',
-    match: 'dashboard',
+    disabled: true,
+  },
+  {
+    label: 'Projects',
+    // description: 'Manage your projects',
+    icon: IconFolders,
+    defaultOpened: true,
+    subitems: businessesMenu,
   },
   {
     label: 'Collaborate',
