@@ -2,11 +2,15 @@ import { Schema } from 'mongoose'
 export type IPropsschemaObject = {
    title?: string
    type?: any
-   item?: any
+   items?: any
    data?: any
    enum?: any
    description?: string
+   placeholder?: string
+   label?: string
+   component?: string
    fields?: Array<any>
+   isRequired?: boolean
    _isSelect?: boolean
    _isEnum?: boolean
    _isArray?: boolean
