@@ -12,7 +12,7 @@ import {
    useMantineTheme,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
-
+import { parseSchema } from '../../lib/landing-pages'
 import { IPropsCreateForm } from '../../types'
 import { useConfig } from '../../lib/landing-pages'
 import type { IPropsschemaObject } from '../../utils/parser/schema_parser'
@@ -33,15 +33,17 @@ export const CreateFormFromConfigObject = ({
    const theme = useMantineTheme()
    const [global, initGlobal] = useConfig({
       type: 'global',
+      parser: parseSchema,
       base_url: url,
    })
+   console.log(global)
    const [templateName, setTemplateName] = useState(null)
    const [template, initTemplate] = useConfig({
       type: 'template',
       base_url: url,
+      parser: parseSchema,
       template: templateName,
    })
-   // console.log('saved', savedGlobal, savedTemplate)
    const form = useForm({
       initialValues: {
          name: savedData ? savedData.name : '',
@@ -49,8 +51,9 @@ export const CreateFormFromConfigObject = ({
          template: savedData ? savedData.template : {},
       },
    })
-   console.log(form.values)
+   // // console.log(form.values)
    useEffect(() => {
+      console.log(initGlobal)
       if (initGlobal != null && savedData == undefined)
          form.setFieldValue('global', initGlobal)
    }, [initGlobal])
@@ -181,10 +184,22 @@ const ParseObject = (
             )
          case 'string':
          case 'number':
+            if (object['component'] == 'select')
+               return (
+                  <>
+                     <Text>{makeUpper(object.title)}</Text>
+                     <Select
+                        // label={object.title}
+                        data={object.data}
+                        {...form.getInputProps(dataposition)}
+                     />
+                  </>
+               )
             return (
                <>
                   <Text>{makeUpper(object.title)}</Text>
                   <TextInput
+                     required={object.isRequired}
                      // label={object.title}
                      placeholder={object.description}
                      onChange={() => {
@@ -213,7 +228,7 @@ const ParseObject = (
                      <>
                         <Box key={dataposition}>
                            {ParseObject(
-                              object.item,
+                              object.items,
                               form,
                               dataposition + `.${index}`
                            )}
@@ -230,7 +245,7 @@ const ParseObject = (
                   ))}
                   <Button
                      onClick={() => {
-                        const temp = getInitialValue(object.item)
+                        const temp = getInitialValue(object.items)
                         console.log(temp)
                         form.insertListItem(dataposition, temp)
                      }}>{`New ${object.title}`}</Button>
@@ -260,7 +275,6 @@ const ParseObject = (
       }
       return <Text>ParseA</Text>
    }
-   const [opened, setOpened] = useState(false)
    return (
       <>
          <Box
