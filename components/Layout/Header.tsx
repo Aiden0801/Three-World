@@ -1,7 +1,6 @@
 import {
-  Box,
+  Anchor,
   Burger,
-  Button,
   createStyles,
   Group,
   Header,
@@ -10,11 +9,10 @@ import {
   Transition,
 } from '@mantine/core'
 import Link from 'next/link'
-import { useDisclosure } from '@mantine/hooks'
 import Image from 'next/image'
-import { useRouter } from 'next/router'
-import { useSession } from 'next-auth/react'
+import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../Button'
+
 const useStyles = createStyles((theme) => ({
   link: {
     display: 'flex',
@@ -26,7 +24,7 @@ const useStyles = createStyles((theme) => ({
     color: theme.colorScheme === 'dark' ? theme.white : theme.black,
     fontWeight: 500,
     fontSize: theme.fontSizes.sm,
-
+    // flex: 1,
     [theme.fn.smallerThan('sm')]: {
       height: 42,
       display: 'flex',
@@ -98,94 +96,82 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export default function HeaderMenu() {
-  const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] =
-    useDisclosure(false)
-  const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false)
-  const { classes, theme } = useStyles()
-  const { data: session, status } = useSession()
-  const router = useRouter()
+  const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false)
+  const { classes } = useStyles()
   return (
-    <Box
-      pb={20}
-      sx={(theme) => ({
-        backgroundColor: 'red',
-        // backgroundColor: 'rgba(255, 0, 0, 1)',
-        position: 'fixed',
-        width: `calc(100vw - ${theme.spacing.md * 2}px)`,
-        top: 0,
-        left: 0,
-        zIndex: 24,
-      })}
-    >
-      <Header height={60} style={{}}>
-        <Group position="apart" sx={{ height: '100%' }} pl="xl">
-          <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
+    <Header height={60}>
+      <Group position="apart" sx={{ height: '100%' }} px="xl">
+        <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
 
-          <Group
-            sx={{ height: '100%' }}
-            spacing={0}
-            className={classes.hiddenMobile}
-          >
-            <a href="#" className={classes.link}>
-              Home
-            </a>
-            <a href="#" className={classes.link}>
-              Features
-            </a>
-            <a href="#" className={classes.link}>
-              Pricing
-            </a>
-            <a href="#" className={classes.link}>
-              About
-            </a>
-            <a href="#" className={classes.link}>
-              Contact US
-            </a>
-          </Group>
-
-          <>
-            <Group className={classes.hiddenMobile}>
-              <LinkButton href="/login">Log In</LinkButton>
-            </Group>
-          </>
-
-          <Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            className={classes.hiddenDesktop}
-          />
-
-          <Transition
-            transition="pop-top-right"
-            duration={200}
-            mounted={drawerOpened}
-          >
-            {(styles) => (
-              <Paper className={classes.dropdown} withBorder style={styles}>
-                <Stack>
-                  <a href="#" className={classes.link}>
-                    Home
-                  </a>
-                  <a href="#" className={classes.link}>
-                    Features
-                  </a>
-                  <a href="#" className={classes.link}>
-                    Contact US
-                  </a>
-
-                  <LinkButton
-                    variant="default"
-                    className={classes.button}
-                    href="/login"
-                  >
-                    Log in
-                  </LinkButton>
-                </Stack>
-              </Paper>
-            )}
-          </Transition>
+        <Group
+          sx={{ height: '100%' }}
+          spacing={0}
+          className={classes.hiddenMobile}
+        >
+          <MenuItems className={classes.link} />
         </Group>
-      </Header>
-    </Box>
+
+        <>
+          <Group className={classes.hiddenMobile}>
+            <LinkButton href="/login">Log In</LinkButton>
+          </Group>
+        </>
+
+        <Burger
+          opened={drawerOpened}
+          onClick={toggleDrawer}
+          className={classes.hiddenDesktop}
+        />
+
+        <Transition
+          transition="pop-top-right"
+          duration={200}
+          mounted={drawerOpened}
+        >
+          {(styles) => (
+            <Paper className={classes.dropdown} withBorder style={styles}>
+              <Stack>
+                <MenuItems className={classes.link} />
+                <LinkButton
+                  variant="default"
+                  className={classes.button}
+                  href="/login"
+                >
+                  Log in
+                </LinkButton>
+              </Stack>
+            </Paper>
+          )}
+        </Transition>
+      </Group>
+    </Header>
+  )
+}
+
+/**
+ * Menu items for both desktop and mobile navigation.
+ * TODO: Use a config array to generate these items.
+ * Also for now these don't point anywhere, so we might want to either
+ * remove the href or add the target pages.
+ */
+function MenuItems({ className }: { className?: string }) {
+  return (
+    <>
+      <Link target="_self" href="#" passHref>
+        <Anchor className={className}>Home</Anchor>
+      </Link>
+      <Link target="_self" href="#" passHref>
+        <Anchor className={className}>Features</Anchor>
+      </Link>
+      <Link target="_self" href="#" passHref>
+        <Anchor className={className}>Pricing</Anchor>
+      </Link>
+      <Link target="_self" href="#" passHref>
+        <Anchor className={className}>About</Anchor>
+      </Link>
+      <Link target="_self" href="#" passHref>
+        <Anchor className={className}>Contact US</Anchor>
+      </Link>
+    </>
   )
 }
