@@ -1,52 +1,61 @@
+import { useCallback, useEffect, useState } from 'react'
 import {
   Stack,
-  Text,
-  Paper,
-  Box,
   createStyles,
   LoadingOverlay,
+  Center,
+  Card,
+  Divider,
+  MantineTheme,
+  Title,
 } from '@mantine/core'
-import { signIn, useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import { serverURL } from '../../config/urlcontrol'
 import Image from 'next/image'
-import {
-  DiscordButton,
-  GithubButton,
-  GoogleButton,
-} from '../../components/Button'
+import { useRouter } from 'next/router'
+import { signIn, useSession } from 'next-auth/react'
 
+import { serverURL } from '../../config/urlcontrol'
+import { SocialButton } from '../../components/Button'
+
+const loginProviders = [
+  {
+    id: 'google',
+    name: 'Google',
+    button: SocialButton.Google,
+  },
+  {
+    id: 'discord',
+    name: 'Discord',
+    button: SocialButton.Discord,
+  },
+  {
+    id: 'github',
+    name: 'GitHub',
+    button: SocialButton.Github,
+  },
+]
+
+const dark = (theme: MantineTheme) => theme.colorScheme === 'dark'
 const useStyles = createStyles((theme) => ({
-  box: {
+  wrapper: {
     height: '100vh',
-    display: 'flex',
-    flexDirection: 'column',
-    background: theme.fn.linearGradient(
-      135,
-      theme.colors.indigo[0],
-      theme.colors.indigo[1]
-    ),
+    background: dark(theme)
+      ? theme.fn.linearGradient(135, theme.colors.dark[6], theme.colors.dark[9])
+      : theme.fn.linearGradient(
+          135,
+          theme.colors.indigo[0],
+          theme.colors.indigo[1]
+        ),
   },
   container: {
-    background: theme.fn.linearGradient(
-      180,
-      theme.colors.gray[4],
-      theme.colors.cyan[5]
-    ),
     width: '400px',
-
-    [`@media (max-width: ${theme.breakpoints.sm}px)`]: {
+    [theme.fn.smallerThan('sm')]: {
       maxWidth: '80%',
-      maxHeight: '50%',
+      maxHeight: '90%',
     },
-    height: '350px',
-    margin: 'auto',
-    padding: '10px 10px 10px 10px',
   },
 }))
 export default function Login() {
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const { classes } = useStyles()
   console.log(status)
   const router = useRouter()
@@ -55,59 +64,52 @@ export default function Login() {
     if (status === 'authenticated') {
       router.push('./dashboard')
     }
-  })
+  }, [status])
   const [loading, setLoading] = useState(false)
-  const handleLogIn = async (providerName: string) => {
-    await signIn(providerName.toLowerCase(), {
-      callbackUrl: `${serverURL}/dashboard`,
-    }).then((res) => {
-      console.log('message', res)
-    })
-    setLoading(false)
-  }
+
+  const handleLogIn = useCallback(
+    async (providerName: string) => {
+      setLoading(true)
+      await signIn(providerName.toLowerCase(), {
+        callbackUrl: `${serverURL}/dashboard`,
+      }).then((res) => {
+        console.log('message', res)
+      })
+      setLoading(false)
+    },
+    [setLoading]
+  )
   return (
     <>
-      <Box className={classes.box}>
-        <Paper shadow="xl" className={classes.container} radius="lg">
-          <LoadingOverlay visible={loading} overlayBlur={2} />
+      <LoadingOverlay visible={loading} overlayBlur={2} />
+      <Center className={classes.wrapper}>
+        <Card
+          withBorder
+          p="xl"
+          shadow="xl"
+          className={classes.container}
+          radius="lg"
+        >
           <Stack align="center">
             <Image alt="" src="/logo/Group_157.png" width={120} height={80} />
-            <Text
-              weight="bold"
-              variant="gradient"
-              gradient={{ from: 'indigo', to: 'cyan' }}
-              size="xl"
-            >
-              {' '}
+            <Title order={3} weight="bold">
               SIGN IN
-            </Text>
-            <GoogleButton
-              onClick={() => {
-                setLoading(true)
-                handleLogIn('google')
-              }}
-            >
-              Login With Google
-            </GoogleButton>
-            <GithubButton
-              onClick={() => {
-                setLoading(true)
-                handleLogIn('github')
-              }}
-            >
-              Login with GitHub
-            </GithubButton>
-            <DiscordButton
-              onClick={() => {
-                setLoading(true)
-                handleLogIn('discord')
-              }}
-            >
-              Join with Discord
-            </DiscordButton>
+            </Title>
+            <Divider sx={{ width: '100%' }} />
+            {loginProviders.map((provider) => (
+              <provider.button
+                key={provider.id}
+                onClick={() => handleLogIn(provider.id)}
+                compact={false} // avoids removing the compact prop from the buttons
+                radius="sm"
+                fullWidth
+              >
+                Login with {provider.name}
+              </provider.button>
+            ))}
           </Stack>
-        </Paper>
-      </Box>
+        </Card>
+      </Center>
     </>
   )
 }
