@@ -6,10 +6,9 @@ import {
   Text,
   Title,
 } from '@mantine/core'
-import { ColorSchemeToggle } from '../../ColorSchemeToggle'
+import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
 import UserAvatar from './UserAvatar'
-import { SearchBox } from '../../Searchbox'
-import { ToggleMenuButton } from '../MainLayout.context'
+import { ToggleMenuButton } from '@/components/ToggleMenuButton'
 
 const useStyles = createStyles((theme, _params, getRef) => {
   return {

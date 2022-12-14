@@ -3,8 +3,7 @@ import { AppShell } from '@mantine/core'
 // import Header from './Header/Header'
 // import Footer from './Footer/Footer'
 import Navbar from './Navbar'
-import { MainLayoutContextProvider } from './MainLayout.context'
-import { UserContextProvider } from '@/contexts/User'
+import { UserContextProvider, MainLayoutContextProvider } from '@/contexts'
 
 const PageWrapper = ({ children, currentPage }) => {
   return (
