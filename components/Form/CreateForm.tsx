@@ -1,27 +1,21 @@
+import { forwardRef, useEffect, useState } from 'react'
 import {
   Box,
   Button,
   Checkbox,
   Code,
-  ColorPicker,
   ColorSwatch,
   Select,
   Text,
   TextInput,
   Group,
+  useMantineTheme,
 } from '@mantine/core'
-import { forwardRef } from 'react'
 import { useForm } from '@mantine/form'
-import { IconTrash } from '@tabler/icons'
-import { useEffect, useState } from 'react'
+
 import { IPropsCreateForm } from '../../types'
-import { useMantineTheme } from '@mantine/core'
-import { useGlobalConfig } from '../../utils/parser/globalconfig'
-import {
-  getInitialValue,
-  IPropsschemaObject,
-} from '../../utils/parser/schema_parser'
-import { useTemplateConfig } from '../../utils/parser/templateconfig'
+import { useConfig } from '../../lib/landing-pages'
+import type { IPropsschemaObject } from '../../utils/parser/schema_parser'
 
 /**
  *
@@ -36,9 +30,16 @@ export const CreateFormFromConfigObject = ({
   handleOnSubmit,
 }: IPropsCreateForm) => {
   const theme = useMantineTheme()
-  const [global, initGlobal] = useGlobalConfig(url)
+  const [global, initGlobal] = useConfig({
+    type: 'global',
+    base_url: url,
+  })
   const [templateName, setTemplateName] = useState(null)
-  const [template, initTemplate] = useTemplateConfig(url, templateName)
+  const [template, initTemplate] = useConfig({
+    type: 'template',
+    base_url: url,
+    template: templateName,
+  })
   // console.log('saved', savedGlobal, savedTemplate)
   const form = useForm({
     initialValues: {
