@@ -13,8 +13,7 @@ import { RouterTransition } from '../layouts/PublicLayout/RouterTransition'
 import { currentUser } from '../utils/recoil/browser'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 
-import { SocketContext, socket } from '../utils/context/socket'
-
+import { SocketContextProvider, socket } from '@/contexts/Socket'
 
 /**
  * Actual App component that requires context providers from outside.
@@ -46,7 +45,7 @@ function AppWithContexts({ Component, pageProps: { ...pageProps } }: any) {
   }
 
   return (
-    <SocketContext.Provider value={socket}>
+    <SocketContextProvider>
       <ColorSchemeProvider
         colorScheme={colorScheme}
         toggleColorScheme={toggleColorScheme}
@@ -64,7 +63,7 @@ function AppWithContexts({ Component, pageProps: { ...pageProps } }: any) {
           </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
-    </SocketContext.Provider>
+    </SocketContextProvider>
   )
 }
 export default AppWithContexts

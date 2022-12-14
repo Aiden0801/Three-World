@@ -2,7 +2,7 @@ import { showNotification } from '@mantine/notifications'
 import { signOut } from 'next-auth/react'
 import { useCallback } from 'react'
 import { serverURL } from '../../config/urlcontrol'
-import { useSocketContext } from '../../utils/context/socket'
+import { useSocketContext } from '../socket'
 
 /**
  * Custom hook that returns a function that logs the user out, disconnects and
