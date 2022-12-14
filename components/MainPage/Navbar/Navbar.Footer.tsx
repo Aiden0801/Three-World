@@ -5,7 +5,7 @@ export function NavbarFooter() {
   return (
     <Group position="apart">
       <Text size="xs" color="dimmed">
-        ©2022 HackerHouse HQ
+        ©2022 HHHQ
       </Text>
       <Group>
         {navFooterLinks.map((item) => (

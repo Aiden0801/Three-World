@@ -1,111 +1,67 @@
-import { useState } from 'react'
-/**
- * Next-Auth
- */
-import { serverURL } from '../../../config/urlcontrol'
 import {
-   Burger,
-   Code,
-   createStyles,
-   Group,
-   Header,
-   Image,
-   Indicator,
-   MediaQuery,
-   Text,
-   TextInput,
-   Title,
+  createStyles,
+  Group,
+  Header,
+  MediaQuery,
+  Text,
+  Title,
 } from '@mantine/core'
-import { IconBell, IconSearch } from '@tabler/icons'
-import { useSession } from 'next-auth/react'
-import ActionToggle from './ColorSchemeToogle'
+import { ColorSchemeToggle } from '../../ColorSchemeToggle'
 import UserAvatar from './UserAvatar'
+import { SearchBox } from '../../Searchbox'
+import { ToggleMenuButton } from '../MainLayout.context'
+
 const useStyles = createStyles((theme, _params, getRef) => {
-   return {
-      container: {
-         backgroundColor:
-            theme.colorScheme === 'dark'
-               ? theme.colors.dark[8]
-               : theme.colors.dark[9],
-      },
-      logo: {
-         marginLeft: '20px',
-      },
-   }
+  return {
+    container: {
+      backgroundColor:
+        theme.colorScheme === 'dark'
+          ? theme.colors.dark[8]
+          : theme.colors.gray[0],
+    },
+  }
 })
-const HeaderComponent = ({ handlenavtoogle }) => {
-   const [opened, setOpened] = useState(false)
-   const { data: session, status } = useSession()
-   const { classes, cx } = useStyles()
-   return (
-      <Header height={50} className={classes.container}>
-         <div
-            style={{
-               display: 'flex',
-               alignItems: 'center',
-               height: '100%',
-            }}>
-            <Group className={classes.logo}>
-               <Image
-                  src={`${serverURL}/logo/logo.svg`}
-                  alt="logo"
-                  width={40}
-                  height={40}
-               />
-               <Title color="white" order={2}>
-                  3
-                  <Text span size="xl" color="green" inherit>
-                     World
-                  </Text>
-               </Title>
-            </Group>
-            <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
-               <Burger
-                  ml="xl"
-                  mr="xl"
-                  color="white"
-                  opened={opened}
-                  onClick={() => {
-                     setOpened((o) => !o)
-                     handlenavtoogle()
-                  }}
-                  size="sm"
-               />
-            </MediaQuery>
-            <Group
-               position="center"
-               my={30}
-               style={{
-                  position: 'absolute',
-                  right: 20,
-                  display: 'flex',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-               }}>
-               <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
-                  <TextInput
-                     placeholder="Search"
-                     size="xs"
-                     icon={<IconSearch size={12} stroke={1.5} />}
-                     rightSectionWidth={120}
-                     rightSection={<Code>Ctrl + K</Code>}
-                     styles={{ rightSection: { pointerEvents: 'none' } }}
-                     ml="xl"
-                  />
-               </MediaQuery>
-               {/* {session && ( */}
-               <>
-                  <ActionToggle />
-                  {/* <Indicator withBorder color="pink" mt="sm">
-                     <IconBell size={20} color="white" />
-                  </Indicator> */}
-                  <UserAvatar img={session.user.image} />
-               </>
-               {/* )} */}
-            </Group>
-         </div>
-      </Header>
-   )
+/**
+ * Header component for the main layout.
+ * Contains the logo, search box, color scheme toggle, and user avatar.
+ * @deprecated in favor of a slimmer navbar with all the same stuff
+ */
+const HeaderComponent = () => {
+  const { classes } = useStyles()
+  return (
+    <Header height={{ base: 50, md: 70 }} className={classes.container}>
+      <Group mx="xl" h="100%" position="apart">
+        <Group>
+          <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
+            <ToggleMenuButton />
+          </MediaQuery>
+          <Logo />
+        </Group>
+
+        <Group>
+          {/* <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+            <SearchBox />
+          </MediaQuery> */}
+          <ColorSchemeToggle />
+          {/* <Indicator withBorder color="pink" mt="sm">
+            <IconBell size={20} color="white" />
+          </Indicator> */}
+          <UserAvatar />
+        </Group>
+      </Group>
+    </Header>
+  )
 }
 
 export default HeaderComponent
+
+function Logo() {
+  return (
+    <Title order={2}>
+      HackerHouse
+      <Text span size="xl" color="green" inherit>
+        HQ
+      </Text>
+    </Title>
+  )
+}

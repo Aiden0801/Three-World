@@ -4,17 +4,18 @@ import {
   Divider,
   Group,
   Image,
-  Navbar,
+  Navbar as MantineNavbar,
   NavbarProps,
   ScrollArea,
 } from '@mantine/core'
 import navbarConfiguration from '../../../config/navbar.items'
+import { useMainLayoutContext } from '../MainLayout.context'
 import { MenuItem } from './MenuItem'
 import { NavbarFooter } from './Navbar.Footer'
+import { UserMenu } from './UserMenu'
 // import { SearchBox } from '../Searchbox'
 
-const useStyles = createStyles((theme, _params, getRef) => {
-  const icon = getRef('icon')
+const useStyles = createStyles((theme, _params) => {
   return {
     container: {
       backgroundColor:
@@ -37,14 +38,23 @@ interface INavbarProps extends Omit<NavbarProps, 'children'> {
    *        instead of in the page, through an helper function.
    */
   currentPage?: string
+  showFooter?: boolean
+  showUserMenu?: boolean
 }
-const UserMenu: React.FC<INavbarProps> = ({ currentPage, ...props }) => {
+const Navbar: React.FC<INavbarProps> = ({
+  currentPage,
+  showUserMenu,
+  showFooter,
+  ...props
+}) => {
   const { classes } = useStyles()
+  const { opened } = useMainLayoutContext()
 
   return (
-    <Navbar p="xs" className={classes.container} {...props}>
+    <MantineNavbar p="xs" className={classes.container} {...props} hidden={!opened}>
       <Group position="apart">
-        <Image alt="" src="/logo/Group_157.png" width={72} height="auto" />
+        {/* <Image alt="" src="/logo/Group_157.png" width={90} height="auto" /> */}
+        <Image alt="" src="/logo/Group_157.png" width="auto" height={72} />
         <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
       </Group>
       <Divider my="xl" />
@@ -53,15 +63,26 @@ const UserMenu: React.FC<INavbarProps> = ({ currentPage, ...props }) => {
        commented out the component until we have a reason for it to exist
         */}
       {/* <SearchBox mb="md"/> */}
-      <Navbar.Section grow component={ScrollArea}>
+      <MantineNavbar.Section grow component={ScrollArea}>
         {navbarConfiguration.map((item, index) => (
           <MenuItem key={index} item={item} currentPage={currentPage} />
         ))}
-      </Navbar.Section>
-      <Navbar.Section>
-        <NavbarFooter/>
-      </Navbar.Section>
-    </Navbar>
+      </MantineNavbar.Section>
+      {/* <Divider my={{ base: 'xs', sm: 'md' }} /> */}
+      {showUserMenu && (
+        <MantineNavbar.Section>
+          <UserMenu />
+        </MantineNavbar.Section>
+      )}
+      {showFooter && (
+        <>
+          <Divider my={{ base: 'xs', sm: 'md' }} />
+          <MantineNavbar.Section>
+            <NavbarFooter />
+          </MantineNavbar.Section>
+        </>
+      )}
+    </MantineNavbar>
   )
 }
-export default UserMenu
+export default Navbar

@@ -26,7 +26,7 @@ export function MenuItem({ item, currentPage, ...rest }: MenuItemProps) {
       )}
     >
       <NavLink
-        variant="subtle"
+        // variant="subtle"
         label={item.label}
         description={item.description}
         active={active}
