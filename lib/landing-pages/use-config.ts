@@ -4,26 +4,26 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getInitialValue, ParseSchema } from '../../utils/parser/schema_parser'
 
 type BaseOptions = {
-  parser?: (schema: JSONSchema) => any
-  base_url: string
+   parser?: (schema: JSONSchema) => any
+   base_url: string
 }
 type TemplateOptions = BaseOptions & {
-  template: string
+   template: string
 }
 
 type UseConfigOptions =
-  | ({ type: 'global' } & BaseOptions)
-  | ({ type: 'template' } & TemplateOptions)
+   | ({ type: 'global' } & BaseOptions)
+   | ({ type: 'template' } & TemplateOptions)
 
 type UseConfigReturnValue = [
-  /** parsed usable configuration */
-  config: any,
-  /** initial values for the form */
-  initConfig: any,
-  /** whether we're loading the config */
-  loading: boolean,
-  /** original (dereferenced) schema object */
-  schema: JSONSchema | null
+   /** parsed usable configuration */
+   config: any,
+   /** initial values for the form */
+   initConfig: any,
+   /** whether we're loading the config */
+   loading: boolean,
+   /** original (dereferenced) schema object */
+   schema: JSONSchema | null
 ]
 /**
  * Fetch the configuration from the server, parse it and flatten all the $ref
@@ -48,18 +48,19 @@ type UseConfigReturnValue = [
  * })
  */
 export function useConfig(options: UseConfigOptions): UseConfigReturnValue {
-  const [config, setConfig] = useState(null)
-  const [initials, setInitials] = useState(null)
-  const [schema, loading] = useJsonSchema(options)
+   const [config, setConfig] = useState(null)
+   const [initials, setInitials] = useState(null)
+   const [schema, loading] = useJsonSchema(options)
 
-  useEffect(() => {
-    if (!schema) return
-    const parser = options.parser ?? ParseSchema
-    setConfig(parser(schema))
-    setInitials(getInitialValue(schema))
-  }, [schema])
+   useEffect(() => {
+      if (!schema) return
+      const parser = options.parser ?? ParseSchema
+      const parsedObject = parser(schema)
+      setConfig(parsedObject)
+      setInitials(getInitialValue(parsedObject))
+   }, [schema])
 
-  return [config, initials, loading, schema]
+   return [config, initials, loading, schema]
 }
 
 // Internals
@@ -71,28 +72,28 @@ export function useConfig(options: UseConfigOptions): UseConfigReturnValue {
  * @returns parsed schema or null if the schema is not yet fetched
  */
 function useJsonSchema(
-  options: UseConfigOptions
+   options: UseConfigOptions
 ): [JSONSchema | null, boolean] {
-  const [schema, setSchema] = useState<JSONSchema>(null!)
-  const [loading, setLoading] = useState(false)
+   const [schema, setSchema] = useState<JSONSchema>(null!)
+   const [loading, setLoading] = useState(false)
 
-  const url = useMemo(() => {
-    if (options.type === 'template' && !isValid(options.template)) return
-    return getUrl(options)
-  }, [options])
+   const url = useMemo(() => {
+      if (options.type === 'template' && !isValid(options.template)) return
+      return getUrl(options)
+   }, [options])
 
-  const getDereferencedSchema = useCallback(async () => {
-    if (!url) return
-    setLoading(true)
-    setSchema(await JsonParser.dereference(url))
-    setLoading(false)
-  }, [url])
+   const getDereferencedSchema = useCallback(async () => {
+      if (!url) return
+      setLoading(true)
+      setSchema(await JsonParser.dereference(url))
+      setLoading(false)
+   }, [url])
 
-  useEffect(() => {
-    if (!schema) getDereferencedSchema()
-  }, [schema, getDereferencedSchema])
+   useEffect(() => {
+      if (!schema) getDereferencedSchema()
+   }, [schema, getDereferencedSchema])
 
-  return [schema, loading]
+   return [schema, loading]
 }
 
 /**
@@ -106,21 +107,21 @@ function useJsonSchema(
  * @returns url to fetch the configuration from
  */
 function getUrl(options: UseConfigOptions) {
-  if (!options.base_url) throw new Error('base_url is required!')
-  if (!options.type) throw new Error('schema type is required!')
+   if (!options.base_url) throw new Error('base_url is required!')
+   if (!options.type) throw new Error('schema type is required!')
 
-  const base = `${options.base_url}/api/config`
+   const base = `${options.base_url}/api/config`
 
-  switch (options.type) {
-    case 'global':
-      return `${base}/global`
-    case 'template':
-      return `${base}/template/${options.template}`
-    default:
-      throw new Error(`Unknown type: ${(options as any).type}!`)
-  }
+   switch (options.type) {
+      case 'global':
+         return `${base}/global`
+      case 'template':
+         return `${base}/template/${options.template}`
+      default:
+         throw new Error(`Unknown type: ${(options as any).type}!`)
+   }
 }
 
 function isValid(str: string | null | undefined): str is string {
-  return str !== '' && str !== null && str !== undefined
+   return str !== '' && str !== null && str !== undefined
 }
