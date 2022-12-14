@@ -1,4 +1,4 @@
-import { useMainLayoutContext } from "@/contexts/MainLayout"
+import { useAppLayoutContext } from "@/contexts/AppLayoutContext"
 import { BurgerProps, useMantineColorScheme, Burger } from "@mantine/core"
 
 /**
@@ -6,7 +6,7 @@ import { BurgerProps, useMantineColorScheme, Burger } from "@mantine/core"
  * @dev TODO: move into separate file.
  */
 export function ToggleMenuButton(props: Omit<BurgerProps, 'opened'>) {
-  const { opened, setOpened } = useMainLayoutContext()
+  const { opened, setOpened } = useAppLayoutContext()
   const { colorScheme } = useMantineColorScheme()
   return (
     <Burger

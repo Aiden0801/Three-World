@@ -9,7 +9,7 @@ import {
   ScrollArea,
 } from '@mantine/core'
 import navbarConfiguration from '@/config/navbar.items'
-import { useMainLayoutContext } from '@/contexts/MainLayout'
+import { useAppLayoutContext } from '@/contexts/AppLayoutContext'
 import { MenuItem } from './MenuItem'
 import { NavbarFooter } from './Navbar.Footer'
 import { UserMenu } from './UserMenu'
@@ -48,7 +48,7 @@ const Navbar: React.FC<INavbarProps> = ({
   ...props
 }) => {
   const { classes } = useStyles()
-  const { opened } = useMainLayoutContext()
+  const { opened } = useAppLayoutContext()
 
   return (
     <MantineNavbar

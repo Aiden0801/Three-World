@@ -15,25 +15,25 @@ import {
   useState,
 } from 'react'
 
-export interface MainLayoutContextValue {
+export interface AppLayoutContextValue {
   opened: boolean
   setOpened: Dispatch<SetStateAction<boolean>>
 }
 
-export const MainLayoutContext = createContext<MainLayoutContextValue>(
-  {} as MainLayoutContextValue
+export const AppLayoutContext = createContext<AppLayoutContextValue>(
+  {} as AppLayoutContextValue
 )
 
-export function useMainLayoutContext() {
-  return useContext(MainLayoutContext)
+export function useAppLayoutContext() {
+  return useContext(AppLayoutContext)
 }
 
-export function MainLayoutContextProvider({ children }: PropsWithChildren) {
+export function AppLayoutContextProvider({ children }: PropsWithChildren) {
   const [opened, setOpened] = useState(false)
 
   return (
-    <MainLayoutContext.Provider value={{ opened, setOpened }}>
+    <AppLayoutContext.Provider value={{ opened, setOpened }}>
       {children}
-    </MainLayoutContext.Provider>
+    </AppLayoutContext.Provider>
   )
 }

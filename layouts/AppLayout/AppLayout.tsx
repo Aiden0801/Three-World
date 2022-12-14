@@ -3,7 +3,7 @@ import { AppShell } from '@mantine/core'
 // import Header from './Header/Header'
 // import Footer from './Footer/Footer'
 import Navbar from './Navbar'
-import { UserContextProvider, MainLayoutContextProvider } from '@/contexts'
+import { UserContextProvider, AppLayoutContextProvider } from '@/contexts'
 
 export interface MainLayoutProps {
   children: React.ReactNode
@@ -12,8 +12,8 @@ export interface MainLayoutProps {
 
 export function AppLayout({ children, currentPage }: MainLayoutProps) {
   return (
-    <MainLayoutContextProvider>
-      <UserContextProvider>
+    <UserContextProvider>
+      <AppLayoutContextProvider>
         <AppShell
           fixed
           padding={0}
@@ -31,7 +31,7 @@ export function AppLayout({ children, currentPage }: MainLayoutProps) {
         >
           {children}
         </AppShell>
-      </UserContextProvider>
-    </MainLayoutContextProvider>
+      </AppLayoutContextProvider>
+    </UserContextProvider>
   )
 }
