@@ -1,7 +1,9 @@
 import { Session } from 'next-auth'
+import { Router } from 'next/router'
 import { SessionProvider } from 'next-auth/react'
 import type { AppProps as NextAppProps } from 'next/app'
-import { Router } from 'next/router'
+
+import { SocketContextProvider } from '@/contexts/socket'
 import { RecoilRoot } from 'recoil'
 import { wrapper } from '../store/store'
 import AppWithContexts from './_app.internal'
@@ -11,11 +13,13 @@ type AppProps = NextAppProps<{
   router?: Router
 }>
 
-function MyApp({ Component, pageProps: { ...pageProps } }: AppProps) {
+function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
   return (
-    <SessionProvider session={pageProps.session} refetchInterval={5 * 60}>
+    <SessionProvider session={session} refetchInterval={5 * 60}>
       <RecoilRoot>
-        <AppWithContexts Component={Component} pageProps={{ ...pageProps }} />
+        <SocketContextProvider>
+          <AppWithContexts Component={Component} pageProps={{ ...pageProps }} />
+        </SocketContextProvider>
       </RecoilRoot>
     </SessionProvider>
   )

@@ -10,7 +10,7 @@ import {
 import { showNotification } from '@mantine/notifications'
 import { useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import { useSocket } from '@/contexts/Socket'
+import { useSocket } from '@/contexts/socket'
 import {
   currentBrowserIndex,
   currentBrowsers,
