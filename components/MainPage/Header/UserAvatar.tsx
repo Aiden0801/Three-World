@@ -1,8 +1,7 @@
 import React, { useState } from 'react'
 import { UnstyledButton, Avatar, Popover, Button } from '@mantine/core'
 import { IconLogout, IconSettings } from '@tabler/icons'
-import { useLogout } from '../../UserContext'
-import { useUserData } from '../../UserContext'
+import { useLogout, useUserData } from '@/contexts/User'
 
 /**
  * Simple user avatar with a popover dropdown for common actions.

@@ -4,7 +4,7 @@ import { AppShell } from '@mantine/core'
 // import Footer from './Footer/Footer'
 import Navbar from './Navbar'
 import { MainLayoutContextProvider } from './MainLayout.context'
-import { UserContextProvider } from '../UserContext'
+import { UserContextProvider } from '@/contexts/User'
 
 const PageWrapper = ({ children, currentPage }) => {
   return (

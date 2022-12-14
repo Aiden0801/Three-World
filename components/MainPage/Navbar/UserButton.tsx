@@ -1,7 +1,7 @@
 import { forwardRef } from 'react'
 import { Group, UnstyledButton, Avatar, Text } from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
-import { useUserData } from '../../UserContext'
+import { useUserData } from '@/contexts/User'
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {}
 

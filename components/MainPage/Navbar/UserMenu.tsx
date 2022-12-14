@@ -3,7 +3,7 @@ import { Menu } from '@mantine/core'
 import { IconLogout, IconSettings, TablerIconProps } from '@tabler/icons'
 import { ColorSchemeIcon } from '../../ColorSchemeToggle'
 import { UserButton } from './UserButton'
-import { useLogout } from '../../UserContext'
+import { useLogout } from '@/contexts/User'
 
 /** commmon icon props, because lazy */
 const icon: TablerIconProps = {
