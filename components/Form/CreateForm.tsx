@@ -9,6 +9,8 @@ import {
    Text,
    TextInput,
    Group,
+   Card,
+   Collapse,
 } from '@mantine/core'
 import { forwardRef } from 'react'
 import { useForm } from '@mantine/form'
@@ -79,15 +81,21 @@ export const CreateFormFromConfigObject = ({
                   {...form.getInputProps('name')}
                />
             )}
-            {!global && <div>Parsing Global</div>}
-            {templateName && !template && <div>Parsing {templateName}</div>}
-            {form.values.global &&
-               global &&
-               ParseObject(global, form, 'global')}
-            {templateName &&
-               template &&
-               form.values.template &&
-               ParseObject(template, form, 'template')}
+            <Card withBorder shadow="md" mt="sm">
+               {!global && <div>Parsing Global</div>}
+
+               {form.values.global &&
+                  global &&
+                  ParseObject(global, form, 'global')}
+            </Card>
+            <Card withBorder shadow="md" mt="sm">
+               {templateName && !template && <div>Parsing {templateName}</div>}
+
+               {templateName &&
+                  template &&
+                  form.values.template &&
+                  ParseObject(template, form, 'template')}
+            </Card>
             <Button type="submit" mt="md">
                Submit
             </Button>
@@ -125,6 +133,12 @@ const ParseObject = (
    form,
    dataposition?: string
 ) => {
+   const getLevel = () => {
+      return dataposition.split('.').length - 1
+   }
+   const makeUpper = (str: string) => {
+      return str ? str.charAt(0).toUpperCase() + str.slice(1) : ''
+   }
    const Parse = () => {
       // form.setFieldvalue(dataposition + object.title, {})
       switch (object.type) {
@@ -153,34 +167,42 @@ const ParseObject = (
             )
          case 'select':
             return (
-               <Select
-                  label={object.title}
-                  data={object.data}
-                  {...form.getInputProps(dataposition)}
-               />
+               <>
+                  <Text>{makeUpper(object.title)}</Text>
+                  <Select
+                     // label={object.title}
+                     data={object.data}
+                     {...form.getInputProps(dataposition)}
+                  />
+               </>
             )
          case 'boolean':
             return (
-               <Checkbox
-                  label={object.title}
-                  {...form.getInputProps(dataposition)}
-               />
+               <>
+                  <Checkbox
+                     label={object.title}
+                     {...form.getInputProps(dataposition)}
+                  />
+               </>
             )
          case 'string':
          case 'number':
             return (
-               <TextInput
-                  label={object.title}
-                  placeholder={object.description}
-                  onChange={() => {
-                     // form.setFieldValue('global', {
-                     //    description: 'A',
-                     //    template: 'B',
-                     //    title: 'C',
-                     // })
-                  }}
-                  {...form.getInputProps(dataposition)}
-               />
+               <>
+                  <Text>{makeUpper(object.title)}</Text>
+                  <TextInput
+                     // label={object.title}
+                     placeholder={object.description}
+                     onChange={() => {
+                        // form.setFieldValue('global', {
+                        //    description: 'A',
+                        //    template: 'B',
+                        //    title: 'C',
+                        // })
+                     }}
+                     {...form.getInputProps(dataposition)}
+                  />
+               </>
             )
          case 'array':
             const formObject = () => {
@@ -192,12 +214,7 @@ const ParseObject = (
             }
             return (
                <>
-                  <Button
-                     onClick={() => {
-                        const temp = getInitialValue(object.item)
-                        console.log(temp)
-                        form.insertListItem(dataposition, temp)
-                     }}>{`New ${object.title}`}</Button>
+                  <Text>{makeUpper(object.title)}</Text>
                   {formObject().map((item, index) => (
                      <>
                         <Box key={dataposition}>
@@ -206,23 +223,29 @@ const ParseObject = (
                               form,
                               dataposition + `.${index}`
                            )}
+                           <Button
+                              compact
+                              variant="outline"
+                              onClick={() => {
+                                 form.removeListItem(`${dataposition}`, index)
+                              }}>
+                              <IconTrash color="red" />
+                           </Button>
                         </Box>
-                        <Button
-                           compact
-                           variant="outline"
-                           onClick={() => {
-                              form.removeListItem(`${dataposition}`, index)
-                           }}>
-                           <IconTrash color="red" />
-                        </Button>
                      </>
                   ))}
+                  <Button
+                     onClick={() => {
+                        const temp = getInitialValue(object.item)
+                        console.log(temp)
+                        form.insertListItem(dataposition, temp)
+                     }}>{`New ${object.title}`}</Button>
                </>
             )
          case 'group':
             return (
                <>
-                  <Text color="red">{object.title}</Text>
+                  <Text>{makeUpper(object.title)}</Text>
                   {object.fields.map((item, index) => {
                      return (
                         <Box key={index}>
@@ -243,5 +266,24 @@ const ParseObject = (
       }
       return <Text>ParseA</Text>
    }
-   return <>{Parse()}</>
+   const [opened, setOpened] = useState(false)
+   return (
+      <>
+         <Box
+            style={{
+               marginLeft: `${getLevel() * 5}px`,
+               marginBottom: `${getLevel() * 2}px`,
+               fontSize: `${30 - getLevel() * 3}px`,
+               color: '#1C7ED6',
+            }}>
+            {/* <Button onClick={() => setOpened((o) => !o)}> Coll</Button> */}
+            {/* <Collapse
+               // in={opened}
+               transitionDuration={1000}
+               transitionTimingFunction="linear"> */}
+            {Parse()}
+            {/* </Collapse> */}
+         </Box>
+      </>
+   )
 }
