@@ -25,7 +25,7 @@ export function isActive(
     if (typeof item.match === 'string') {
       return currentPage === item.match
     }
-    return item.match.includes(currentPage)
+    return item.match?.includes(currentPage)
   }
   return false
 }
