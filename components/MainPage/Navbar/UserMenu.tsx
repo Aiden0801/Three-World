@@ -1,7 +1,7 @@
 import { Menu } from '@mantine/core'
 
 import { IconLogout, IconSettings, TablerIconProps } from '@tabler/icons'
-import { ColorSchemeIcon } from '../../ColorSchemeToggle'
+import { ColorSchemeIcon } from '@/components/ColorSchemeToggle'
 import { UserButton } from './UserButton'
 import { useLogout } from '@/contexts/User'
 

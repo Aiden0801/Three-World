@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { NavLink, NavLinkProps } from "@mantine/core"
-import { LinkNavItem, NavItem, SubNavItem } from "../../../types/navbar.item.type"
-import { isActive, isLinkItem } from "../../../utils/navitem.helpers"
-import { ConditionalWrapper } from "../../ConditionalWrapper"
+import { LinkNavItem, NavItem, SubNavItem } from "@/types/navbar.item.type"
+import { isActive, isLinkItem } from "@/utils/navitem.helpers"
+import { ConditionalWrapper } from "@/components/ConditionalWrapper"
 
 type MenuItemProps = {
   item: NavItem

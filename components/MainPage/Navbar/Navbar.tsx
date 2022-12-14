@@ -8,8 +8,8 @@ import {
   NavbarProps,
   ScrollArea,
 } from '@mantine/core'
-import navbarConfiguration from '../../../config/navbar.items'
-import { useMainLayoutContext } from '../MainLayout.context'
+import navbarConfiguration from '@/config/navbar.items'
+import { useMainLayoutContext } from '@/contexts/MainLayout'
 import { MenuItem } from './MenuItem'
 import { NavbarFooter } from './Navbar.Footer'
 import { UserMenu } from './UserMenu'
@@ -51,7 +51,12 @@ const Navbar: React.FC<INavbarProps> = ({
   const { opened } = useMainLayoutContext()
 
   return (
-    <MantineNavbar p="xs" className={classes.container} {...props} hidden={!opened}>
+    <MantineNavbar
+      p="xs"
+      className={classes.container}
+      {...props}
+      hidden={!opened}
+    >
       <Group position="apart">
         {/* <Image alt="" src="/logo/Group_157.png" width={90} height="auto" /> */}
         <Image alt="" src="/logo/Group_157.png" width="auto" height={72} />

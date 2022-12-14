@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Text } from '@mantine/core'
-import { navFooterLinks } from '../../../config/navbar.items'
+import { navFooterLinks } from '@/config/navbar.items'
 
 export function NavbarFooter() {
   return (
