@@ -11,7 +11,7 @@ import {
 import Link from 'next/link'
 import Image from 'next/image'
 import { useDisclosure } from '@mantine/hooks'
-import { LinkButton } from '../Button'
+import { LinkButton } from '../../components/Button'
 
 const useStyles = createStyles((theme) => ({
   link: {

@@ -1,13 +1,13 @@
 import React from 'react'
-import { User } from '../../page-components/User'
-import { Layout } from '../../components/Layout'
-import { Grid, SimpleGrid } from '@mantine/core'
+import { PublicLayout } from '@/layouts/PublicLayout'
+import { User } from '@/page-components/User'
+
 const UserPage: React.FC = () => {
-   return (
-      <>
-         <User />
-      </>
-   )
+  return (
+    <PublicLayout>
+      <User />
+    </PublicLayout>
+  )
 }
 
 export default UserPage

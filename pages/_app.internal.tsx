@@ -9,7 +9,7 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useCallback, useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
-import { RouterTransition } from '../components/Layout/RouterTransition'
+import { RouterTransition } from '../layouts/PublicLayout/RouterTransition'
 import { currentUser } from '../utils/recoil/browser'
 import { useHotkeys, useLocalStorage } from '@mantine/hooks'
 
