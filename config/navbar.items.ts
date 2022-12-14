@@ -11,6 +11,8 @@ import {
   IconDashboard,
   IconUsers,
   IconAlarm,
+  IconBrandDiscord,
+  IconBrandGithub,
 } from '@tabler/icons'
 import type { NavItem } from '../types/navbar.item.type'
 export type { NavItem }
@@ -98,3 +100,21 @@ export const navItems: NavItem[] = [
 ]
 
 export default navItems
+
+/**
+ * The navbar footer links.
+ */
+export const navFooterLinks = [
+  {
+    icon: IconBrandDiscord,
+    // unlimited invite to HHHQ discord server, start-here channel
+    href: 'https://discord.gg/pgA8uCV2sy',
+    label: 'Discord',
+    target: '_blank',
+  },
+  {
+    icon: IconBrandGithub,
+    href: 'https://github.com/hackerhousehq',
+    label: 'GitHub',
+  }
+]

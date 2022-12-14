@@ -10,6 +10,7 @@ import {
 } from '@mantine/core'
 import navbarConfiguration from '../../../config/navbar.items'
 import { MenuItem } from './MenuItem'
+import { NavbarFooter } from './Navbar.Footer'
 // import { SearchBox } from '../Searchbox'
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -56,6 +57,9 @@ const UserMenu: React.FC<INavbarProps> = ({ currentPage, ...props }) => {
         {navbarConfiguration.map((item, index) => (
           <MenuItem key={index} item={item} currentPage={currentPage} />
         ))}
+      </Navbar.Section>
+      <Navbar.Section>
+        <NavbarFooter/>
       </Navbar.Section>
     </Navbar>
   )

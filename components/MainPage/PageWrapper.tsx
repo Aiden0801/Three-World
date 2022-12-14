@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react'
 import { AppShell } from '@mantine/core'
 
 import Header from './Header/Header'
-import Footer from './Footer/Footer'
+// import Footer from './Footer/Footer'
 import Navbar from './Navbar'
 
 const PageWrapper = ({ children, currentPage }) => {
@@ -23,7 +23,7 @@ const PageWrapper = ({ children, currentPage }) => {
           />
         }
         header={<Header handlenavtoogle={handlenavtoogle} />}
-        footer={<Footer />}
+        // footer={<Footer />}
       >
         {children}
       </AppShell>
