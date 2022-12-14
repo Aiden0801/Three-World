@@ -9,3 +9,7 @@ init()
 export const socket = socketio()
 
 export const SocketContext = React.createContext()
+
+export function useSocketContext() {
+   return React.useContext(SocketContext)
+}
