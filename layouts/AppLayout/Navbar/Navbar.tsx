@@ -73,7 +73,6 @@ const Navbar: React.FC<INavbarProps> = ({
           <MenuItem key={index} item={item} currentPage={currentPage} />
         ))}
       </MantineNavbar.Section>
-      {/* <Divider my={{ base: 'xs', sm: 'md' }} /> */}
       {showUserMenu && (
         <MantineNavbar.Section>
           <UserMenu />

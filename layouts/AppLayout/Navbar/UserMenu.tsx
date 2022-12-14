@@ -1,4 +1,4 @@
-import { Menu } from '@mantine/core'
+import { Menu, useMantineColorScheme } from '@mantine/core'
 
 import { IconLogout, IconSettings, TablerIconProps } from '@tabler/icons'
 import { ColorSchemeIcon } from '@/components/ColorSchemeToggle'
@@ -16,21 +16,40 @@ const icon: TablerIconProps = {
  */
 export function UserMenu() {
   const logout = useLogout()
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme()
   return (
-    <Menu withArrow width="target">
+    <Menu
+      withArrow
+      width="target"
+      styles={(theme) => ({
+        dropdown: {
+          backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+        },
+      })}
+    >
       <Menu.Target>
         <UserButton />
       </Menu.Target>
       <Menu.Dropdown>
-        <Menu.Item disabled icon={<IconSettings {...icon} />}>Settings</Menu.Item>
+        <Menu.Item disabled icon={<IconSettings {...icon} />}>
+          Settings
+        </Menu.Item>
 
-        <Menu.Item icon={<ColorSchemeIcon {...icon} />}>
-          Toggle dark mode
+        <Menu.Item
+          icon={<ColorSchemeIcon {...icon} />}
+          onClick={() => toggleColorScheme()}
+        >
+          {colorScheme === 'dark' ? 'Light' : 'Dark'} theme
         </Menu.Item>
 
         <Menu.Divider />
 
-        <Menu.Item icon={<IconLogout {...icon} />} onClick={logout} color="red.5">
+        <Menu.Item
+          icon={<IconLogout {...icon} />}
+          onClick={logout}
+          color="red.5"
+        >
           Logout
         </Menu.Item>
       </Menu.Dropdown>
