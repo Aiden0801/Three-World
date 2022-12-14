@@ -1,30 +1,23 @@
+import { forwardRef, useEffect, useState } from 'react'
 import {
    Box,
    Button,
    Checkbox,
    Code,
-   ColorPicker,
    ColorSwatch,
    Select,
    Text,
    TextInput,
    Group,
-   Card,
-   Collapse,
+   useMantineTheme,
 } from '@mantine/core'
-import { forwardRef } from 'react'
 import { useForm } from '@mantine/form'
-import { IconTrash } from '@tabler/icons'
-import { useEffect, useState } from 'react'
-import { IPropsCreateForm } from '../../types'
-import { useMantineTheme } from '@mantine/core'
-import { useGlobalConfig } from '../../utils/parser/globalconfig'
-import {
-   getInitialValue,
-   IPropsschemaObject,
-} from '../../utils/parser/schma_parser'
-import { useTemplateConfig } from '../../utils/parser/templateconfig'
 
+import { IPropsCreateForm } from '../../types'
+import { useConfig } from '../../lib/landing-pages'
+import type { IPropsschemaObject } from '../../utils/parser/schema_parser'
+import { IconTrash } from '@tabler/icons'
+import { getInitialValue } from '../../utils/parser/schema_parser'
 /**
  *
  * @param schema Schema needed for creating form
@@ -38,9 +31,16 @@ export const CreateFormFromConfigObject = ({
    handleOnSubmit,
 }: IPropsCreateForm) => {
    const theme = useMantineTheme()
-   const [global, initGlobal] = useGlobalConfig(url)
+   const [global, initGlobal] = useConfig({
+      type: 'global',
+      base_url: url,
+   })
    const [templateName, setTemplateName] = useState(null)
-   const [template, initTemplate] = useTemplateConfig(url, templateName)
+   const [template, initTemplate] = useConfig({
+      type: 'template',
+      base_url: url,
+      template: templateName,
+   })
    // console.log('saved', savedGlobal, savedTemplate)
    const form = useForm({
       initialValues: {
@@ -81,21 +81,15 @@ export const CreateFormFromConfigObject = ({
                   {...form.getInputProps('name')}
                />
             )}
-            <Card withBorder shadow="md" mt="sm">
-               {!global && <div>Parsing Global</div>}
-
-               {form.values.global &&
-                  global &&
-                  ParseObject(global, form, 'global')}
-            </Card>
-            <Card withBorder shadow="md" mt="sm">
-               {templateName && !template && <div>Parsing {templateName}</div>}
-
-               {templateName &&
-                  template &&
-                  form.values.template &&
-                  ParseObject(template, form, 'template')}
-            </Card>
+            {!global && <div>Parsing Global</div>}
+            {templateName && !template && <div>Parsing {templateName}</div>}
+            {form.values.global &&
+               global &&
+               ParseObject(global, form, 'global')}
+            {templateName &&
+               template &&
+               form.values.template &&
+               ParseObject(template, form, 'template')}
             <Button type="submit" mt="md">
                Submit
             </Button>
