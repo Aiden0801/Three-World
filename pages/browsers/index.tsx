@@ -1,14 +1,12 @@
 import React from 'react'
-import { BrowserControl } from '../../page-components/Browser'
-import PageWrapper from '../../components/MainPage/PageWrapper'
+import { BrowserControl } from '@/page-components/Browser'
+import { AppLayout } from '@/layouts/AppLayout'
 const BrowserPage: React.FC = () => {
-   return (
-      <>
-         <PageWrapper currentPage="browsers">
-            <BrowserControl />
-         </PageWrapper>
-      </>
-   )
+  return (
+    <AppLayout currentPage="browsers">
+      <BrowserControl />
+    </AppLayout>
+  )
 }
 
 export default BrowserPage

@@ -5,7 +5,12 @@ import { AppShell } from '@mantine/core'
 import Navbar from './Navbar'
 import { UserContextProvider, MainLayoutContextProvider } from '@/contexts'
 
-const PageWrapper = ({ children, currentPage }) => {
+export interface MainLayoutProps {
+  children: React.ReactNode
+  currentPage: string
+}
+
+export function AppLayout({ children, currentPage }: MainLayoutProps) {
   return (
     <MainLayoutContextProvider>
       <UserContextProvider>
@@ -30,4 +35,3 @@ const PageWrapper = ({ children, currentPage }) => {
     </MainLayoutContextProvider>
   )
 }
-export default PageWrapper

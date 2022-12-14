@@ -1,14 +1,13 @@
 import React from 'react'
-import PageWrapper from '../../components/MainPage/PageWrapper'
-import { Profile } from '../../page-components/User'
+import { AppLayout } from '@/layouts/AppLayout/AppLayout'
+import { Profile } from '@/page-components/User'
+
 const UserProfile: React.FC = () => {
-   return (
-      <>
-         <PageWrapper currentPage="profile">
-            <Profile />
-         </PageWrapper>
-      </>
-   )
+  return (
+    <AppLayout currentPage="profile">
+      <Profile />
+    </AppLayout>
+  )
 }
 
 export default UserProfile

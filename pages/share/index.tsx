@@ -1,14 +1,12 @@
 import React from 'react'
-import { Share } from '../../page-components/Share/index'
-import PageWrapper from '../../components/MainPage/PageWrapper'
+import { Share } from '@/page-components/Share/index'
+import { AppLayout } from '@/layouts/AppLayout'
 const SharePage: React.FC = () => {
-   return (
-      <>
-         <PageWrapper currentPage="share">
-            <Share></Share>
-         </PageWrapper>
-      </>
-   )
+  return (
+    <AppLayout currentPage="share">
+      <Share />
+    </AppLayout>
+  )
 }
 
 export default SharePage
