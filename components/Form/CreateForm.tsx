@@ -73,7 +73,8 @@ export const CreateFormFromConfigObject = ({
         onSubmit={form.onSubmit((values) => {
           setSubmittedValues(JSON.stringify(values, null, 2))
           handleOnSubmit(values)
-        })}>
+        })}
+      >
         {savedData ? (
           <></>
         ) : (
@@ -231,7 +232,8 @@ const ParseObject = (
                     variant="outline"
                     onClick={() => {
                       form.removeListItem(`${dataposition}`, index)
-                    }}>
+                    }}
+                  >
                     <IconTrash color="red" />
                   </Button>
                 </Box>
@@ -242,7 +244,8 @@ const ParseObject = (
                 const temp = getInitialValue(object.items)
                 console.log(temp)
                 form.insertListItem(dataposition, temp)
-              }}>{`New ${object.title}`}</Button>
+              }}
+            >{`New ${object.title}`}</Button>
           </>
         )
       case 'group':
@@ -277,7 +280,8 @@ const ParseObject = (
           marginBottom: `${getLevel() * 2}px`,
           fontSize: `${30 - getLevel() * 3}px`,
           color: '#1C7ED6',
-        }}>
+        }}
+      >
         {/* <Button onClick={() => setOpened((o) => !o)}> Coll</Button> */}
         {/* <Collapse
                // in={opened}
