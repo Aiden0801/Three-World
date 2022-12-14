@@ -115,7 +115,7 @@ export const getInitialValue = (object: IPropsschemaObject) => {
       case 'boolean':
          return false
       case 'color':
-         return '#25262b'
+         return 'dark'
       case 'select':
          return object.data[0]
       case 'array':
