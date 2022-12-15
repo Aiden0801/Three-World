@@ -5,9 +5,6 @@ import {
   IconBuildingCommunity,
   IconBuildingLighthouse,
   IconMessage2,
-  IconUserPlus,
-  IconKey,
-  IconSettingsAutomation,
   IconDashboard,
   IconUsers,
   IconAlarm,
@@ -15,8 +12,10 @@ import {
   IconBrandGithub,
   IconLayoutDashboard,
   IconFolders,
+  Icon3dCubeSphere,
+  IconMessageChatbot,
 } from '@tabler/icons'
-import type { NavItem } from '../types/navbar.item.type'
+import type { NavItem } from '@/types/navbar.item.type'
 export type { NavItem }
 
 /**
@@ -52,11 +51,17 @@ const collaborateMenu: NavItem[] = [
  */
 const businessesMenu: NavItem[] = [
   {
-    label: 'Your Landing Pages',
-    // description: 'Configure your landing pages',
+    label: 'Landing Pages',
+    description: 'Your window to the world',
     icon: IconDashboard,
     href: '/dashboard',
     match: 'dashboard',
+  },
+  {
+    label: 'Virtual Worlds',
+    description: 'Virtual experiences',
+    icon: Icon3dCubeSphere,
+    disabled: true,
   },
 ]
 /**
@@ -66,7 +71,18 @@ const businessesMenu: NavItem[] = [
 const comingSoonMenu: NavItem[] = [
   {
     label: 'Community',
+    description: 'Manage your community',
     icon: IconBuildingCommunity,
+    defaultOpened: true,
+    subitems: [
+      // this should get filtered out because it's empty
+    ],
+  },
+  {
+    label: 'Discord bot',
+    description: 'Configure your bot',
+    icon: IconMessageChatbot,
+    disabled: true,
   },
   {
     label: 'Hacker House',
@@ -74,20 +90,17 @@ const comingSoonMenu: NavItem[] = [
   },
   {
     label: 'Messages',
+    description: 'A message center, just for you',
     icon: IconMessage2,
   },
-  {
-    label: 'User Management',
-    icon: IconUserPlus,
-  },
-  {
-    label: 'Security',
-    icon: IconKey,
-  },
-  {
-    label: 'Bot Settings',
-    icon: IconSettingsAutomation,
-  },
+  // { // if this is for the logged user management, it is the settings/profile page
+  //   label: 'User Management',
+  //   icon: IconUserPlus,
+  // },
+  // {  // this is going to go into the settings page
+  //   label: 'Security',
+  //   icon: IconKey,
+  // },
 ].map((item) => ({ ...item, disabled: true }))
 
 /**
@@ -96,14 +109,14 @@ const comingSoonMenu: NavItem[] = [
 export const navItems: NavItem[] = [
   {
     label: 'Dashboard',
-    description: 'Your ',
+    description: 'Central command',
     icon: IconLayoutDashboard,
     href: '/dashboard',
     disabled: true,
   },
   {
     label: 'Projects',
-    description: 'Manage your projects',
+    // description: 'Configure your projects',
     icon: IconFolders,
     defaultOpened: true,
     subitems: businessesMenu,
@@ -116,6 +129,7 @@ export const navItems: NavItem[] = [
   },
   {
     label: 'Coming soon',
+    description: 'Sneak peak of the future',
     icon: IconAlarm,
     subitems: comingSoonMenu,
   },
@@ -138,5 +152,5 @@ export const navFooterLinks = [
     icon: IconBrandGithub,
     href: 'https://github.com/hackerhousehq',
     label: 'GitHub',
-  }
+  },
 ]

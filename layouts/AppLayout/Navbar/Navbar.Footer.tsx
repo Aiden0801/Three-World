@@ -1,5 +1,5 @@
 import { ActionIcon, Group, Text } from '@mantine/core'
-import { navFooterLinks } from '@/config/navbar.items'
+import { NAVIGATION } from '@/config/website'
 
 export function NavbarFooter() {
   return (
@@ -8,7 +8,7 @@ export function NavbarFooter() {
         ©2022 HHHQ
       </Text>
       <Group>
-        {navFooterLinks.map((item) => (
+        {NAVIGATION.FOOTER.map((item) => (
           <ActionIcon
             key={item.label}
             size="lg"

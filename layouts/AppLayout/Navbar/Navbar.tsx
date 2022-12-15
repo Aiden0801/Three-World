@@ -9,12 +9,12 @@ import {
   NavbarProps,
   ScrollArea,
 } from '@mantine/core'
-import navbarConfiguration from '@/config/navbar.items'
+import { NAVIGATION } from '@/config/website'
 import { useAppLayoutContext } from '@/contexts/AppLayoutContext'
 import { MenuItem } from './MenuItem'
 import { NavbarFooter } from './Navbar.Footer'
 import { UserMenu } from './UserMenu'
-import { ToggleMenuButton } from '@/components/ToggleMenuButton'
+// import { ToggleMenuButton } from '@/components/ToggleMenuButton'
 // import { SearchBox } from '../Searchbox'
 
 const useStyles = createStyles((theme, _params) => {
@@ -68,11 +68,11 @@ const Navbar: React.FC<INavbarProps> = ({
           </MediaQuery>
       </MantineNavbar.Section> */}
       <MantineNavbar.Section>
-      <Group position="apart">
-        {/* <Image alt="" src="/logo/Group_157.png" width={90} height="auto" /> */}
-        <Image alt="" src="/logo/Group_157.png" width="auto" height={72} />
-        <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
-      </Group>
+        <Group position="apart">
+          {/* <Image alt="" src="/logo/Group_157.png" width={90} height="auto" /> */}
+          <Image alt="" src="/logo/Group_157.png" width="auto" height={72} />
+          <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
+        </Group>
       </MantineNavbar.Section>
       <Divider my="xl" />
       {/*
@@ -81,7 +81,7 @@ const Navbar: React.FC<INavbarProps> = ({
         */}
       {/* <SearchBox mb="md"/> */}
       <MantineNavbar.Section grow component={ScrollArea}>
-        {navbarConfiguration.map((item, index) => (
+        {NAVIGATION.MAIN.map((item, index) => (
           <MenuItem key={index} item={item} currentPage={currentPage} />
         ))}
       </MantineNavbar.Section>
