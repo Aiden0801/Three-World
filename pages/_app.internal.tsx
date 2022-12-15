@@ -1,4 +1,4 @@
-import { RouterTransition } from '../layouts/RouterTransition'
+import { RouterTransition } from '@/layouts/RouterTransition'
 import { MantineContexts } from '@/contexts/MantineContexts'
 
 /**

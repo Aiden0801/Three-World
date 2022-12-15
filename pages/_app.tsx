@@ -5,7 +5,7 @@ import type { AppProps as NextAppProps } from 'next/app'
 
 import { SocketContextProvider } from '@/contexts/socket'
 import { RecoilRoot } from 'recoil'
-import { wrapper } from '../store/store'
+import { wrapper } from '@/store/store'
 import AppWithContexts from './_app.internal'
 
 type AppProps = NextAppProps<{
