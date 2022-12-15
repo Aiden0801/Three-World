@@ -9,7 +9,7 @@ export function isLinkItem(item: NavItem): item is LinkNavItem {
 }
 
 export function isWithMenu(item: NavItem): item is SubNavItem {
-  return 'subitems' in item
+  return 'subitems' in item && item.subitems.length > 0
 }
 
 /**
