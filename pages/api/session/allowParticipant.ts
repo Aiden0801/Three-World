@@ -1,8 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import connectMongo from '../../../api-lib/mongodb'
-import { serverURL } from '../../../config/urlcontrol'
-const User = require('../../../api-lib/models/users')
-const Session = require('../../../api-lib/models/session')
+import connectMongo from '@/api-lib/mongodb'
+import { BASE_URL } from '@/config/constants'
+
+const User = require('@/api-lib/models/users')
+const Session = require('@/api-lib/models/session')
 /**
  * ! should change code URL
  *
@@ -14,7 +15,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
    await connectMongo()
    let { email, url } = req.body
    try {
-      var socket = client.connect(`${serverURL}`)
+      var socket = client.connect(`${BASE_URL.SERVER}`)
       let currentSession = await Session.findOne({ embed_url: url })
       if (!currentSession) {
          res.status(200).json('No Session')

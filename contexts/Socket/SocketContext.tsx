@@ -7,14 +7,14 @@ import {
   useRef,
 } from 'react'
 import socketio from 'socket.io-client'
-import { serverURL } from '@/config/urlcontrol'
+import { BASE_URL } from '@/config/constants'
 import { useSession } from 'next-auth/react'
 import { useSetRecoilState } from 'recoil'
 import { currentUser } from '@/utils/recoil/browser'
 import { NextRouter, useRouter } from 'next/router'
 
 const init = async () => {
-  await fetch(`${serverURL}/api/socket`)
+  await fetch(`${BASE_URL.SERVER}/api/socket`)
 }
 init()
 

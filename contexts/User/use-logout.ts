@@ -1,8 +1,8 @@
 import { showNotification } from '@mantine/notifications'
 import { signOut } from 'next-auth/react'
 import { useCallback } from 'react'
-import { serverURL } from '../../config/urlcontrol'
-import { useSocketContext } from '../socket'
+import { BASE_URL } from '@/config/constants'
+import { useSocketContext } from '@/contexts/socket'
 
 /**
  * Custom hook that returns a function that logs the user out, disconnects and
@@ -14,12 +14,12 @@ import { useSocketContext } from '../socket'
  * @returns A function that logs the user out and disconnects the socket
  */
 export function useLogout(): () => Promise<void> {
-  const socket = useSocketContext()
+  const { socket } = useSocketContext()
 
   return useCallback(async () => {
     return signOut({
       redirect: false,
-      callbackUrl: serverURL,
+      callbackUrl: BASE_URL.SERVER,
     })
       .then(() => {
         socket.disconnect()

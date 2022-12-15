@@ -5,8 +5,9 @@ import { AdapterUser } from 'next-auth/adapters'
 import DiscordProvider from 'next-auth/providers/discord'
 import GithubProvider from 'next-auth/providers/github'
 import GoogleProvider from 'next-auth/providers/google'
-import { serverURL } from '../../../config/urlcontrol'
-import { fetcher } from '../../../lib/fetcher'
+
+import { BASE_URL } from '@/config/constants'
+import { fetcher } from '@/lib/fetcher'
 
 //import clientPromise from '../../../lib/mongodb'
 
@@ -103,7 +104,7 @@ export const authOptions: NextAuthOptions = {
          console.log('signIn')
          if (user) {
             console.log('next_auth', user)
-            const response = await fetcher(`${serverURL}/api/users`, {
+            const response = await fetcher(`${BASE_URL.SERVER}/api/users`, {
                method: 'POST',
                headers: { 'Content-Type': 'application/json' },
                body: JSON.stringify({

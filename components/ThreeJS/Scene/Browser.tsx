@@ -16,9 +16,10 @@ import {
    currentBrowserIndex,
    currentBrowsers,
    currentUser,
-} from '../../../utils/recoil/browser'
-import { fetcher } from '../../../lib/fetcher'
-import { serverURL } from '../../../config/urlcontrol'
+} from '@/utils/recoil/browser'
+import { fetcher } from '@/lib/fetcher'
+import { BASE_URL } from '@/config/constants'
+
 import { showNotification } from '@mantine/notifications'
 // const TvComponent = lazy(() => import('./TVModel'))
 // import display from './assets/tv_screen.glb';
@@ -107,7 +108,7 @@ function Browser(props) {
       )
          return
       const response = await fetcher(
-         `${serverURL}/api/session/removeParticipant`,
+         `${BASE_URL.SERVER}/api/session/removeParticipant`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

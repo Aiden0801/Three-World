@@ -1,6 +1,7 @@
 import { selectorFamily, selector, atom } from 'recoil'
-import { fetcher } from '../../lib/fetcher'
-import { serverURL } from '../../config/urlcontrol'
+import { fetcher } from '@/lib/fetcher'
+import { BASE_URL } from '@/config/constants'
+
 export const getCurrentBrowsers = selector({
    key: 'currentUserBrowser',
    get: ({ get }) => get(fetchBrowserByEmail(get(currentUser))),
@@ -39,7 +40,7 @@ export const fetchBrowserByEmail = selectorFamily({
       console.log('recoil', userEmail)
       try {
          const response = await fetcher(
-            `${serverURL}/api/users/getBrowsersByEmail`,
+            `${BASE_URL.SERVER}/api/users/getBrowsersByEmail`,
             {
                method: 'POST',
                headers: { 'Content-Type': 'application/json' },

@@ -13,8 +13,9 @@ import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'
 
-import { serverURL } from '../../config/urlcontrol'
-import { SocialButton } from '../../components/Button'
+import { BASE_URL } from '@/config/constants'
+
+import { SocialButton } from '@/components/Button'
 
 const loginProviders = [
   {
@@ -71,7 +72,7 @@ export default function Login() {
     async (providerName: string) => {
       setLoading(true)
       await signIn(providerName.toLowerCase(), {
-        callbackUrl: `${serverURL}/dashboard`,
+        callbackUrl: `${BASE_URL.SERVER}/dashboard`,
       }).then((res) => {
         console.log('message', res)
       })

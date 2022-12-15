@@ -2,8 +2,8 @@ import { Carousel } from '@mantine/carousel'
 import { Button, createStyles, Modal, Paper, Text, Flex } from '@mantine/core'
 import { IconDownload, IconWorldDownload } from '@tabler/icons'
 import { useState } from 'react'
-import { fetcher } from '../../../../lib/fetcher'
-import { serverURL } from '../../../../config/urlcontrol'
+import { fetcher } from '@/lib/fetcher'
+import { BASE_URL } from '@/config/constants'
 const useStyles = createStyles((theme) => ({
    card: {
       height: 440,
@@ -94,7 +94,7 @@ export default function Utility() {
       setIsScraping(true)
 
       const url = 'https://squarepanda.com/'
-      const newData = await fetcher(`${serverURL}/api/scrap/scrapfromURL`, {
+      const newData = await fetcher(`${BASE_URL.SERVER}/api/scrap/scrapfromURL`, {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
          body: JSON.stringify({

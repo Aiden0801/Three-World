@@ -1,14 +1,16 @@
-import connectMongo from '../../../api-lib/mongodb'
+import connectMongo from '@/api-lib/mongodb'
 import axios from 'axios'
-const User = require('../../../api-lib/models/users')
-const Session = require('../../../api-lib/models/session')
+// const User = require('@/api-lib/models/users')
+// @dev TODO: refactor api-lib import/exports
+const Session = require('@/api-lib/models/session')
 // ./api/session/getControlSession
 // Get Sessions created by me
 /**
  * ! Changes DB
  *
  */
-import { serverURL } from '../../../config/urlcontrol'
+import { BASE_URL } from '@/config/constants'
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(
    req: NextApiRequest,
@@ -48,7 +50,7 @@ async function handler(
                auth: {
                   type: 'webhook',
                   value: {
-                     url: `${serverURL}/api/hyperbeam/allow`,
+                     url: `${BASE_URL.SERVER}/api/hyperbeam/allow`,
                      bearer: process.env.HYPERBEAM_KEY,
                   },
                },

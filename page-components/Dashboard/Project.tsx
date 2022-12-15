@@ -5,16 +5,17 @@ import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { CreateFormFromConfigObject } from '../../components/Form/CreateForm'
-import { LinkButton } from '../../components/Button'
-import { serverURL } from '../../config/urlcontrol'
-import { fetcher } from '../../lib/fetcher'
-import { clientAppURL } from '../../config/urlcontrol'
+import { CreateFormFromConfigObject } from '@/components/Form/CreateForm'
+import { LinkButton } from '@/components/Button'
+import { BASE_URL } from '@/config/constants'
+
+import { fetcher } from '@/lib/fetcher'
 
 const fetchProjects = async (url: string, name: string) => {
    console.log('fetch', name)
-   const data = await fetcher(
-      `${serverURL}/api/projects/${name}/websiteconfig`,
+  const data = await fetcher(
+     // FIX: I think the url is changed now? no websiteconfig but landing-page?
+      `${BASE_URL.SERVER}/api/projects/${name}/websiteconfig`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -58,7 +59,7 @@ const ProjectCofig = ({ projectName }) => {
    const handleOnSubmit = async (values) => {
       console.log('handleOnSubmit', values)
       const response = await fetcher(
-         `${serverURL}/api/projects/updateProject`,
+         `${BASE_URL.SERVER}/api/projects/updateProject`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -118,7 +119,7 @@ const ProjectCofig = ({ projectName }) => {
             </Box>
             {projectData && (
                <CreateFormFromConfigObject
-                  url={clientAppURL}
+                  url={BASE_URL.CLIENT}
                   savedData={projectData}
                   handleOnSubmit={handleOnSubmit}
                />

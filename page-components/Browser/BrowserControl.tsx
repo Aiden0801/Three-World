@@ -14,10 +14,11 @@ import { useEffect, useState } from 'react'
 import { DragDropContext, Draggable, Droppable } from 'react-beautiful-dnd'
 import { useSetRecoilState, useRecoilRefresher_UNSTABLE } from 'recoil'
 import useSWR from 'swr'
-import { serverURL } from '../../config/urlcontrol'
-import { fetcher } from '../../lib/fetcher'
-import { currentBrowsers } from '../../utils/recoil/browser'
-import { ToolTipButton } from '../../components/Button'
+import { BASE_URL } from '@/config/constants'
+
+import { fetcher } from '@/lib/fetcher'
+import { currentBrowsers } from '@/utils/recoil/browser'
+import { ToolTipButton } from '@/components/Button'
 const useStyles = createStyles((theme) => ({
    container: {
       paddingBottom: '20px',
@@ -30,7 +31,7 @@ const useStyles = createStyles((theme) => ({
 
 const fetchBrowserData = async (url: string, email: string) => {
    const session_data = await fetcher(
-      `${serverURL}/api/users/getBrowsersByEmail`,
+      `${BASE_URL.SERVER}/api/users/getBrowsersByEmail`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -59,7 +60,7 @@ const useBrowserData = (email: string) => {
 const fetchSessionData = async (url: string, email: string) => {
    console.log('fetchSessionData', email)
    const session_data = await fetcher(
-      `${serverURL}/api/session/getAvailableSessions`,
+      `${BASE_URL.SERVER}/api/session/getAvailableSessions`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },
@@ -119,7 +120,7 @@ export default function BrowserControl() {
    const handleSetSessionToBrowser = async (session_id, browser_id) => {
       setIsHandling(true)
       const data = await fetcher(
-         `${serverURL}/api/session/setSessiontoBrowser`,
+         `${BASE_URL.SERVER}/api/session/setSessiontoBrowser`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

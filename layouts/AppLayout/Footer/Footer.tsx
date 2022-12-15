@@ -11,9 +11,9 @@ import {
   IconBrandDiscord,
   IconBrandInstagram,
 } from '@tabler/icons'
-import { MantineLogo } from '@mantine/ds'
 
-import { serverURL } from '../../../config/urlcontrol'
+import { BASE_URL } from '@/config/constants'
+
 const useStyles = createStyles((theme) => ({
   footer: {
     borderTop: `1px solid ${
@@ -49,7 +49,7 @@ export default function FooterComponent() {
       <Container ml="xl" fluid className={classes.inner}>
         <Group spacing={0} className={classes.links} position="right" noWrap>
           <Image
-            src={`${serverURL}/logo/logo.svg`}
+            src={`${BASE_URL.SERVER}/logo/logo.svg`}
             alt="logo"
             width={40}
             height={40}

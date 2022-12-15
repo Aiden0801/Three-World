@@ -17,11 +17,11 @@ import { IconCheck, IconPlus } from '@tabler/icons'
 import { useRouter } from 'next/router'
 import React, { useCallback, useEffect, useState } from 'react'
 import useSWR from 'swr'
-import { LinkButton } from '../../components/Button'
-import { CreateFormFromConfigObject } from '../../components/Form/CreateForm'
-import { clientAppURL, serverURL } from '../../config/urlcontrol'
-import { fetcher } from '../../lib/fetcher'
-import FadeIn from '../../utils/spring/FadeIn'
+import { LinkButton } from '@/components/Button'
+import { CreateFormFromConfigObject } from '@/components/Form/CreateForm'
+import { BASE_URL } from '@/config/constants'
+import { fetcher } from '@/lib/fetcher'
+import FadeIn from '@/utils/spring/FadeIn'
 const useStyles = createStyles((theme) => ({
    container: {
       position: 'relative',
@@ -31,8 +31,12 @@ const useStyles = createStyles((theme) => ({
    },
 }))
 
+/**
+ * fetches current projects list.
+ * @dev Do we use the parameters? if not remove them.
+ */
 const fetchProjects = async (url: string, email: string) => {
-   const data = await fetcher(`${serverURL}/api/projects`, {
+   const data = await fetcher(`${BASE_URL.SERVER}/api/projects`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
    })
@@ -59,7 +63,7 @@ const Dashboard: React.FC = () => {
 
    const handleOnSubmit = async (values) => {
       const response = await fetcher(
-         `${serverURL}/api/projects/createProject`,
+         `${BASE_URL.SERVER}/api/projects/createProject`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -84,7 +88,7 @@ const Dashboard: React.FC = () => {
    }
    const handleDeleteProject = useCallback(async (name: string) => {
       const response = await fetcher(
-         `${serverURL}/api/projects/deleteProject`,
+         `${BASE_URL.SERVER}/api/projects/deleteProject`,
          {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -156,7 +160,7 @@ const Dashboard: React.FC = () => {
             }}>
             {
                <CreateFormFromConfigObject
-                  url={clientAppURL}
+                  url={BASE_URL.CLIENT}
                   handleOnSubmit={handleOnSubmit}
                />
             }

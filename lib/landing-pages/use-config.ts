@@ -1,7 +1,7 @@
 // file: utils\parser\schema_parser.ts
 import JsonParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { getInitialValue, ParseSchema } from '../../utils/parser/schema_parser'
+import { getInitialValue, ParseSchema } from '@/utils/parser/schema_parser'
 
 type BaseOptions = {
   parser?: (schema: JSONSchema) => any
