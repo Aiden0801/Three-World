@@ -1,13 +1,21 @@
-import { useThemeConfig } from "../../lib/landing-pages";
-import { SchemaViewer } from "./SchemaViewer";
-
+import { useFormValue, useThemeConfig } from '../../lib/landing-pages'
+import { SchemaViewer } from './SchemaViewer'
+import { ParseObject } from '../../lib/landing-pages/parse-object'
+import { useEffect } from 'react'
 export function ThemeForm() {
-  const config = useThemeConfig()
-  console.info('theme configuration', JSON.stringify(config ?? {}, null, 2))
+  const [config, initial] = useThemeConfig()
+  const formValue = useFormValue()
+
+  useEffect(() => {
+    // console.log(formValue.valu, initial)
+    // console.log('initial', initial, formValue.values)
+    formValue.setFieldValue('template.theme', initial)
+  }, [initial])
   return (
     <>
       <h1>Theme Config</h1>
-      <SchemaViewer title="Theme" schema={config} />
+      {/* <SchemaViewer title="Theme" schema={config} /> */}
+      {ParseObject(config, formValue, 'template.theme')}
     </>
   )
 }

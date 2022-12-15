@@ -1,16 +1,17 @@
 import { ISessionData } from './session.type'
 export interface IPropsSessionData {
-   sessionID: string
+  sessionID: string
 }
 export interface IPropsProjectPgae {
-   name: string
+  name: string
+  savedData: object
 }
 export interface IPropsCreateForm {
-   url?: string
-   savedData?: {
-      name: string
-      global: object
-      template: object
-   }
-   handleOnSubmit?: Function
+  url?: string
+  savedData?: {
+    name: string
+    global: object
+    template: object
+  }
+  handleOnSubmit?: Function
 }
