@@ -1,22 +1,21 @@
 import {
-  Code,
   createStyles,
   Divider,
   Group,
-  Image,
   MediaQuery,
   Navbar as MantineNavbar,
   NavbarProps,
   ScrollArea,
-  Text,
 } from '@mantine/core'
 import { NAVIGATION } from '@/config/website'
-import { useMobileBreakpoint, useNavbarState } from '@/contexts/AppLayout'
+import { useIsMobile, useMobileBreakpoint, useNavbarState } from '@/contexts/AppLayout'
 import { MenuItem } from './MenuItem'
 import { NavbarFooter } from './Navbar.Footer'
 import { UserMenu } from './UserMenu'
 import { ToggleMenuButton } from '@/components/ToggleMenuButton'
 import { ImageLogo, TextLogo } from '../Logo'
+import { SearchBox } from '@/components/Searchbox'
+import { UserButton } from './UserButton'
 
 const useStyles = createStyles((theme, _params) => {
   return {
@@ -47,59 +46,69 @@ interface INavbarProps extends Omit<NavbarProps, 'children'> {
    * */
   showFooter?: boolean
   /**
-   * if true shows the user popup menu (logout, settings, etc)
-   * @default true
+   * If not false, adds the user button with menu.
+   * Default position is on top on the menu, but it can be overridden to be
+   * at the bottom.
+   *
+   * @default 'top'
    */
-  showUserMenu?: boolean
+  showUserMenu?: false | 'bottom' | 'top'
+  /**
+   * if true shows the search box
+   * @default false
+   */
+  showSearch?: boolean
 }
 const Navbar: React.FC<INavbarProps> = ({
   currentPage,
-  showUserMenu = true,
+  showUserMenu = 'top',
   showFooter = true,
+  showSearch = false,
   ...props
 }) => {
   const { classes } = useStyles()
   const [opened] = useNavbarState()
   const breakpoint = useMobileBreakpoint()
+  const isMobile = useIsMobile()
 
   return (
     <MantineNavbar
       p="xs"
       className={classes.container}
-      // styles={{ root: { width: '100%', margin: 0 } }}
       {...props}
       hidden={!opened}
     >
-      {/* @dev this is in advance of completely refactoring the header out of the layout */}
-      <MediaQuery largerThan={breakpoint} styles={{ display: 'none' }}>
-        <MantineNavbar.Section>
-          <Group position="apart" mx="sm">
-            <ToggleMenuButton />
-            {/* <Text color="dimmed">Close menu</Text> */}
-            <TextLogo/>
-          </Group>
-        </MantineNavbar.Section>
-      </MediaQuery>
-      <MediaQuery smallerThan={breakpoint} styles={{ display: 'none' }}>
       <MantineNavbar.Section>
-        <Group position="apart">
-          <ImageLogo />
-          <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
+        <Group position="left" mx="sm">
+          <MediaQuery largerThan={breakpoint} styles={{ display: 'none' }}>
+            <ToggleMenuButton />
+          </MediaQuery>
+          <TextLogo />
         </Group>
-        </MantineNavbar.Section>
-      </MediaQuery>
+      </MantineNavbar.Section>
 
-      <Divider my={{base: 'sm', [breakpoint]: "xl" }} />
-      {/* <SearchBox mb="md" disabled /> */}
+      <Divider mt={{ base: 'sm', [breakpoint]: 'xl' }} mb="md" />
+
+      {!isMobile && showUserMenu === 'top' && (
+        <MantineNavbar.Section>
+          <UserMenu width="target">
+            <UserButton />
+          </UserMenu>
+        </MantineNavbar.Section>
+      )}
+      {!isMobile && <Divider my={{ base: 'sm', [breakpoint]: 'md' }} />}
+      {showSearch && <SearchBox mb="md" disabled />}
 
       <MantineNavbar.Section grow component={ScrollArea}>
         {NAVIGATION.MAIN.map((item, index) => (
           <MenuItem key={index} item={item} currentPage={currentPage} />
         ))}
       </MantineNavbar.Section>
-      {showUserMenu && (
+      {!isMobile && showUserMenu === 'bottom' && (
         <MantineNavbar.Section>
-          <UserMenu />
+          <UserMenu width="target">
+            <UserButton />
+          </UserMenu>
         </MantineNavbar.Section>
       )}
       {showFooter && (
