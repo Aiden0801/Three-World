@@ -26,21 +26,21 @@ export type { NavItem }
 const collaborateMenu: NavItem[] = [
   {
     label: 'Session',
-    description: 'Manage your sessions',
+    // description: 'Manage your sessions',
     icon: IconDatabaseImport,
     href: '/sessions',
     match: 'sessions',
   },
   {
     label: 'Browser',
-    description: 'Setup your browsers',
+    // description: 'Setup your browsers',
     icon: IconScreenShare,
     href: '/browsers',
     match: 'browsers',
   },
   {
     label: 'Launch',
-    description: 'collaborate with your team',
+    // description: 'collaborate with your team',
     icon: IconShare,
     href: '/share',
     match: 'share',
@@ -53,7 +53,7 @@ const collaborateMenu: NavItem[] = [
 const businessesMenu: NavItem[] = [
   {
     label: 'Your Landing Pages',
-    description: 'Configure your landing pages',
+    // description: 'Configure your landing pages',
     icon: IconDashboard,
     href: '/dashboard',
     match: 'dashboard',
@@ -96,14 +96,14 @@ const comingSoonMenu: NavItem[] = [
 export const navItems: NavItem[] = [
   {
     label: 'Dashboard',
-    // description: 'Your ',
+    description: 'Your ',
     icon: IconLayoutDashboard,
     href: '/dashboard',
     disabled: true,
   },
   {
     label: 'Projects',
-    // description: 'Manage your projects',
+    description: 'Manage your projects',
     icon: IconFolders,
     defaultOpened: true,
     subitems: businessesMenu,

@@ -1,9 +1,9 @@
 import { forwardRef } from 'react'
-import { Group, UnstyledButton, Avatar, Text } from '@mantine/core'
+import { Group, UnstyledButton, Avatar, Text, UnstyledButtonProps } from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
 import { useUserData } from '@/contexts/User'
 
-interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {}
+interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'>, UnstyledButtonProps {}
 
 /**
  * Navbar user button
@@ -13,15 +13,14 @@ interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'> {}
 export const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
   ({ ...props }: UserButtonProps, ref) => {
     const user = useUserData()
-
     return (
       <UnstyledButton
         ref={ref}
-        py="xs"
-        px="sm"
+        p="xs"
         sx={(theme) => ({
           display: 'block',
-          width: '100%',
+          width: `100%`,
+          borderRadius: theme.radius.md,
           // padding: theme.spacing.xs,
           color:
             theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,

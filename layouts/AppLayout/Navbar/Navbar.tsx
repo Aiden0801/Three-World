@@ -4,6 +4,7 @@ import {
   Divider,
   Group,
   Image,
+  MediaQuery,
   Navbar as MantineNavbar,
   NavbarProps,
   ScrollArea,
@@ -13,6 +14,7 @@ import { useAppLayoutContext } from '@/contexts/AppLayoutContext'
 import { MenuItem } from './MenuItem'
 import { NavbarFooter } from './Navbar.Footer'
 import { UserMenu } from './UserMenu'
+import { ToggleMenuButton } from '@/components/ToggleMenuButton'
 // import { SearchBox } from '../Searchbox'
 
 const useStyles = createStyles((theme, _params) => {
@@ -53,15 +55,25 @@ const Navbar: React.FC<INavbarProps> = ({
   return (
     <MantineNavbar
       p="xs"
+      // pl="-xs"
       className={classes.container}
+      styles={{ root: { width: '100%', margin: 0 } }}
       {...props}
       hidden={!opened}
     >
+      {/* @dev this is in advance of completely refactoring the header out of the layout */}
+      {/* <MantineNavbar.Section >
+        <MediaQuery largerThan="sm" styles={{display: 'none'}}>
+          <ToggleMenuButton />
+          </MediaQuery>
+      </MantineNavbar.Section> */}
+      <MantineNavbar.Section>
       <Group position="apart">
         {/* <Image alt="" src="/logo/Group_157.png" width={90} height="auto" /> */}
         <Image alt="" src="/logo/Group_157.png" width="auto" height={72} />
         <Code sx={{ fontWeight: 700 }}>v1.0.0</Code>
       </Group>
+      </MantineNavbar.Section>
       <Divider my="xl" />
       {/*
         * @dev search does nothing for now.

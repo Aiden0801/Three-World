@@ -1,6 +1,11 @@
 import { Menu, useMantineColorScheme } from '@mantine/core'
 
-import { IconLogout, IconSettings, TablerIconProps } from '@tabler/icons'
+import {
+  IconLogout,
+  IconSettings,
+  IconUserCircle,
+  TablerIconProps,
+} from '@tabler/icons'
 import { ColorSchemeIcon } from '@/components/ColorSchemeToggle'
 import { UserButton } from './UserButton'
 import { useLogout } from '@/contexts/User'
@@ -13,10 +18,16 @@ const icon: TablerIconProps = {
 /**
  * User menu with logout and other functionalities.
  * Wraps UserButton with Mantine Menu.
+ * TODO: Add usability improvements like, hotkeys, focus trap, etc.
+ * what should happen (for accessibility) is that when the user opens
+ * the menu through the keyboard, the focus should be trapped inside
+ * the menu, and the user should be able to navigate through the menu
+ * using the arrow keys, and close the menu using the escape key.
  */
 export function UserMenu() {
   const logout = useLogout()
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
+
   return (
     <Menu
       withArrow
@@ -32,6 +43,9 @@ export function UserMenu() {
         <UserButton />
       </Menu.Target>
       <Menu.Dropdown>
+        <Menu.Item disabled icon={<IconUserCircle {...icon} />}>
+          Profile
+        </Menu.Item>
         <Menu.Item disabled icon={<IconSettings {...icon} />}>
           Settings
         </Menu.Item>

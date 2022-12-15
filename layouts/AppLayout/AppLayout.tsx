@@ -1,6 +1,6 @@
 import { AppShell } from '@mantine/core'
 
-// import Header from './Header/Header'
+import Header from './Header/Header'
 // import Footer from './Footer/Footer'
 import Navbar from './Navbar'
 import { UserContextProvider, AppLayoutContextProvider } from '@/contexts'
@@ -17,9 +17,9 @@ export function AppLayout({ children, currentPage }: MainLayoutProps) {
         <AppShell
           fixed
           padding={0}
-          layout="alt"
+          // layout="alt" // TODO: Fix responsivness of header/footer
           navbarOffsetBreakpoint="sm"
-          // header={<Header />}
+          header={<Header />}
           navbar={
             <Navbar
               width={{ base: '100%', sm: 285 }}
