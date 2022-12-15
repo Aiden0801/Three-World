@@ -1,14 +1,16 @@
-import connectMongo from '../../../api-lib/mongodb'
+import connectMongo from '@/api-lib/mongodb'
 import axios from 'axios'
-const User = require('../../../api-lib/models/users')
-const Session = require('../../../api-lib/models/session')
+// const User = require('@/api-lib/models/users')
+// @dev TODO: refactor api-lib import/exports
+const Session = require('@/api-lib/models/session')
 // ./api/session/getControlSession
 // Get Sessions created by me
 /**
  * ! Changes DB
  *
  */
-import { serverURL } from '../../../config/urlcontrol'
+import { BASE_URL } from '@/config/constants'
+
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(
    req: NextApiRequest,
@@ -25,7 +27,7 @@ async function handler(
       })
       //.select('name session_id isActive');
       if (!session || session.length == 0) {
-         res.status(200).send('no Session or Access is denied')
+         res.status(200).json('no Session or Access is denied')
       } else {
          const resp = await axios.get(
             `https://engine.hyperbeam.com/v0/vm/{${session.session_id}}`,
@@ -48,7 +50,7 @@ async function handler(
                auth: {
                   type: 'webhook',
                   value: {
-                     url: `${serverURL}/api/hyperbeam/allow`,
+                     url: `${BASE_URL.SERVER}/api/hyperbeam/allow`,
                      bearer: process.env.HYPERBEAM_KEY,
                   },
                },
@@ -78,7 +80,7 @@ async function handler(
                   }
                }
             ).clone()
-            res.status(200).send('Sucess')
+            res.status(200).json('Sucess')
          } else {
             console.log('Session is still running')
             res.status(200).send({ session })

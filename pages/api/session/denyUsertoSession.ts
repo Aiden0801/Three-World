@@ -29,7 +29,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                }
             ).clone()
             console.log('update success')
-            res.status(200).send('success')
+            res.status(200).json('success')
          }
       }
    } catch (err) {

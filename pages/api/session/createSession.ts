@@ -1,14 +1,14 @@
-import connectMongo from '../../../api-lib/mongodb'
+import connectMongo from '@/api-lib/mongodb'
 import axios from 'axios'
-const User = require('../../../api-lib/models/users')
-const Session = require('../../../api-lib/models/session')
+const User = require('@/api-lib/models/users')
+const Session = require('@/api-lib/models/session')
 /***
- * 
+ *
  * It's guaranteed that you'll get a new session ID every time you create a new session.
 You can think of passing in IDs in save and load as us taking/loading a snapshot of a particular session.
 For example, you start a new session with save: true and the session's ID is A.
 To load the session, you'd pass in load: "A". A new session will be created with A's data, but this new session ID will be different, say B.
-To load the data from session A and overwrite the data when the session is finished, you can do save: "A", load: "A". In practice this is what you'll be doing 99% of the time. 
+To load the data from session A and overwrite the data when the session is finished, you can do save: "A", load: "A". In practice this is what you'll be doing 99% of the time.
 Also, the keys need to be
 {
   profile: {
@@ -18,7 +18,8 @@ Also, the keys need to be
 }
  */
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { serverURL } from '../../../config/urlcontrol'
+import { BASE_URL } from '@/config/constants'
+
 async function handler(req: NextApiRequest, res: NextApiResponse) {
    // res.status(200).json({ name: req.body, name: req.name });
    await connectMongo()
@@ -39,7 +40,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
                auth: {
                   type: 'webhook',
                   value: {
-                     url: `${serverURL}/api/hyperbeam/allow`,
+                     url: `${BASE_URL.SERVER}/api/hyperbeam/allow`,
                      bearer: process.env.HYPERBEAM_KEY,
                   },
                },

@@ -3,12 +3,12 @@ import { animated, config, useSpring } from '@react-spring/three'
 import { Canvas } from '@react-three/fiber'
 import { lazy, useEffect, useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import { currentBrowserIndex } from '../../../utils/recoil/browser'
+import { currentBrowserIndex } from '@/utils/recoil/browser'
 import BrowserGroup from './BrowserGroup'
 const SkyComponent = lazy(() => import('./Sky'))
 
 import { useViewportSize } from '@mantine/hooks'
-import { HeaderHeight, FooterHeight } from '../../../config/themeConfig'
+import { HeaderHeight, FooterHeight } from '@/config/themeConfig'
 export default function SpaceScreen() {
    const { height, width } = useViewportSize()
    const curIndex = useRecoilValue(currentBrowserIndex)
@@ -37,12 +37,7 @@ export default function SpaceScreen() {
       ],
    ])
    return (
-      <div
-         style={{
-            position: 'relative',
-            height: '100%',
-            width: '100%',
-         }}>
+      <>
          <Canvas
             camera={{
                fov: 45,
@@ -68,7 +63,7 @@ export default function SpaceScreen() {
                position={[0, 0, 0]}
             />
          </Canvas>
-      </div>
+      </>
    )
 }
 

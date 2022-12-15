@@ -1,24 +1,32 @@
 import { GetServerSideProps } from 'next'
 import React from 'react'
-import PageWrapper from '../../components/MainPage/PageWrapper'
-import { IPropsProjectPgae } from '../../types'
-import { ProjectCofig } from '../../page-components/Dashboard'
+
+import { AppLayout } from '@/layouts/AppLayout'
+import { IPropsProjectPgae } from '@/types'
+import { ProjectCofig } from '@/page-components/Dashboard'
+
+/**
+ * @vlad what does this actually do RIGHT NOW?
+ * I imagine this is the way you want to get the `savedData` prop
+ * (which should be a JSON (object) directly since next does handle it),
+ * but right now serves... what purpose?
+ */
 export const getServerSideProps: GetServerSideProps = async (context) => {
-   return {
-      props: { name: context.params.id },
-   }
+  const name = context.params.id
+  return {
+    props: { name: context.params.id },
+  }
 }
 
 const ProjectPage: React.FC<IPropsProjectPgae> = ({
-   name,
+  name,
+  savedData,
 }: IPropsProjectPgae) => {
-   return (
-      <>
-         <PageWrapper currentPage="sessions">
-            <ProjectCofig projectName={name} />
-         </PageWrapper>
-      </>
-   )
+  return (
+    <AppLayout currentPage="sessions">
+      <ProjectCofig projectName={name} />
+    </AppLayout>
+  )
 }
 
 export default ProjectPage

@@ -49,12 +49,13 @@ const MessageHandler = (io, socket) => {
    const participantsRemoved = (msg) => {
       console.log('Participants Removed Message ')
       const socket_id = allClients.find((obj) => obj.email == msg.email).id
-      allClients.filter((obj) => obj.email != msg.email)
       socket.emit('messageReceived')
       io.sockets.sockets
          .get(socket_id)
          .to(msg.sessionName)
          .emit('participantsRemoved', msg)
+      const index = allClients.findIndex((obj) => obj.email == msg.email)
+      allClients.splice(index, 1)
    }
    const signIn = (msg) => {
       allClients.forEach((obj, index) => {

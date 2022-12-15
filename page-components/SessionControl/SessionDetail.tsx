@@ -21,10 +21,11 @@ import {
 import { useForm } from '@mantine/form'
 // Users with a higher priority will preempt the control of lower priority users.
 import { IconActivity, IconArrowBack, IconPlus, IconPoint } from '@tabler/icons'
-import { currentUser } from '../../utils/recoil/user'
-import { serverURL } from '../../config/urlcontrol'
-import { fetcher } from '../../lib/fetcher'
-import { IPropsSessionData } from '../../types'
+import { currentUser } from '@/utils/recoil/user'
+import { BASE_URL } from '@/config/constants'
+
+import { fetcher } from '@/lib/fetcher'
+import { IPropsSessionData } from '@/types'
 import { useRecoilValue } from 'recoil'
 import { useRouter } from 'next/router'
 const useStyles = createStyles((theme) => ({
@@ -42,7 +43,7 @@ const useStyles = createStyles((theme) => ({
 const fetchSessionData = async (url: string, _id: string) => {
    console.log('fetchSessionData', _id)
    const session_data = await fetcher(
-      `${serverURL}/api/session/getSessionByID`,
+      `${BASE_URL.SERVER}/api/session/getSessionByID`,
       {
          method: 'POST',
          headers: { 'Content-Type': 'application/json' },

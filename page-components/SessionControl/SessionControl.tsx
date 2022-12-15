@@ -13,6 +13,7 @@ import {
    Text,
    Textarea,
    TextInput,
+   Tooltip,
 } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import {
@@ -31,6 +32,7 @@ import useSWR from 'swr'
 
 import { fetcher } from '../../lib/fetcher'
 import { currentBrowsers } from '../../utils/recoil/browser'
+import { ToolTipButton } from '../../components/Button'
 const BREAKPOINT = '@media (max-width: 755px)'
 const useStyles = createStyles((theme) => ({
    container: {
@@ -231,7 +233,8 @@ const SessionControl = () => {
                   }}>
                   Sessions
                </Text>
-               <Button
+               <ToolTipButton
+                  description="Create a New Session"
                   compact
                   onClick={() => {
                      setOpened(true)
@@ -247,7 +250,7 @@ const SessionControl = () => {
                      New
                   </Text>
                   <IconPlus size={20} stroke={1.5} />
-               </Button>
+               </ToolTipButton>
             </Box>
             <Text mb={20} span>
                Create a new Session and share it with friends!
@@ -321,7 +324,12 @@ const SessionControl = () => {
                                           alignItems: 'center',
                                           justifyContent: 'center',
                                        }}>
-                                       <Button
+                                       <ToolTipButton
+                                          description={
+                                             session.isActive
+                                                ? 'Active'
+                                                : 'Deactive'
+                                          }
                                           onClick={() => {
                                              session.isActive
                                                 ? handleKillSession(session._id)
@@ -334,26 +342,27 @@ const SessionControl = () => {
                                           }
                                           variant="subtle">
                                           <IconActivity />
-                                       </Button>
-                                       <Button
-                                          color="indigo"
-                                          variant="subtle"
+                                       </ToolTipButton>
+                                       <ToolTipButton
+                                          description="Detail"
+                                          color="red"
                                           onClick={() => {
                                              router.push(
                                                 `/sessions/${session._id}`
                                              )
                                           }}>
                                           <IconListDetails />
-                                       </Button>
+                                       </ToolTipButton>
 
-                                       <Button
+                                       <ToolTipButton
+                                          description="Delete"
                                           onClick={() =>
                                              handleDeleteSession(session._id)
                                           }
                                           color="orange"
                                           variant="subtle">
                                           <XOctagonFill />
-                                       </Button>
+                                       </ToolTipButton>
                                     </div>
                                  </td>
                               </tr>

@@ -1,0 +1,156 @@
+import {
+  IconDatabaseImport,
+  IconScreenShare,
+  IconShare,
+  IconBuildingCommunity,
+  IconBuildingLighthouse,
+  IconMessage2,
+  IconDashboard,
+  IconUsers,
+  IconAlarm,
+  IconBrandDiscord,
+  IconBrandGithub,
+  IconLayoutDashboard,
+  IconFolders,
+  Icon3dCubeSphere,
+  IconMessageChatbot,
+} from '@tabler/icons'
+import type { NavItem } from '@/types/navbar.item.type'
+export type { NavItem }
+
+/**
+ * The sub menu items for the "Collaborate" menu.
+ * This represents for now only the virtual sessions items.
+ */
+const collaborateMenu: NavItem[] = [
+  {
+    label: 'Session',
+    // description: 'Manage your sessions',
+    icon: IconDatabaseImport,
+    href: '/sessions',
+    match: 'sessions',
+  },
+  {
+    label: 'Browser',
+    // description: 'Setup your browsers',
+    icon: IconScreenShare,
+    href: '/browsers',
+    match: 'browsers',
+  },
+  {
+    label: 'Launch',
+    // description: 'collaborate with your team',
+    icon: IconShare,
+    href: '/share',
+    match: 'share',
+  },
+]
+/**
+ * Sub menu for the businesses management.
+ *
+ */
+const businessesMenu: NavItem[] = [
+  {
+    label: 'Landing Pages',
+    description: 'Your window to the world',
+    icon: IconDashboard,
+    href: '/dashboard',
+    match: 'dashboard',
+  },
+  {
+    label: 'Virtual Worlds',
+    description: 'Virtual experiences',
+    icon: Icon3dCubeSphere,
+    disabled: true,
+  },
+]
+/**
+ * The sub menu items for the "Coming soon" menu.
+ * All items are disabled.
+ */
+const comingSoonMenu: NavItem[] = [
+  {
+    label: 'Community',
+    description: 'Manage your community',
+    icon: IconBuildingCommunity,
+    defaultOpened: true,
+    subitems: [
+      // this should get filtered out because it's empty
+    ],
+  },
+  {
+    label: 'Discord bot',
+    description: 'Configure your bot',
+    icon: IconMessageChatbot,
+    disabled: true,
+  },
+  {
+    label: 'Hacker House',
+    icon: IconBuildingLighthouse,
+  },
+  {
+    label: 'Messages',
+    description: 'A message center, just for you',
+    icon: IconMessage2,
+  },
+  // { // if this is for the logged user management, it is the settings/profile page
+  //   label: 'User Management',
+  //   icon: IconUserPlus,
+  // },
+  // {  // this is going to go into the settings page
+  //   label: 'Security',
+  //   icon: IconKey,
+  // },
+].map((item) => ({ ...item, disabled: true }))
+
+/**
+ * The main navigation items, including the sub menus.
+ */
+export const navItems: NavItem[] = [
+  {
+    label: 'Dashboard',
+    description: 'Central command',
+    icon: IconLayoutDashboard,
+    href: '/dashboard',
+    disabled: true,
+  },
+  {
+    label: 'Projects',
+    // description: 'Configure your projects',
+    icon: IconFolders,
+    defaultOpened: true,
+    subitems: businessesMenu,
+  },
+  {
+    label: 'Collaborate',
+    icon: IconUsers,
+    defaultOpened: true,
+    subitems: collaborateMenu,
+  },
+  {
+    label: 'Coming soon',
+    description: 'Sneak peak of the future',
+    icon: IconAlarm,
+    subitems: comingSoonMenu,
+  },
+]
+
+export default navItems
+
+/**
+ * The navbar footer links.
+ */
+export const navFooterLinks = [
+  {
+    icon: IconBrandDiscord,
+    // unlimited invite to HHHQ discord server, start-here channel
+    href: 'https://discord.gg/pgA8uCV2sy',
+    label: 'Discord',
+    target: '_blank',
+  },
+  {
+    icon: IconBrandGithub,
+    href: 'https://github.com/hackerhousehq',
+    label: 'GitHub',
+  },
+]

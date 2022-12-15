@@ -57,6 +57,10 @@ const SessionSchema = new mongoose.Schema({
    //     default: Date.now
    //   }
 })
-
+/**
+ * @vlad why export like this? can't we just do the second part?
+ * not familiar with how this works, but doing this and using `require` on
+ * the other side makes the type as `any` instead of `Session` so no typescript.
+ */
 module.exports =
    mongoose.models['session'] || mongoose.model('session', SessionSchema)

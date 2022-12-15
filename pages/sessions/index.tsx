@@ -1,14 +1,12 @@
 import React from 'react'
-import { SessionControl } from '../../page-components/SessionControl'
-import PageWrapper from '../../components/MainPage/PageWrapper'
+import { SessionControl } from '@/page-components/SessionControl'
+import { AppLayout } from '@/layouts/AppLayout'
 const SessionPage = () => {
-   return (
-      <>
-         <PageWrapper currentPage="sessions">
-            <SessionControl />
-         </PageWrapper>
-      </>
-   )
+  return (
+    <AppLayout currentPage="sessions">
+      <SessionControl />
+    </AppLayout>
+  )
 }
 
 export default SessionPage
