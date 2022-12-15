@@ -1,12 +1,12 @@
-import { useAppLayoutContext } from "@/contexts/AppLayoutContext"
-import { BurgerProps, useMantineColorScheme, Burger } from "@mantine/core"
+import { useNavbarState } from '@/contexts/AppLayout'
+import { BurgerProps, useMantineColorScheme, Burger } from '@mantine/core'
 
 /**
  * Burger button to toggle the main menu through the context.
  * @dev TODO: move into separate file.
  */
 export function ToggleMenuButton(props: Omit<BurgerProps, 'opened'>) {
-  const { opened, setOpened } = useAppLayoutContext()
+  const [opened, setOpened] = useNavbarState()
   const { colorScheme } = useMantineColorScheme()
   return (
     <Burger
