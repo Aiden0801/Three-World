@@ -11,47 +11,37 @@ import { BASE_URL } from '@/config/constants'
 
 import { fetcher } from '@/lib/fetcher'
 import { FormContextProvider } from '@/lib/landing-pages'
-import {LandingPagesForm} from '@/components/LandingPagesForm'
+import { LandingPagesForm } from '@/components/LandingPagesForm'
 
-const fetchProjects = async (url: string, name: string) => {
-  console.log('fetch', name)
-  /** @vlad FIX: I think the url is changed now? no websiteconfig but landing-page? */
-  const data = await fetcher(`${BASE_URL.SERVER}/api/projects/${name}/websiteconfig`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  })
-  return data ? data : []
-}
-const useProjectData = (projectName) => {
-  console.log('use', projectName)
-  const { data, mutate, error, isValidating } = useSWR(['api/projects', projectName], fetchProjects, {
-    revalidateOnFocus: false,
-  })
-  return {
-    data: data,
-    isLoading: (!error && !data) || isValidating,
-    isError: error,
-    mutate: mutate,
-  }
-}
-const ProjectCofig = ({ projectName }) => {
+// const fetchProjects = async (url: string, name: string) => {
+//   console.log('fetch', name)
+//   /** @vlad FIX: I think the url is changed now? no websiteconfig but landing-page? */
+//   const data = await fetcher(`${BASE_URL.SERVER}/api/projects/${name}/websiteconfig`, {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//   })
+//   return data ? data : []
+// }
+// const useProjectData = (projectName) => {
+//   console.log('use', projectName)
+//   const { data, mutate, error, isValidating } = useSWR(['api/projects', projectName], fetchProjects, {
+//     revalidateOnFocus: false,
+//   })
+//   return {
+//     data: data,
+//     isLoading: (!error && !data) || isValidating,
+//     isError: error,
+//     mutate: mutate,
+//   }
+// }
+const ProjectCofig = ({ projectName, configData }) => {
   const { data: session, status } = useSession()
   //    const [refs, setRefs] = useState<$RefParser.$Refs>(null)
 
   //    const [schema, setSchema] = useState<JSONSchema>()
-  const [loaded, setLoaded] = useState(false)
   const router = useRouter()
-  const { data: configData } = useProjectData(projectName)
-
-  useEffect(() => {
-    test()
-  }, [])
-  const test = async () => {
-    //   let test = await $RefParser.dereference(LandingPageSchema)
-    //   setSchema(test)
-    //   console.log(test)
-    setLoaded((o) => true)
-  }
+  // const { data: configData } = useProjectData(projectName)
+  console.log(configData)
 
   const handleOnSubmit = async (values) => {
     console.log('handleOnSubmit', values)

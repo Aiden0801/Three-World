@@ -80,7 +80,7 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                   <th style={{ width: '70px' }}>Edit</th>
                   <th>Section Name</th>
                   <th>Action</th>
-                  <th style={{ width: '30px' }}>Order</th>
+                  <th style={{ width: '70px' }}>Order</th>
                 </tr>
               </thead>
               <tbody>

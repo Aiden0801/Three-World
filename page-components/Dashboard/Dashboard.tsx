@@ -12,7 +12,7 @@ import { fetcher } from '@/lib/fetcher'
 import FadeIn from '@/utils/spring/FadeIn'
 
 import { FormContextProvider } from '@/lib/landing-pages'
-import {LandingPagesForm }from '@/components/LandingPagesForm'
+import { LandingPagesForm } from '@/components/LandingPagesForm'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -28,11 +28,11 @@ const useStyles = createStyles((theme) => ({
  * @dev Do we use the parameters? if not remove them.
  */
 const fetchProjects = async (url: string, email: string) => {
-   const data = await fetcher(`${BASE_URL.SERVER}/api/projects`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-   })
-   return data ? data : []
+  const data = await fetcher(`${BASE_URL.SERVER}/api/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  return data ? data : []
 }
 const useProjectData = () => {
   const { data, mutate, error, isValidating } = useSWR(['api/projects'], fetchProjects, { revalidateOnFocus: false })
@@ -191,7 +191,7 @@ const Dashboard: React.FC = () => {
                       mt="md"
                       size="xs"
                       radius="md"
-                      href={`/dashboard/${item.name}`}>
+                      href={`/dashboard/${item.slug}`}>
                       Edit
                     </LinkButton>
                     <Button
