@@ -1,15 +1,10 @@
 import axios from 'axios'
 import connectMongo from '../../../api-lib/mongodb'
+var createSlug = require('slug')
 // const Config = require('../../../api-lib/models/twoconfig')
 const Config = require('../../../api-lib/models/websiteconfig')
 // ./api/session/geAvailableSession
 
-function createSlug(str) {
-  return str
-    .toLowerCase()
-    .replace(/ /g, '-')
-    .replace(/[^\w-]+/g, '')
-}
 import type { NextApiRequest, NextApiResponse } from 'next'
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   // res.status(200).json({ name: req.body, name: req.name });
