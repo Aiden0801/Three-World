@@ -26,7 +26,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
 const ProjectPage: React.FC<IPropsProjectPgae> = ({ name, savedData }: IPropsProjectPgae) => {
   return (
-    <AppLayout currentPage="sessions">
+    <AppLayout currentPage="dashboard">
       <ProjectCofig projectName={name} configData={savedData} />
     </AppLayout>
   )
