@@ -22,9 +22,7 @@ const useStyles = createStyles(
   (theme, { item, active }: { item: NavItem; active: boolean }) => {
     const { colors } = theme
     const primary = theme.colors[theme.primaryColor]
-    const borderColor =
-      // theme.colorScheme === 'dark' ? colors.dark[4] : colors.gray[3]
-      theme.colorScheme === 'dark' ? primary[3] : primary[6]
+    const borderColor = theme.colorScheme === 'dark' ? primary[3] : primary[6]
 
     const baseSubItemShadow = `-1px 0 0 0 ${
       item.disabled ? colors.gray[2] : borderColor
@@ -35,13 +33,10 @@ const useStyles = createStyles(
 
     return {
       control: {
-        // borderRadius: theme.radius.md,
-        // marginBottom: isWithMenu(item) ? theme.spacing.xs/2: 0 ,
         transition: 'all 150ms ease-out',
         '&>*': {
           transition: 'all 150ms ease-out',
         },
-        // display: 'block',
         color: theme.colorScheme === 'dark' ? colors.dark[0] : theme.black,
         '&:hover': {
           backgroundColor:
@@ -50,14 +45,18 @@ const useStyles = createStyles(
         },
       },
       opened: {
-        boxShadow: `0 1px 0 0 ${borderColor}`,
+        backgroundColor:
+          theme.colorScheme === 'dark' ? colors.dark[7] : colors.gray[3],
         borderBottomLeftRadius: 0,
         borderBottomRightRadius: 0,
       },
       subitem: {
         boxShadow: active ? extendedSubItemShadow : baseSubItemShadow,
+        backgroundColor:
+          theme.colorScheme === 'dark' ? colors.dark[8] : colors.gray[2],
         borderTopLeftRadius: 0,
         borderBottomLeftRadius: 0,
+
         '&:hover': {
           boxShadow: extendedSubItemShadow,
         },
@@ -109,7 +108,7 @@ export function MenuItem({ item, currentPage, ...rest }: MenuItemProps) {
                 key={index}
                 item={child}
                 mr="-sm"
-                mt={1}
+                // mt={1}
                 currentPage={currentPage}
                 className={classes.subitem}
               />

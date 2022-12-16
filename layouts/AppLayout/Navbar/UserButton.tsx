@@ -20,7 +20,7 @@ export const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
         sx={(theme) => ({
           display: 'block',
           width: `100%`,
-          borderRadius: theme.radius.md,
+          borderRadius: theme.radius.sm,
           // padding: theme.spacing.xs,
           color:
             theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,

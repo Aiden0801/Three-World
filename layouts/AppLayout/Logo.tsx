@@ -1,8 +1,8 @@
-import { Image, MediaQuery, Text, Title } from "@mantine/core";
+import { Image, MediaQuery, Text, Title, TitleProps } from "@mantine/core";
 
-export function TextLogo() {
+export function TextLogo(props: Omit<TitleProps, 'order'>) {
   return (
-    <Title order={2}>
+    <Title {...props} order={2}>
       <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
         <Text component="span">HackerHouse</Text>
       </MediaQuery>
