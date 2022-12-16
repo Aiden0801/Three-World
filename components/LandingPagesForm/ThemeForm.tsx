@@ -5,12 +5,6 @@ import { useEffect } from 'react'
 export function ThemeForm() {
   const [config, initial] = useThemeConfig()
   const formValue = useFormValue()
-
-  useEffect(() => {
-    // console.log(formValue.valu, initial)
-    // console.log('initial', initial, formValue.values)
-    formValue.setFieldValue('template.theme', initial)
-  }, [initial])
   return (
     <>
       <h2>Theme Config</h2>
