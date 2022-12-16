@@ -89,7 +89,7 @@ const ProjectCofig = ({ projectName, configData }) => {
               fontFamily: 'Greycliff CF, sans-serif',
               fontSize: '30px',
             }}>
-            {projectName}
+            {configData.name}
           </Text>
           <LinkButton
             compact

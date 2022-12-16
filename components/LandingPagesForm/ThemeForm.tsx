@@ -13,7 +13,7 @@ export function ThemeForm() {
   }, [initial])
   return (
     <>
-      <h1>Theme Config</h1>
+      <h2>Theme Config</h2>
       {/* <SchemaViewer title="Theme" schema={config} /> */}
       {ParseObject(config, formValue, 'template.theme')}
     </>

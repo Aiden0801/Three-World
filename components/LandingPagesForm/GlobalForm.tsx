@@ -10,7 +10,7 @@ export function GlobalForm({ showSchema }: ConfigForm) {
   const formValue = useFormValue()
   return (
     <div>
-      <h3>Global Config</h3>
+      <h2>Global Config</h2>
       <Skeleton visible={loading}>
         <Flex direction={{ xs: 'column', md: 'row' }} gap="sm" py="sm" justify="space-evenly">
           {config?.fields &&
@@ -19,6 +19,7 @@ export function GlobalForm({ showSchema }: ConfigForm) {
               if (field.component === 'select') {
                 return (
                   <Select
+                    withinPortal
                     key={field.key}
                     data={field.data}
                     label={field.label}

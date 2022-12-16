@@ -1,6 +1,18 @@
 import { openConfirmModal } from '@mantine/modals'
 
-import { Badge, Box, Button, Card, Container, createStyles, Flex, Modal, Skeleton, Text } from '@mantine/core'
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Card,
+  Container,
+  createStyles,
+  Flex,
+  Modal,
+  Skeleton,
+  Text,
+} from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons'
 import { useRouter } from 'next/router'
@@ -10,7 +22,7 @@ import { LinkButton } from '@/components/Button'
 import { BASE_URL } from '@/config/constants'
 import { fetcher } from '@/lib/fetcher'
 import FadeIn from '@/utils/spring/FadeIn'
-
+import { Fullscreen, FullscreenExit } from 'react-bootstrap-icons'
 import { FormContextProvider } from '@/lib/landing-pages'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
 
@@ -46,6 +58,7 @@ const useProjectData = () => {
 const Dashboard: React.FC = () => {
   const { data: projectData, isLoading, isError, mutate } = useProjectData()
   const [opened, setOpened] = useState(false)
+  const [fullScreen, setFullScreen] = useState(false)
   const [confirm, setConfirm] = useState(false)
   const { classes, theme } = useStyles()
   const router = useRouter()
@@ -135,27 +148,39 @@ const Dashboard: React.FC = () => {
         transitionDuration={600}
         size="80%"
         opened={opened}
+        fullScreen={fullScreen}
         title="Create Project"
-        closeOnEscape={false}
         onClose={() => {
           console.log('onClose')
-          setOpened(false)
+          openConfirmModal({
+            title: 'Please confirm your action',
+            children: (
+              <Text size="sm">
+                Are you going to leave with out saving your configuration data? Please Press Confirm to Process.
+              </Text>
+            ),
+            labels: { confirm: 'Confirm', cancel: 'Cancel' },
+            confirmProps: { color: 'red' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => setOpened(false),
+          })
+          // setOpened(false)
         }}>
         {
-          <FormContextProvider baseUrl={BASE_URL.CLIENT}>
-            <LandingPagesForm handleOnSubmit={handleOnSubmit} />
-          </FormContextProvider>
+          <>
+            <ActionIcon
+              style={{ position: 'absolute', right: '40px', top: '20px' }}
+              onClick={() => setFullScreen((o) => !o)}>
+              {!fullScreen ? <Fullscreen /> : <FullscreenExit />}
+            </ActionIcon>
+            <FormContextProvider baseUrl={BASE_URL.CLIENT}>
+              <LandingPagesForm handleOnSubmit={handleOnSubmit} />
+            </FormContextProvider>
+          </>
         }
       </Modal>
-      <Box
-        sx={(theme) => ({
-          display: 'flex',
-          justifyContent: 'space-between',
-          align: 'center',
-          alignItems: 'center',
-          marginBottom: '20px',
-        })}>
-        <Text>Projects</Text>
+      <Flex align="flex-end" gap="sm" py="sm" justify="space-evenly" direction={{ xs: 'column', md: 'row' }}>
+        <Text sx={{ flex: 1 }}>Projects</Text>
 
         <Button
           compact
@@ -174,7 +199,7 @@ const Dashboard: React.FC = () => {
           </Text>
           <IconPlus size={20} stroke={1.5} />
         </Button>
-      </Box>
+      </Flex>
 
       <Skeleton height={500} visible={projectData == undefined ? true : false}>
         {projectData &&

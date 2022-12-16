@@ -1,9 +1,11 @@
-import { Card, Stack, Code, Button, TextInput } from '@mantine/core'
+import { Card, Stack, Code, Button, TextInput, Affix, Transition } from '@mantine/core'
 import { useFormValue, useGlobalConfig, useTemplateConfig, useTemplateSelection } from '../../lib/landing-pages'
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { GlobalForm } from './GlobalForm'
 import { SectionsForm } from './SectionsForm'
 import { ThemeForm } from './ThemeForm'
+import { useCallback } from 'react'
+
 interface IPropsLandingPagesForm {
   handleOnSubmit?: (values: object) => void
 }
@@ -37,7 +39,13 @@ export function LandingPagesForm({ handleOnSubmit }: IPropsLandingPagesForm) {
               </Card>
             </>
           )}
-          <Button type="submit">Submit</Button>
+          <Button
+            type="submit"
+            // style={{ position: 'absolute', right: '50px', bottom: '50px' }}
+          >
+            Submit
+          </Button>
+
           <Card>{submittedValues && <Code block>{submittedValues}</Code>}</Card>
         </Stack>
       </form>
