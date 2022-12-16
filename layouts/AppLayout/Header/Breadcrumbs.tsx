@@ -1,6 +1,7 @@
 import { capitalize } from '@/lib/text-helpers'
 import { Breadcrumbs, Anchor, BreadcrumbsProps } from '@mantine/core'
 import { IconChevronRight, IconHome } from '@tabler/icons'
+import { decode } from 'next-auth/jwt'
 import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import { ReactNode } from 'react'
@@ -62,7 +63,9 @@ function generateBreadcrumbs(
     // by joining together the path parts up to this point.
     const href = '/' + parts.slice(0, idx + 1).join('/')
     // The title will just be the route string for now
-    const text = capitalize(subpath)
+    // we decode the URI in case it has any special characters
+    // split on the dash (in case of slugs) and join with a space
+    const text = capitalize(decodeURI(subpath).split('-').join(' '))
     return { href, text }
   })
 
