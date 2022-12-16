@@ -8,7 +8,6 @@ import {
   Title,
   UnstyledButton,
 } from '@mantine/core'
-import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
 import UserAvatar from './UserAvatar'
 import { ToggleMenuButton } from '@/components/ToggleMenuButton'
 import { useMobileBreakpoint } from '@/contexts/AppLayout'
@@ -16,10 +15,12 @@ import { TextLogo } from '../Logo'
 import { BreadCrumbsNav } from './Breadcrumbs'
 import { SearchBox } from '@/components/Searchbox'
 import { UserMenu } from '../Navbar/UserMenu'
+import { useHeaderHeight } from '@/contexts/AppLayout'
 
 const useStyles = createStyles((theme, _params) => {
   return {
     container: {
+      zIndex: 101,
       backgroundColor:
         theme.colorScheme === 'dark'
           ? theme.colors.dark[6]
@@ -35,8 +36,10 @@ const useStyles = createStyles((theme, _params) => {
 const HeaderComponent = ({ showSearch = false }) => {
   const { classes } = useStyles()
   const breakpoint = useMobileBreakpoint()
+  const headerHeight = useHeaderHeight()
+
   return (
-    <Header height={{ base: 64 }} className={classes.container}>
+    <Header height={headerHeight} className={classes.container}>
       <Group mx="xl" h="100%" position="apart">
         {/* Burger + company name/logo, mobile only */}
         <MediaQuery largerThan={breakpoint} styles={{ display: 'none' }}>
