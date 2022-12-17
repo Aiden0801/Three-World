@@ -1,8 +1,15 @@
 import { AppLayout } from '@/layouts/AppLayout'
-import { Accordion, Card, Container, SimpleGrid } from '@mantine/core'
+import {
+  Accordion,
+  Card,
+  Container,
+  List,
+  SimpleGrid,
+  Text,
+  Title,
+} from '@mantine/core'
 import { PrismaClient } from '@prisma/client'
 import { InferGetServerSidePropsType } from 'next'
-import { useEffect } from 'react'
 
 const prisma = new PrismaClient()
 
@@ -36,8 +43,10 @@ export default function PrismaDemo(
               >
                 {props.users.map((user) => (
                   <Card key={user.id}>
-                    <h1>{user.name}</h1>
-                    <p>{user.email}</p>
+                    <Title order={3} transform="uppercase">
+                      {user.name}
+                    </Title>
+                    <Text size="sm">{user.email}</Text>
                   </Card>
                 ))}
               </SimpleGrid>
@@ -48,13 +57,23 @@ export default function PrismaDemo(
             <Accordion.Panel>
               {props.websites.map((website) => (
                 <Card key={website.id}>
-                  <h1>{website.name}</h1>
-                  <p>{website.slug}</p>
-                  <p>
-                    {website.template.sections.map((section) => (
-                      <span key={section.title}>{section.title}</span>
-                    ))}
-                  </p>
+                  <Title order={3}>{website.name}</Title>
+                  <Text component="p" color="dimmed">
+                    {website.slug}
+                  </Text>
+                  {website.template.sections.length ? (
+                    <List>
+                      {website.template.sections.map((section) => (
+                        <List.Item key={section.title}>
+                          {section.title}
+                        </List.Item>
+                      ))}
+                    </List>
+                  ) : (
+                    <Text component="p" color="dimmed">
+                      No sections
+                    </Text>
+                  )}
                 </Card>
               ))}
             </Accordion.Panel>
