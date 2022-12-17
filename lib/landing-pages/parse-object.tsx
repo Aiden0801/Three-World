@@ -44,6 +44,7 @@ const formObject = (form, dataposition) => {
 const colorComponent = (object: IPropsschemaObject, form, dataposition?: string) => {
   return (
     <Select
+      withinPortal
       data={[
         { color: 'blue', value: 'blue', label: 'Blue' },
         { color: 'cyan', value: 'cyan', label: 'Cyan' },
@@ -70,6 +71,7 @@ const selectComponent = (object: IPropsschemaObject, form, dataposition?: string
     <>
       <Text>{capitalize(object.title)}</Text>
       <Select
+        withinPortal
         // label={object.title}
         data={object.data}
         {...form.getInputProps(dataposition)}
@@ -85,11 +87,7 @@ const inputComponent = (object: IPropsschemaObject, form, dataposition?: string)
     return (
       <>
         <Text>{capitalize(object.title)}</Text>
-        <Select
-          // label={object.title}
-          data={object.data}
-          {...form.getInputProps(dataposition)}
-        />
+        <Select withinPortal data={object.data} {...form.getInputProps(dataposition)} />
       </>
     )
   return (

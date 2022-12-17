@@ -89,7 +89,7 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
     selectedTemplate: templateName,
     onSelectTemplate: setTemplateName,
   }
-  console.log('TEMPLATE', configData?.global, formValue.values)
+  // console.log('TEMPLATE', configData?.global, formValue.values)
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>
 }
 function getSectionsConfig(config: any) {

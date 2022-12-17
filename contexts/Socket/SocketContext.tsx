@@ -1,11 +1,4 @@
-import {
-  createContext,
-  PropsWithChildren,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-} from 'react'
+import { createContext, PropsWithChildren, useContext, useEffect, useMemo, useRef } from 'react'
 import socketio from 'socket.io-client'
 import { BASE_URL } from '@/config/constants'
 import { useSession } from 'next-auth/react'
@@ -32,8 +25,9 @@ export const useSocketContext = () => useContext(SocketContext)
  * Context provider for socket-io.
  * Needs to be wrapped around NextAuthProvider since it uses the user token.
  */
+const globalSocket = socketio()
 export function SocketContextProvider({ children }: PropsWithChildren) {
-  const socket = useRef(socketio())
+  const socket = useRef(globalSocket)
   const session = useSession()
   const setCurrentUser = useSetRecoilState(currentUser)
   const router = useRouter()
@@ -47,20 +41,20 @@ export function SocketContextProvider({ children }: PropsWithChildren) {
       console.info('disconnecting from socket')
       socket.current.disconnect()
     }
-  },[])
+  }, [])
 
-  const user = useMemo(() => session?.data?.user ?? {}, [session])
+  const user: any = useMemo(() => session?.data?.user ?? {}, [session])
 
   useEffect(() => {
     if (!session || !fn.session.isAuth(session) || !user) return
 
     setCurrentUser(user.email)
     socket.current.emit('signIn', { email: user.email })
-  }, [session.status, user, setCurrentUser, socket.current])
+  }, [session.status])
 
-  // if we are on the login page or home page, we check if the user is not authenticated
+  // if we are not on the login page or home page, we check if the user is not authenticated
   // or is still loading.
-  if (fn.router.isHomeOrLogin(router)) {
+  if (fn.router.isNotHomeOrLogin(router)) {
     // if we're loading we don't want to show anything
     // TODO: show sometning like a loading screen
     if (fn.session.isLoading(session)) {
@@ -74,11 +68,7 @@ export function SocketContextProvider({ children }: PropsWithChildren) {
     }
   }
 
-  return (
-    <SocketContext.Provider value={{ socket: socket.current }}>
-      {children}
-    </SocketContext.Provider>
-  )
+  return <SocketContext.Provider value={{ socket: socket.current }}>{children}</SocketContext.Provider>
 }
 
 /** helpers */
@@ -95,8 +85,8 @@ const fn = {
     },
   },
   router: {
-    isHomeOrLogin(router: NextRouter) {
-      return router.pathname === '/' || router.pathname === '/login'
+    isNotHomeOrLogin(router: NextRouter) {
+      return !(router.pathname === '/' || router.pathname === '/login')
     },
   },
 }

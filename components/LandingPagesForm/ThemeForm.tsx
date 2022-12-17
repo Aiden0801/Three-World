@@ -5,15 +5,9 @@ import { useEffect } from 'react'
 export function ThemeForm() {
   const [config, initial] = useThemeConfig()
   const formValue = useFormValue()
-
-  useEffect(() => {
-    // console.log(formValue.valu, initial)
-    // console.log('initial', initial, formValue.values)
-    formValue.setFieldValue('template.theme', initial)
-  }, [initial])
   return (
     <>
-      <h1>Theme Config</h1>
+      <h2>Theme Config</h2>
       {/* <SchemaViewer title="Theme" schema={config} /> */}
       {ParseObject(config, formValue, 'template.theme')}
     </>
