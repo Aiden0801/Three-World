@@ -28,6 +28,7 @@
       "@mantine/spotlight": "^5.9.4",
       "@mantine/tiptap": "^5.9.4",
       "@next-auth/mongodb-adapter": "^1.1.1",
+      "@prisma/client": "^4.7.1",
       "@react-spring/three": "^9.5.5",
       "@react-three/drei": "^9.37.0",
       "@react-three/fiber": "^8.8.10",
@@ -86,6 +87,7 @@
       "eslint": "8.25.0",
       "eslint-config-next": "12.3.1",
       "eslint-plugin-prettier": "^4.2.1",
-      "prettier": "^2.8.1"
+      "prettier": "^2.8.1",
+      "prisma": "^4.7.1"
    }
 }

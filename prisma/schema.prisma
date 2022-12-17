@@ -1,0 +1,165 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+type SessionsParticipants {
+  id    String? @map("_id") @db.ObjectId
+  email String
+}
+
+type SessionsUsers {
+  id    String @map("_id") @db.ObjectId
+  email String
+}
+
+type TwoconfigsGlobal {
+  color       String
+  description String
+  title       String
+}
+
+type TwoconfigsSections {
+  clients  TwoconfigsSectionsClients[]
+  footer   TwoconfigsSectionsFooter
+  hero     TwoconfigsSectionsHero
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  services Json?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  team     Json?
+}
+
+type TwoconfigsSectionsClients {
+  id          String @map("_id") @db.ObjectId
+  description String
+  logo        String
+  name        String
+  url         String
+}
+
+type TwoconfigsSectionsFooter {
+  copyright TwoconfigsSectionsFooterCopyright
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  menu      Json?
+}
+
+type TwoconfigsSectionsFooterCopyright {
+  company String
+  year    Int
+}
+
+type TwoconfigsSectionsHero {
+  buttons     TwoconfigsSectionsHeroButtons
+  description String
+  image       String
+  title       String
+}
+
+type TwoconfigsSectionsHeroButtons {
+  primary   TwoconfigsSectionsHeroButtonsPrimary
+  secondary TwoconfigsSectionsHeroButtonsSecondary
+}
+
+type TwoconfigsSectionsHeroButtonsPrimary {
+  action String
+  link   String
+  text   String
+}
+
+type TwoconfigsSectionsHeroButtonsSecondary {
+  action String
+  link   String
+  text   String
+}
+
+type UsersBrowsers {
+  id   String @map("_id") @db.ObjectId
+  id_  String @map("id")
+  name String
+}
+
+type WebsiteconfigsGlobal {
+  description String
+  template    String
+  title       String?
+}
+
+type WebsiteconfigsTemplate {
+  sections WebsiteconfigsTemplateSections[]
+  theme    WebsiteconfigsTemplateTheme
+}
+
+type WebsiteconfigsTemplateSections {
+  buttons      WebsiteconfigsTemplateSectionsButtons
+  cta          String
+  description  String
+  image        String
+  section_type String
+  title        String
+}
+
+type WebsiteconfigsTemplateSectionsButtons {
+  primary   WebsiteconfigsTemplateSectionsButtonsPrimary
+  secondary WebsiteconfigsTemplateSectionsButtonsSecondary
+}
+
+type WebsiteconfigsTemplateSectionsButtonsPrimary {
+  action String
+  link   String
+  logo   String
+  text   String
+}
+
+type WebsiteconfigsTemplateSectionsButtonsSecondary {
+  action String
+  link   String
+  logo   String
+  text   String
+}
+
+type WebsiteconfigsTemplateTheme {
+  primaryColor String
+}
+
+model sessions {
+  id           String                 @id @default(auto()) @map("_id") @db.ObjectId
+  v            Int                    @map("__v")
+  createdAt    DateTime               @db.Date
+  creator      String
+  description  String
+  embed_url    String
+  isActive     Boolean
+  name         String                 @unique(map: "name_1")
+  participants SessionsParticipants[]
+  session_id   String
+  users        SessionsUsers[]
+}
+
+model twoconfigs {
+  id       String             @id @default(auto()) @map("_id") @db.ObjectId
+  v        Int                @map("__v")
+  global   TwoconfigsGlobal
+  name     String
+  sections TwoconfigsSections
+}
+
+model users {
+  id       String          @id @default(auto()) @map("_id") @db.ObjectId
+  v        Int             @map("__v")
+  browsers UsersBrowsers[]
+  email    String          @unique(map: "email_1")
+  name     String
+}
+
+model websiteconfigs {
+  id       String                 @id @default(auto()) @map("_id") @db.ObjectId
+  v        Int                    @map("__v")
+  global   WebsiteconfigsGlobal
+  name     String
+  slug     String
+  template WebsiteconfigsTemplate
+}
