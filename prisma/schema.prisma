@@ -83,23 +83,27 @@ type UsersBrowsers {
 }
 
 type WebsiteconfigsGlobal {
-  description String
+  description String?
   template    String
   title       String?
 }
 
 type WebsiteconfigsTemplate {
   sections WebsiteconfigsTemplateSections[]
-  theme    WebsiteconfigsTemplateTheme
+  theme    WebsiteconfigsTemplateTheme?
 }
 
 type WebsiteconfigsTemplateSections {
-  buttons      WebsiteconfigsTemplateSectionsButtons
-  cta          String
-  description  String
-  image        String
+  buttons      WebsiteconfigsTemplateSectionsButtons?
+  cta          String?
+  description  String?
+  grayscale    Boolean?
+  image        String?
+  /// Could not determine type: the field only had null or empty values in the sample set.
+  items        Json?
   section_type String
-  title        String
+  title        String?
+  withCaption  Boolean?
 }
 
 type WebsiteconfigsTemplateSectionsButtons {
