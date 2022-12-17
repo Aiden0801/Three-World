@@ -63,7 +63,7 @@ export function SocketContextProvider({ children }: PropsWithChildren) {
     // if we're not authenticated, we redirect to the login page
     // TODO: improve denied page + timed redirect
     if (fn.session.isNotAuth(session)) {
-      router.push('./')
+      router.push('./login')
       return <p>Access Denied</p>
     }
   }
