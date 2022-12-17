@@ -10,6 +10,43 @@ npm run dev
 yarn dev
 ```
 
+## Prisma
+
+Prisma generates a custom `node_modules` package for our database. This is done by running the following command:
+
+```bash
+npx prisma generate
+```
+
+If we need to update the database schema, because it changed remotely for some reasons
+we can do so by running the following command:
+
+```bash
+npx prisma db pull --force
+```
+
+We need to `--force` it because limitations of prisma on mongodb database.
+This should go away if we migrate to a relational database (like postgresql).
+
+### Usage
+
+You can refer to the [Prisma documentation](https://www.prisma.io/docs/) for more information.
+but generally speaking, you can use the following commands:
+
+```ts
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
+
+// Get all users, inside your server side or hook or wherever you want.
+const users = await prisma.user.findMany();
+```
+
+Prisma is fully typed, so it uses the definitions in the `schema.prisma` file
+to generate the API and their types.
+
+## Setup
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
