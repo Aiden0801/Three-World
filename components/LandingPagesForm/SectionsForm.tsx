@@ -29,11 +29,11 @@ type TcurSelection = {
 }
 export function SectionsForm({ showSchema }: ConfigForm) {
   const [config, initial] = useSectionsConfig()
-
   const formValue = useFormValue()
   const [selected, setSelected] = useState<string>('3')
   const [currentSection, setCurrentSection] = useState<TcurSelection>(undefined)
   const handleAddSection = useCallback(() => {
+    console.log('addSection', config.fields[selected])
     formValue.insertListItem('template.sections', {
       ...getInitialValue(config.fields[selected]),
       section_type: selected,
@@ -55,14 +55,13 @@ export function SectionsForm({ showSchema }: ConfigForm) {
     [formValue]
   )
   const getSectionsName = useCallback((): Array<any> => {
-    if (config.fields == null || config.fields == undefined) return []
+    if (config.data == null || config.data == undefined) return []
     let result = []
-    config.fields.forEach((field, index) => {
-      result = [...result, { label: capitalize(field.key), value: `${index}` }]
+    config.data.forEach((field, index) => {
+      result = [...result, { label: capitalize(field), value: `${index}` }]
     })
-    console.log('get', result)
     return result
-  }, [config.fields])
+  }, [config.data])
   return (
     <div>
       <h2>Sections Config</h2>
@@ -121,7 +120,7 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                       </td>
                       <td>
                         <Text align="left" color={currentSection?.index == index ? 'red' : 'blue'}>
-                          {config?.fields?.[item.section_type]?.label ?? 'Unknown'}
+                          {config?.data?.[item.section_type] ?? 'Unknown'}
                         </Text>
                       </td>
                       <td>
@@ -164,6 +163,7 @@ export function SectionsForm({ showSchema }: ConfigForm) {
               formValue,
               'template.sections' + `.${currentSection.index}`
             )}
+          {config?.fields && currentSection && console.log('section_type', config.fields[currentSection.section_type])}
         </>
       ) : (
         <Skeleton visible={true} height={64} />

@@ -2,7 +2,7 @@
 import JsonParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getInitialValue, ParseSchema } from '@/utils/parser/schema_parser'
-
+import { convertJsonSchemaToZod } from '@/utils/zod.helper'
 type BaseOptions = {
   parser?: (schema: JSONSchema) => any
   base_url: string
@@ -11,15 +11,15 @@ type TemplateOptions = BaseOptions & {
   template: string
 }
 
-type UseConfigOptions =
-  | ({ type: 'global' } & BaseOptions)
-  | ({ type: 'template' } & TemplateOptions)
+type UseConfigOptions = ({ type: 'global' } & BaseOptions) | ({ type: 'template' } & TemplateOptions)
 
 type UseConfigReturnValue<Options extends UseConfigOptions> = [
   /** parsed usable configuration */
   config: Options['parser'] extends undefined ? any : ReturnType<Options['parser']>,
   /** initial values for the form */
   initConfig: any,
+  /** zod Object */
+  zodObject: any,
   /** whether we're loading the config */
   loading: boolean,
   /** original (dereferenced) schema object */
@@ -51,16 +51,17 @@ export function useConfig(options: UseConfigOptions): UseConfigReturnValue<UseCo
   const [config, setConfig] = useState(null)
   const [initials, setInitials] = useState(null)
   const [schema, loading] = useJsonSchema(options)
-
+  const [zodObject, setZodObject] = useState(null)
   useEffect(() => {
     if (!schema) return
+    setZodObject(convertJsonSchemaToZod(schema))
     const parser = options.parser ?? ParseSchema
     const parsedObject = parser(schema)
     setConfig(parsedObject)
     setInitials(getInitialValue(parsedObject))
   }, [schema])
 
-  return [config, initials, loading, schema]
+  return [config, initials, zodObject, loading, schema]
 }
 
 // Internals
@@ -71,9 +72,7 @@ export function useConfig(options: UseConfigOptions): UseConfigReturnValue<UseCo
  * @param options Options to fetch the configuration
  * @returns parsed schema or null if the schema is not yet fetched
  */
-function useJsonSchema(
-  options: UseConfigOptions
-): [JSONSchema | null, boolean] {
+function useJsonSchema(options: UseConfigOptions): [JSONSchema | null, boolean] {
   const [schema, setSchema] = useState<JSONSchema>(null!)
   const [loading, setLoading] = useState(false)
 
@@ -86,6 +85,7 @@ function useJsonSchema(
     if (!url) return
     setLoading(true)
     setSchema(await JsonParser.dereference(url))
+    console.log(await JsonParser.dereference(url))
     setLoading(false)
   }, [url])
 
