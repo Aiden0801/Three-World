@@ -38,9 +38,9 @@ export function LandingPagesForm({ handleOnSubmit }: IPropsLandingPagesForm) {
               <Card>
                 <SectionsForm showSchema />
               </Card>
-              {/* <Card>
+              <Card>
                 <FixedSectionForm />
-              </Card> */}
+              </Card>
             </>
           )}
           <Button

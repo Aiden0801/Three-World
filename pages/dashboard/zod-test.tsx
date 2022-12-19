@@ -196,12 +196,13 @@ export default function Zod() {
     initialValues: (config && getInitialValue(config)) ?? {},
     validate: zodObject ? zodResolver(zodObject) : {},
   })
+  console.log(form.values)
   useEffect(() => {
     test()
   }, [])
 
   const test = async () => {
-    const schema = parseSchema(json_schema)
+    const schema = parseSchema(test_schema)
     // const module1 = await import(dataUri)
     // const dataModuel = await import(dataUri);
     let newSchema = 'function(z) { return ' + schema + '}'
@@ -209,11 +210,11 @@ export default function Zod() {
     var func = new Function(wrap())
     var obj = func.call(null).call(null, z)
 
-    const configObject = parseSchemaToObject(json_schema)
-    form.setValues(getInitialValue(configObject))
+    const configObject = parseSchemaToObject(test_schema)
     setConfig(configObject)
     setZodObject(obj)
 
+    console.log(form.values)
     console.log(schema)
   }
   return (
