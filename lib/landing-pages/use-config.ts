@@ -13,9 +13,9 @@ type TemplateOptions = BaseOptions & {
 
 type UseConfigOptions = ({ type: 'global' } & BaseOptions) | ({ type: 'template' } & TemplateOptions)
 
-type UseConfigReturnValue = [
+type UseConfigReturnValue<Options extends UseConfigOptions> = [
   /** parsed usable configuration */
-  config: any,
+  config: Options['parser'] extends undefined ? any : ReturnType<Options['parser']>,
   /** initial values for the form */
   initConfig: any,
   /** zod Object */
@@ -47,7 +47,7 @@ type UseConfigReturnValue = [
  *   template: 'figma'
  * })
  */
-export function useConfig(options: UseConfigOptions): UseConfigReturnValue {
+export function useConfig(options: UseConfigOptions): UseConfigReturnValue<UseConfigOptions> {
   const [config, setConfig] = useState(null)
   const [initials, setInitials] = useState(null)
   const [schema, loading] = useJsonSchema(options)
