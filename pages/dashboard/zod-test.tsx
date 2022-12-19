@@ -189,7 +189,7 @@ import { ParseObject } from '@/lib/landing-pages/parse-object'
 import { parseSchema as parseSchemaToObject } from '@/lib/landing-pages'
 import { Button } from '@mantine/core'
 
-import { createZodTemplateSchema } from '@/lib/landing-pages/zod'
+import * as zodHelpers from '@/lib/landing-pages/zod'
 
 export default function Zod() {
   const [config, setConfig] = useState(undefined)
@@ -205,7 +205,10 @@ export default function Zod() {
 
   const test = async () => {
     const zodAsString = parseSchema(json_schema)
-    const zodObject = createZodTemplateSchema(zodAsString)
+    const zodObject = zodHelpers.createTemplateSchema(zodAsString)
+    // example usage to get the list of sections
+    // TODO: delete unused variable
+    const _sections = zodHelpers.getSectionsList(zodObject)
     const parsedSchema = parseSchemaToObject(test_schema)
     setConfig(parsedSchema)
     setZodObject(zodObject)
