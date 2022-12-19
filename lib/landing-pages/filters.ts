@@ -1,4 +1,5 @@
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
+import { FormComponentType, FormField, AnyFormField } from './types'
 
 type Schema = JSONSchema
 
@@ -11,6 +12,17 @@ export function isArray(
   schema: Schema
 ): schema is Schema & { items: Schema[] } {
   return schema.type && schema.type === 'array'
+}
+/**
+ * Checks a parsed form field against a specified component type.
+ * This is mainly for type narrowing during the parsing process.
+ * but can be used to check if a field is of a specific type in other places too.
+ * @param field Field to check
+ * @param component what form component type to check for
+ * @returns typed field if the field is of the specified component type
+ */
+export function isField<T extends FormComponentType>(field: AnyFormField, component: T): field is FormField<T> {
+  return field.component === component
 }
 
 export function isAnchorTarget(schema: Schema) {

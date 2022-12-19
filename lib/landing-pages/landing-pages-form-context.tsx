@@ -3,6 +3,8 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 import { parseSchema } from './parse-schema'
 import { useConfig } from './use-config'
 import { useMemo } from 'react'
+import { parseGlobalConfig } from './parse-global-config'
+
 interface FormContextValue {
   global: ReturnType<typeof useConfig>
   theme: any
@@ -65,7 +67,7 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
   const global = useConfig({
     type: 'global',
     base_url: baseUrl,
-    parser: parseSchema,
+    parser: parseGlobalConfig,
   })
   const [templateName, setTemplateName] = useState<string>(configData?.global?.template ?? '')
   const template = useConfig({
@@ -81,6 +83,7 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
       template: configData?.template ?? { theme: template?.[1]?.theme ?? {}, sections: template?.[1]?.sections ?? [] },
     },
   })
+
   const value: FormContextValue = {
     global,
     theme: [getThemeConfig(template?.[0]) ?? {}, template?.[1]?.theme ?? {}],
