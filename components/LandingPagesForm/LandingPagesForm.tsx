@@ -5,6 +5,7 @@ import { GlobalForm } from './GlobalForm'
 import { SectionsForm } from './SectionsForm'
 import { ThemeForm } from './ThemeForm'
 import { useCallback } from 'react'
+import { FixedSectionForm } from './FixedSectionForm'
 
 interface IPropsLandingPagesForm {
   handleOnSubmit?: (values: object) => void
@@ -37,6 +38,9 @@ export function LandingPagesForm({ handleOnSubmit }: IPropsLandingPagesForm) {
               <Card>
                 <SectionsForm showSchema />
               </Card>
+              {/* <Card>
+                <FixedSectionForm />
+              </Card> */}
             </>
           )}
           <Button

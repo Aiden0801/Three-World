@@ -1,15 +1,14 @@
+import { SchemaViewer } from '@/components/LandingPagesForm/SchemaViewer'
 import { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 
 type Schema = JSONSchema
-
-export function isObject(
-  schema: Schema
-): schema is Schema & { type: 'object' } {
+export function isArrayOfEnum(schema: Schema) {
+  return schema.type && schema.type === 'array' && schema.items.hasOwnProperty('anyOf')
+}
+export function isObject(schema: Schema): schema is Schema & { type: 'object' } {
   return schema.type && schema.type === 'object'
 }
-export function isArray(
-  schema: Schema
-): schema is Schema & { items: Schema[] } {
+export function isArray(schema: Schema): schema is Schema & { items: Schema[] } {
   return schema.type && schema.type === 'array'
 }
 
@@ -46,9 +45,5 @@ export function isSelect(schema: Schema) {
 }
 
 export function isRequired(key: string, schema: Schema) {
-  return (
-    !!schema.required &&
-    Array.isArray(schema.required) &&
-    schema.required.includes(key)
-  )
+  return !!schema.required && Array.isArray(schema.required) && schema.required.includes(key)
 }

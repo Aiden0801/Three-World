@@ -11,9 +11,7 @@ type TemplateOptions = BaseOptions & {
   template: string
 }
 
-type UseConfigOptions =
-  | ({ type: 'global' } & BaseOptions)
-  | ({ type: 'template' } & TemplateOptions)
+type UseConfigOptions = ({ type: 'global' } & BaseOptions) | ({ type: 'template' } & TemplateOptions)
 
 type UseConfigReturnValue = [
   /** parsed usable configuration */
@@ -71,9 +69,7 @@ export function useConfig(options: UseConfigOptions): UseConfigReturnValue {
  * @param options Options to fetch the configuration
  * @returns parsed schema or null if the schema is not yet fetched
  */
-function useJsonSchema(
-  options: UseConfigOptions
-): [JSONSchema | null, boolean] {
+function useJsonSchema(options: UseConfigOptions): [JSONSchema | null, boolean] {
   const [schema, setSchema] = useState<JSONSchema>(null!)
   const [loading, setLoading] = useState(false)
 
@@ -86,6 +82,7 @@ function useJsonSchema(
     if (!url) return
     setLoading(true)
     setSchema(await JsonParser.dereference(url))
+    console.log(await JsonParser.dereference(url))
     setLoading(false)
   }, [url])
 

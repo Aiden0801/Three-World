@@ -3,7 +3,8 @@ const DEV = process.env.NODE_ENV !== 'production'
 // temporary deployment url for this project
 const hhhqcontrolpanel = 'http://hhhqcontrolpanel.tk'
 // web-landing deployment url on vercel
-const clientVercel = 'https://hhhq-web-landing.vercel.app'
+const clientVercel = 'http://localhost:3001'
+// 'https://hhhq-web-landing.vercel.app'
 
 export const localhost = (port = 3000) => `http://localhost:${port}` as const
 

@@ -27,3 +27,7 @@ export type FormFieldComponentType =
    * fields for each item in the array
    */
   | 'list-group'
+  /**
+   *
+   */
+  | 'list-enum'
