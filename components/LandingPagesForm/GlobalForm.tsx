@@ -5,7 +5,7 @@ import { SchemaViewer } from './SchemaViewer'
 import { ConfigForm } from './types'
 
 export function GlobalForm({ showSchema }: ConfigForm) {
-  const [config, initial, loading, schema] = useGlobalConfig()
+  const [config, initial, zodObject, loading, schema] = useGlobalConfig()
   const { selectedTemplate, onSelectTemplate } = useTemplateSelection()
   const formValue = useFormValue()
   return (

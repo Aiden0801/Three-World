@@ -21,7 +21,7 @@ export function LandingPagesForm({ handleOnSubmit }: IPropsLandingPagesForm) {
         onSubmit={formValue.onSubmit((values) => {
           console.log(values)
           setSubmittedValues(JSON.stringify(values, null, 2))
-          handleOnSubmit(values)
+          // handleOnSubmit(values)
         })}>
         <Stack spacing="md">
           <Card>
@@ -37,18 +37,11 @@ export function LandingPagesForm({ handleOnSubmit }: IPropsLandingPagesForm) {
               </Card>
               <Card>
                 <SectionsForm showSchema />
-              </Card>
-              <Card>
                 <FixedSectionForm />
               </Card>
             </>
           )}
-          <Button
-            type="submit"
-            // style={{ position: 'absolute', right: '50px', bottom: '50px' }}
-          >
-            Submit
-          </Button>
+          <Button type="submit">Submit</Button>
 
           <Card>{submittedValues && <Code block>{submittedValues}</Code>}</Card>
         </Stack>

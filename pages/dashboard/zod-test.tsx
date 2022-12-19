@@ -213,9 +213,7 @@ export default function Zod() {
     const configObject = parseSchemaToObject(test_schema)
     setConfig(configObject)
     setZodObject(obj)
-
-    console.log(form.values)
-    console.log(schema)
+    console.log(obj)
   }
   return (
     <>

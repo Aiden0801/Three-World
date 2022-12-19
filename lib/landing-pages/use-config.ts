@@ -2,7 +2,7 @@
 import JsonParser, { JSONSchema } from '@apidevtools/json-schema-ref-parser'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { getInitialValue, ParseSchema } from '@/utils/parser/schema_parser'
-
+import { convertJsonSchemaToZod } from '@/utils/zod.helper'
 type BaseOptions = {
   parser?: (schema: JSONSchema) => any
   base_url: string
@@ -18,6 +18,8 @@ type UseConfigReturnValue = [
   config: any,
   /** initial values for the form */
   initConfig: any,
+  /** zod Object */
+  zodObject: any,
   /** whether we're loading the config */
   loading: boolean,
   /** original (dereferenced) schema object */
@@ -49,16 +51,17 @@ export function useConfig(options: UseConfigOptions): UseConfigReturnValue {
   const [config, setConfig] = useState(null)
   const [initials, setInitials] = useState(null)
   const [schema, loading] = useJsonSchema(options)
-
+  const [zodObject, setZodObject] = useState(null)
   useEffect(() => {
     if (!schema) return
+    setZodObject(convertJsonSchemaToZod(schema))
     const parser = options.parser ?? ParseSchema
     const parsedObject = parser(schema)
     setConfig(parsedObject)
     setInitials(getInitialValue(parsedObject))
   }, [schema])
 
-  return [config, initials, loading, schema]
+  return [config, initials, zodObject, loading, schema]
 }
 
 // Internals

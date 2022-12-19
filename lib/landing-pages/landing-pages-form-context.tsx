@@ -86,10 +86,11 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
       template: configData?.template ?? {
         theme: template?.[1]?.theme ?? {},
         sections: template?.[1]?.sections ?? [],
-        fixed: template?.[1]?.fixed ?? {},
+        fixed: template?.[1]?.fixed ?? undefined,
       },
     },
   })
+  console.log('landing_page', template?.[1], formValue.values)
   const value: FormContextValue = {
     global,
     theme: [getThemeConfig(template?.[0]) ?? {}, template?.[1]?.theme ?? {}],
