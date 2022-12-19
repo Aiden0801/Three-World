@@ -18,9 +18,9 @@ const _sections = z.object({
 
 export function getSectionsList(schema: typeof _sections): string[] {
   try {
-    return schema.shape.sections.options.map(section => (
-      section.shape.component.value
-    ))
+    return schema.shape.sections.options.map(
+      (section) => section.shape.component.value
+    )
   } catch (error) {
     console.error('error', error)
     return []
@@ -28,21 +28,20 @@ export function getSectionsList(schema: typeof _sections): string[] {
 }
 export function getSectionsConfiguration(schema: typeof _sections) {
   try {
-    return schema.shape.sections.options.map(section => (
-      section.shape.config
-    ))
+    return schema.shape.sections.options.map((section) => section.shape.config)
   } catch (error) {
     console.error('error', error)
     return []
   }
 }
-export function getSectionConfiguration<Shape extends typeof _sections>(schema: Shape, name: string) {
+export function getSectionConfiguration<Shape extends typeof _sections>(
+  schema: Shape,
+  name: string
+) {
   try {
-
-    return schema.shape.sections.options.find(section => (
-      // @ts-ignore -- we're obviously failing to check `section` against the literal in the type
-      section.shape.component.value === section
-    ))?.shape.config
+    return schema.shape.sections.options.find(
+      (section) => section.shape.component.value === name
+    )?.shape.config ?? {}
   } catch (error) {
     console.error('error', error)
     return {}
