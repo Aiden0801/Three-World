@@ -6,7 +6,7 @@ import { ConfigForm } from './types'
 
 export function GlobalForm({ showSchema }: ConfigForm) {
   const [config, initial, zodObject, loading, schema] = useGlobalConfig()
-  const { selectedTemplate, onSelectTemplate } = useTemplateSelection()
+  const [templateName, setTemplateName] = useTemplateSelection()
   const formValue = useFormValue()
   return (
     <div>
@@ -23,9 +23,9 @@ export function GlobalForm({ showSchema }: ConfigForm) {
                     key={field.key}
                     data={field.data}
                     label={field.label}
-                    value={selectedTemplate}
+                    value={templateName}
                     onChange={(template) => {
-                      onSelectTemplate(template)
+                      setTemplateName(template)
                       formValue.setFieldValue(`global.${field.title}`, template)
                     }}
                     placeholder={field.placeholder}

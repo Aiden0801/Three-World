@@ -33,6 +33,7 @@ export function useGlobalConfig() {
 }
 export function useThemeConfig() {
   const { theme } = useFormContext()
+  const vara = 5
   return theme
 }
 export function useFixedSectionsConfig() {
@@ -88,7 +89,7 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
       template: configData?.template ?? {
         theme: template?.[1]?.theme ?? {},
         sections: template?.[1]?.sections ?? [],
-        fixed: template?.[1]?.fixed ?? undefined,
+        fixed: template?.[1]?.fixed ?? {},
       },
     },
   })

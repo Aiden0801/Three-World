@@ -10,7 +10,6 @@ type BaseOptions = {
 type TemplateOptions = BaseOptions & {
   template: string
 }
-
 type UseConfigOptions = ({ type: 'global' } & BaseOptions) | ({ type: 'template' } & TemplateOptions)
 
 type UseConfigReturnValue<Options extends UseConfigOptions> = [
@@ -54,6 +53,7 @@ export function useConfig(options: UseConfigOptions): UseConfigReturnValue<UseCo
   const [zodObject, setZodObject] = useState(null)
   useEffect(() => {
     if (!schema) return
+
     setZodObject(convertJsonSchemaToZod(schema))
     const parser = options.parser ?? ParseSchema
     const parsedObject = parser(schema)
@@ -80,19 +80,18 @@ function useJsonSchema(options: UseConfigOptions): [JSONSchema | null, boolean] 
     if (options.type === 'template' && !isValid(options.template)) return
     return getUrl(options)
   }, [options])
-
   const getDereferencedSchema = useCallback(async () => {
     if (!url) return
     setLoading(true)
     setSchema(await JsonParser.dereference(url))
-    console.log(await JsonParser.dereference(url))
     setLoading(false)
   }, [url])
-
   useEffect(() => {
     if (!schema) getDereferencedSchema()
   }, [schema, getDereferencedSchema])
-
+  useEffect(() => {
+    if (schema) getDereferencedSchema()
+  }, [url, getDereferencedSchema])
   return [schema, loading]
 }
 

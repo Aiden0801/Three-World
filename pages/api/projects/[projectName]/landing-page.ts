@@ -11,22 +11,20 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   console.log(projectName)
   await connectMongo()
   try {
-    let project = await Config.findOne({ slug: projectName }).select()
-    console.log(project)
-    let result = []
-    for (const [key, value] of Object.entries(project.template.sections)) {
-      result.push({
-        component: key,
-        props: value,
-      })
-    }
-    res.status(200).send({
-      global: project.global,
-      template: {
-        theme: project.template.theme,
-        sections: result,
-      },
+    let data = await Config.findOne({ slug: projectName }).select()
+    let newSections = []
+    data.template.sections.forEach((value, index) => {
+      console.log(value)
+      let newSection = {
+        component: value.component,
+        config: value,
+      }
+      delete newSection.config.component
+      newSections = [...newSections, newSection]
+      console.log(newSections)
     })
+    data.template.sections = newSections
+    res.status(200).send(data)
   } catch (err) {
     console.error(err.message)
     res.status(500).send('Server error')

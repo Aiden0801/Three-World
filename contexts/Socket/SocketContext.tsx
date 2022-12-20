@@ -90,3 +90,11 @@ const fn = {
     },
   },
 }
+/**
+ * useContext
+ * @returns
+ */
+export function useSocket() {
+  const { socket } = useSocketContext()
+  return socket
+}

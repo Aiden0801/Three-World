@@ -10,7 +10,7 @@ import { LinkButton } from '@/components/Button'
 import { BASE_URL } from '@/config/constants'
 
 import { fetcher } from '@/lib/fetcher'
-import { FormContextProvider } from '@/lib/landing-pages'
+import { GlobalContextProvider } from '@/lib/landing-pages'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
 
 // const fetchProjects = async (url: string, name: string) => {
@@ -41,10 +41,8 @@ const ProjectCofig = ({ projectName, configData }) => {
   //    const [schema, setSchema] = useState<JSONSchema>()
   const router = useRouter()
   // const { data: configData } = useProjectData(projectName)
-  console.log(configData)
 
   const handleOnSubmit = async (values) => {
-    console.log('handleOnSubmit', values)
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/updateProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -102,9 +100,9 @@ const ProjectCofig = ({ projectName, configData }) => {
           </LinkButton>
         </Box>
         {configData && (
-          <FormContextProvider baseUrl={BASE_URL.CLIENT} configData={configData}>
+          <GlobalContextProvider baseUrl={BASE_URL.CLIENT} configData={configData}>
             <LandingPagesForm handleOnSubmit={handleOnSubmit} />
-          </FormContextProvider>
+          </GlobalContextProvider>
         )}
         {configData == undefined && <Skeleton visible={true} height={500}></Skeleton>}
       </>

@@ -7,7 +7,6 @@ const WebsiteConfig = new mongoose.Schema({
   global: {
     title: { type: String },
     description: { type: String },
-    color: { type: String },
     template: { type: String },
   },
   template: {

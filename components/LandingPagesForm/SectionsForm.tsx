@@ -33,10 +33,10 @@ export function SectionsForm({ showSchema }: ConfigForm) {
   const [selected, setSelected] = useState<string>('3')
   const [currentSection, setCurrentSection] = useState<TcurSelection>(undefined)
   const handleAddSection = useCallback(() => {
-    console.log('addSection', config.fields[selected])
     formValue.insertListItem('template.sections', {
       ...getInitialValue(config.fields[selected]),
       section_type: selected,
+      component: config.data[selected],
     })
   }, [config.fields, selected])
   const handleRemoveSection = useCallback(
@@ -44,7 +44,7 @@ export function SectionsForm({ showSchema }: ConfigForm) {
       formValue.removeListItem('template.sections', index)
       if (currentSection && currentSection.index == index) setCurrentSection(undefined)
     },
-    [formValue]
+    [formValue, currentSection]
   )
   const handleReorderSection = useCallback(
     (index, newIndex) => {
@@ -52,7 +52,7 @@ export function SectionsForm({ showSchema }: ConfigForm) {
       if (currentSection && (currentSection.index == index || currentSection.index == newIndex))
         setCurrentSection({ section_type: currentSection.section_type, index: newIndex + index - currentSection.index })
     },
-    [formValue]
+    [formValue, currentSection]
   )
   const getSectionsName = useCallback((): Array<any> => {
     if (config.data == null || config.data == undefined) return []
@@ -109,10 +109,14 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                           variant="subtle"
                           onClick={(e) => {
                             e.preventDefault()
-                            setCurrentSection({
-                              section_type: item.section_type,
-                              index: index,
-                            })
+                            setCurrentSection(
+                              index !== currentSection?.index
+                                ? {
+                                    section_type: item.section_type,
+                                    index: index,
+                                  }
+                                : undefined
+                            )
                           }}
                           color={currentSection?.index == index ? 'red' : 'blue'}>
                           <IconListDetails />
@@ -157,13 +161,12 @@ export function SectionsForm({ showSchema }: ConfigForm) {
             )}
           </Box>
           {config?.fields &&
-            currentSection &&
+            currentSection != undefined &&
             ParseObject(
               config.fields[currentSection.section_type],
               formValue,
               'template.sections' + `.${currentSection.index}`
             )}
-          {config?.fields && currentSection && console.log('section_type', config.fields[currentSection.section_type])}
         </>
       ) : (
         <Skeleton visible={true} height={64} />

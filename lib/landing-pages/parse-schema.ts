@@ -16,10 +16,9 @@ export function parseSchema(schema_: JSONSchema) {
       return schema
     }
     if (filter.isArrayOfEnum(schema)) {
-      console.log('isArrayoEnum', schema)
       const data = {
         component: 'list-enum',
-        data: schema.items['anyOf'].map((value) => parseTitle(value.properties.component.const as string)),
+        data: schema.items['anyOf'].map((value) => value.properties.component.const),
         fields: schema.items['anyOf'].map((value) => executeParse(value.properties.config)),
         ...schema,
       }
