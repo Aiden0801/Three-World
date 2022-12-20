@@ -3,7 +3,7 @@ import { createContext, PropsWithChildren, useContext, useState } from 'react'
 import { parseGlobalConfig } from './parse-global-config'
 import { parseSchema } from './parse-schema'
 import { useConfig } from './use-config'
-
+import logger from '@/utils/logger'
 interface GlobalContextValue {
   global: ReturnType<typeof useConfig>
   formValue: UseFormReturnType<FormValues>
@@ -70,12 +70,11 @@ export function GlobalContextProvider({ baseUrl, configData, children }: GlobalC
       template: configData?.template ?? {
         theme: template?.[1]?.theme ?? undefined,
         sections: template?.[1]?.sections ?? [],
-        fixed: template?.[1]?.fixed ?? {},
+        fixed: template?.[1]?.fixed ?? undefined,
       },
     },
   })
   // logger.log('configData', formValue.values)
-  console.log(template?.[0])
   const value: GlobalContextValue = {
     global,
     formValue,

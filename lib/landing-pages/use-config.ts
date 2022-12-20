@@ -54,11 +54,9 @@ export function useConfig(options: UseConfigOptions): UseConfigReturnValue<UseCo
   useEffect(() => {
     if (!schema) return
 
-    console.log(options.type, schema)
     setZodObject(convertJsonSchemaToZod(schema))
     const parser = options.parser ?? ParseSchema
     const parsedObject = parser(schema)
-    console.log(parsedObject)
     setConfig(parsedObject)
     setInitials(getInitialValue(parsedObject))
   }, [schema])

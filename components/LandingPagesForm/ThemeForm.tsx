@@ -6,7 +6,6 @@ import logger from '@/utils/logger'
 export function ThemeForm() {
   const [config, initial] = useThemeConfig()
   const formValue = useFormValue()
-  console.log('changed', config)
   const configData = useConfigData()
   useEffect(() => {
     if (initial != undefined && configData == undefined) formValue.setFieldValue('template.theme', initial)

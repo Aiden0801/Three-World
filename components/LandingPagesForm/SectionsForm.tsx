@@ -33,7 +33,6 @@ export function SectionsForm({ showSchema }: ConfigForm) {
   const [selected, setSelected] = useState<string>('3')
   const [currentSection, setCurrentSection] = useState<TcurSelection>(undefined)
   const handleAddSection = useCallback(() => {
-    console.log('addSection', config.fields[selected], config)
     formValue.insertListItem('template.sections', {
       ...getInitialValue(config.fields[selected]),
       section_type: selected,
@@ -43,7 +42,6 @@ export function SectionsForm({ showSchema }: ConfigForm) {
   const handleRemoveSection = useCallback(
     (index) => {
       formValue.removeListItem('template.sections', index)
-      console.log('removeSection', currentSection, index)
       if (currentSection && currentSection.index == index) setCurrentSection(undefined)
     },
     [formValue, currentSection]
@@ -111,10 +109,14 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                           variant="subtle"
                           onClick={(e) => {
                             e.preventDefault()
-                            setCurrentSection({
-                              section_type: item.section_type,
-                              index: index,
-                            })
+                            setCurrentSection(
+                              index !== currentSection?.index
+                                ? {
+                                    section_type: item.section_type,
+                                    index: index,
+                                  }
+                                : undefined
+                            )
                           }}
                           color={currentSection?.index == index ? 'red' : 'blue'}>
                           <IconListDetails />
@@ -165,7 +167,6 @@ export function SectionsForm({ showSchema }: ConfigForm) {
               formValue,
               'template.sections' + `.${currentSection.index}`
             )}
-          {/* {config?.fields && currentSection && console.log('section_type', config.fields[currentSection.section_type])} */}
         </>
       ) : (
         <Skeleton visible={true} height={64} />
