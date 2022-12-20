@@ -50,7 +50,7 @@ const fetchSessionData = async (url: string, email: string) => {
       creator: email,
     }),
   })
-  return session_data ? session_data.user : []
+  return session_data?.user ?? []
 }
 /***
  * * Custom Hook for useSWR
@@ -60,7 +60,6 @@ const useControlSession = (email: string) => {
   const { data, mutate, error, isValidating } = useSWR(['api/session/getControlSession', email], fetchSessionData, {
     revalidateOnFocus: false,
   })
-
   return {
     data: data ? data : [],
     isLoading: (!error && !data) || isValidating,
@@ -232,7 +231,7 @@ const SessionControl = () => {
         </Text>
         <TextInput placeholder="Search" mb={10} icon={<IconSearch size={14} radius="md" />} />
         <ScrollArea>
-          <Skeleton visible={isLoading || isHandling}>
+          <Skeleton visible={isLoading}>
             <Table withBorder striped withColumnBorders sx={{ minWidth: 800 }} verticalSpacing="xs">
               <thead>
                 <tr>
