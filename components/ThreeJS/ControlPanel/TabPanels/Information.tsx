@@ -22,9 +22,6 @@ export default function Information() {
   const socket = useSocket()
   const [data, setData] = useState([])
   useEffect(() => {
-    console.log(Index, userBrowser[Index].url)
-    console.log('socket getparticipants calling')
-
     if (userBrowser[Index].url == 'none' || userBrowser[Index].url == 'No Session') return
     socket.emit('getParticipants', { sessionName: userBrowser[Index].name })
   }, [Index, userBrowser])

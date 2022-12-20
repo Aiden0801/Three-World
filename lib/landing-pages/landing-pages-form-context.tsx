@@ -82,7 +82,6 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
     parser: parseSchema,
     template: templateName,
   })
-  console.log(templateName)
   const formValue = useForm<FormValues>({
     initialValues: {
       name: configData?.name ?? '',
@@ -94,7 +93,6 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
       },
     },
   })
-  console.log(template?.[0])
   const value: FormContextValue = {
     global,
     theme: [getThemeConfig(template?.[0]) ?? {}, template?.[1]?.theme ?? {}],

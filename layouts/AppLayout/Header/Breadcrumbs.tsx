@@ -19,7 +19,6 @@ const items = [
 export function BreadCrumbsNav(props: Omit<BreadcrumbsProps, 'children'>) {
   const router = useRouter()
   const breadcrumbs = generateBreadcrumbs(router)
-  console.log(breadcrumbs)
   return (
     <>
       <Breadcrumbs {...props} separator={<IconChevronRight size={20} stroke={1} />}>
@@ -47,14 +46,10 @@ function flex() {
  * @dev since our `Home` is technically /dashboard, should we refactor this
  * to take that into account?
  */
-function generateBreadcrumbs(
-  router: NextRouter
-): { href: string; text: ReactNode }[] {
+function generateBreadcrumbs(router: NextRouter): { href: string; text: ReactNode }[] {
   // Remove any query parameters, as those aren't included in breadcrumbs
   const path = router.asPath.split('?')[0]
-  const parts = path
-    .split('/')
-    .filter((v) => v.length > 0)
+  const parts = path.split('/').filter((v) => v.length > 0)
 
   // Iterate over the list of nested route parts and build
   // a "crumb" object for each one.

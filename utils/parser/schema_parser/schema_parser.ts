@@ -92,7 +92,7 @@ export const ParseSchema = (schema) => {
     case 'boolean':
       return schema
     case 'array':
-      result.item = ParseSchema(schema.items)
+      result.items = ParseSchema(schema.items)
       result.type = 'array'
       result._isArray = true
       return result

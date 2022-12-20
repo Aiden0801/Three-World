@@ -212,6 +212,7 @@ export default function Zod() {
     const parsedSchema = parseSchemaToObject(test_schema)
     setConfig(parsedSchema)
     setZodObject(zodObject)
+    console.log(zodObject.shape)
   }
   return (
     <>

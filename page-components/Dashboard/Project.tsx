@@ -41,10 +41,8 @@ const ProjectCofig = ({ projectName, configData }) => {
   //    const [schema, setSchema] = useState<JSONSchema>()
   const router = useRouter()
   // const { data: configData } = useProjectData(projectName)
-  console.log(configData)
 
   const handleOnSubmit = async (values) => {
-    console.log('handleOnSubmit', values)
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/updateProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

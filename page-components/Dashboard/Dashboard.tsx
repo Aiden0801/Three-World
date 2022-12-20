@@ -23,7 +23,6 @@ import { BASE_URL } from '@/config/constants'
 import { fetcher } from '@/lib/fetcher'
 import FadeIn from '@/utils/spring/FadeIn'
 import { Fullscreen, FullscreenExit } from 'react-bootstrap-icons'
-import { FormContextProvider } from '@/lib/landing-pages'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
 import { GlobalContextProvider } from '@/lib/landing-pages/global-form-context'
 
@@ -84,7 +83,6 @@ const Dashboard: React.FC = () => {
     }
 
     mutate()
-    console.log(response)
   }
   const handleDeleteProject = useCallback(async (name: string) => {
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/deleteProject`, {
@@ -152,7 +150,6 @@ const Dashboard: React.FC = () => {
         fullScreen={fullScreen}
         title="Create Project"
         onClose={() => {
-          console.log('onClose')
           openConfirmModal({
             title: 'Please confirm your action',
             children: (

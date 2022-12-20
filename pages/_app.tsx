@@ -3,7 +3,7 @@ import { Router } from 'next/router'
 import { SessionProvider } from 'next-auth/react'
 import type { AppProps as NextAppProps } from 'next/app'
 
-import { SocketContextProvider } from '@/contexts/socket'
+import { SocketContextProvider } from '../contexts/socket/SocketContext'
 import { RecoilRoot } from 'recoil'
 import { wrapper } from '@/store/store'
 import AppWithContexts from './_app.internal'

@@ -82,6 +82,5 @@ export function GlobalContextProvider({ baseUrl, configData, children }: GlobalC
     configData: configData ?? undefined,
   }
 
-  // console.log('TEMPLATE', configData?.global, formValue.values)
   return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>
 }

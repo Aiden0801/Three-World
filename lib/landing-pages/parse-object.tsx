@@ -116,7 +116,6 @@ const arrayComponent = (object: IPropsschemaObject, form, dataposition?: string)
       <Button
         onClick={() => {
           const temp = getInitialValue(object.items)
-          console.log(temp)
           form.insertListItem(dataposition, temp)
         }}>{`New ${object.title}`}</Button>
     </>
