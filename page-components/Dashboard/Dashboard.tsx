@@ -25,6 +25,7 @@ import FadeIn from '@/utils/spring/FadeIn'
 import { Fullscreen, FullscreenExit } from 'react-bootstrap-icons'
 import { FormContextProvider } from '@/lib/landing-pages'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
+import { GlobalContextProvider } from '@/lib/landing-pages/global-form-context'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -173,9 +174,9 @@ const Dashboard: React.FC = () => {
               onClick={() => setFullScreen((o) => !o)}>
               {!fullScreen ? <Fullscreen /> : <FullscreenExit />}
             </ActionIcon>
-            <FormContextProvider baseUrl={BASE_URL.CLIENT}>
+            <GlobalContextProvider baseUrl={BASE_URL.CLIENT}>
               <LandingPagesForm handleOnSubmit={handleOnSubmit} />
-            </FormContextProvider>
+            </GlobalContextProvider>
           </>
         }
       </Modal>

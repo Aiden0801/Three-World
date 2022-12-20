@@ -6,7 +6,7 @@ export const convertJsonSchemaToZod = (schema: any) => {
   const zodschema = parseSchema(schema)
   let newSchema = 'function(z) { return ' + zodschema + '}'
   var wrap = () => '{ return ' + newSchema + ' };' //return the block having function expression
-  var func = new Func   tion(wrap())
+  var func = new Function(wrap())
   var obj = func.call(null).call(null, z)
   return obj
 }

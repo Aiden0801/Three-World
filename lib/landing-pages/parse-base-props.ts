@@ -12,14 +12,11 @@ import { AnyFormField } from './types'
  * @param requiredArray the parent required array (if any)
  * @returns Partial FormField object
  */
-export function parseBaseProperties(
-  name: string,
-  schema: JSONSchema,
-  requiredArray = []
-): AnyFormField {
+export function parseBaseProperties(name: string, schema: JSONSchema, requiredArray = []): AnyFormField {
   const component = determineComponent(schema)
   return {
     label: schema.title ?? capitalize(name),
+    title: schema.title ?? name,
     isRequired: requiredArray.includes(name),
     placeholder: schema.description,
     // @ts-ignore -- this is a hack to get around the extra JSONSchema7 types
