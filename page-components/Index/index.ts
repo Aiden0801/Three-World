@@ -1,1 +1,1 @@
-export { default as Index } from './Component';
+export { Index } from './Component';
