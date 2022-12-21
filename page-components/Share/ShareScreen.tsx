@@ -10,7 +10,7 @@ export default function ShareScreen() {
       <Suspense fallback={<LoadingOverlay visible={true} overlayBlur={2} />}>
         <Flex direction="row" gap={0} style={{ width: '100%' }}>
           <ControlPanel />
-          {/* <Scene /> */}
+          <Scene />
         </Flex>
       </Suspense>
     </>

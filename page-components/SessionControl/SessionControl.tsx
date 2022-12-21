@@ -27,6 +27,7 @@ import useSWR from 'swr'
 import { fetcher } from '../../lib/fetcher'
 import { currentBrowsers } from '../../utils/recoil/browser'
 import { ToolTipButton } from '../../components/Button'
+import { BASE_URL } from '@/config/constants'
 const BREAKPOINT = '@media (max-width: 755px)'
 const useStyles = createStyles((theme) => ({
   container: {
@@ -43,7 +44,7 @@ const useStyles = createStyles((theme) => ({
  * @returns
  */
 const fetchSessionData = async (url: string, email: string) => {
-  const session_data = await fetcher('api/session/getControlSession', {
+  const session_data = await fetcher('api/session/f', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
@@ -96,7 +97,7 @@ const SessionControl = () => {
       setOpened(false)
       const { name, description } = values
       setIsHandling(true)
-      const response = await fetcher('/api/session/createSession', {
+      const response = await fetcher(`${BASE_URL.SERVER}/api/session/createSession`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -114,7 +115,7 @@ const SessionControl = () => {
   const handleActivateSession = useCallback(
     async (_id) => {
       setIsHandling(true)
-      const response = await fetcher('/api/session/activateSessionByID', {
+      const response = await fetcher(`${BASE_URL.SERVER}/api/session/activateSessionByID`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -132,7 +133,7 @@ const SessionControl = () => {
     async (_id) => {
       console.log(_id)
       setIsHandling(true)
-      const response = await fetcher('/api/session/deleteSessionByID', {
+      const response = await fetcher(`${BASE_URL.SERVER}/api/session/deleteSessionByID`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -147,7 +148,7 @@ const SessionControl = () => {
   const handleKillSession = useCallback(
     async (_id) => {
       setIsHandling(true)
-      const response = await fetcher('/api/session/killSessionByID', {
+      const response = await fetcher(`${BASE_URL.SERVER}/api/session/killSessionByID`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

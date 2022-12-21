@@ -82,6 +82,7 @@ const ControlPanel = () => {
         ref={ref}
         defaultValue="information"
         placement="left"
+        orientation="vertical"
         variant="pills"
         onTabChange={setActiveTab}
         className={classes.tabctrl}>

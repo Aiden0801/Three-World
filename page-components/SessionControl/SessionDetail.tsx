@@ -77,7 +77,7 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
 
   const handleActivateSession = async (_id) => {
     setIsHandling(true)
-    const response = await fetcher('/api/session/activateSessionByID', {
+    const response = await fetcher(`${BASE_URL.SERVER}/api/session/activateSessionByID`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -90,7 +90,7 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
   }
   const handleKillSession = async (_id) => {
     setIsHandling(true)
-    const response = await fetcher('/api/session/killSessionByID', {
+    const response = await fetcher(`${BASE_URL.SERVER}/api/session/killSessionByID`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -113,7 +113,7 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
     setOpened(false)
 
     setIsHandling(true)
-    const response = await fetcher('/api/session/allowUsertoSession', {
+    const response = await fetcher(`${BASE_URL.SERVER}/api/session/allowUsertoSession`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -128,7 +128,7 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
   const handleDenyAllowedUser = async (values) => {
     const email = values
     setIsHandling(true)
-    const response = await fetcher('/api/session/denyUsertoSession', {
+    const response = await fetcher(`${BASE_URL.SERVER}/api/session/denyUsertoSession`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
