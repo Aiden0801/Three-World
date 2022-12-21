@@ -1,23 +1,18 @@
+import { useAuthRedirect } from '@/hooks/use-auth-redirect'
 import { PublicLayout } from '@/layouts/PublicLayout'
 import { Index } from '@/page-components/Index'
-import { useSession } from 'next-auth/react'
-import { useRouter } from 'next/router'
 const Home: React.FC = () => {
-  const session = useSession()
-  /**
-   * @dev just for NOW
-   */
-  const router = useRouter()
-  if (session.status === 'loading') return <></>
-  if (session.status === 'authenticated') router.push('./dashboard')
-  if (session.status === 'unauthenticated') router.push('./login')
-  return <></>
+  const loading = useAuthRedirect()
+
+  if (loading) {
+    // TODO: Add loading component
+    return <></>
+  }
+
   return (
-    <>
-      <PublicLayout>
-        <Index />
-      </PublicLayout>
-    </>
+    <PublicLayout>
+      <Index />
+    </PublicLayout>
   )
 }
 export default Home
