@@ -31,6 +31,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       res.status(200).json({ email: 'User Not Exist in the DB' })
     } else {
       console.log(process.env.HYPERBEAM_KEY)
+      console.log(BASE_URL.SERVER)
       const resp = await axios.post(
         'https://engine.hyperbeam.com/v0/vm',
         {

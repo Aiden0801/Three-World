@@ -32,7 +32,7 @@ const height = 3.3
 const geometry = new THREE.PlaneGeometry(width, height)
 function Browser(props) {
   const texture = new THREE.Texture()
-  const deftexture = useTexture('loading.jpg')
+  const deftexture = useTexture('/loading.jpg')
   const [defMaterial, setDefmaterial] = useState(new THREE.MeshBasicMaterial({ map: deftexture }))
   const hbContainer = document.createElement('div')
   const meshobject = useRef()

@@ -70,7 +70,7 @@ export default function Information() {
   return (
     <>
       <Container>
-        {userBrowser.length == 4 && (
+        {userBrowser?.length == 4 && (
           <Text fz="xl" c="teal.4" fw={700} align="center">
             {userBrowser[Index].name}
           </Text>
