@@ -1,25 +1,33 @@
-import { useMantineColorScheme, ActionIcon, ActionIconProps } from '@mantine/core'
+import {
+  useMantineColorScheme,
+  ActionIcon,
+  ActionIconProps,
+  MantineTheme,
+} from '@mantine/core'
 import { ColorSchemeIcon } from './ColorSchemeIcon'
 
 export function ColorSchemeToggle(props: ActionIconProps) {
   const { toggleColorScheme } = useMantineColorScheme()
+  const isSubtle = props.variant === 'subtle'
   return (
     <ActionIcon
       onClick={() => toggleColorScheme()}
       size="lg"
       sx={(theme) => ({
-        backgroundColor:
-          theme.colorScheme === 'dark'
-            ? theme.colors.dark[6]
-            : theme.colors.gray[2],
-        color:
-          theme.colorScheme === 'dark'
-            ? theme.colors.yellow[4]
-            : theme.colors.blue[6],
+        backgroundColor: isSubtle ? undefined : backgroundColor(theme),
+        color: iconColor(theme),
       })}
       {...props}
     >
-      <ColorSchemeIcon/>
+      <ColorSchemeIcon />
     </ActionIcon>
   )
+}
+
+function backgroundColor({ colorScheme, colors }: MantineTheme) {
+  return colorScheme === 'dark' ? colors.dark[6] : colors.gray[2]
+}
+
+function iconColor({ colorScheme, colors }: MantineTheme) {
+  return colorScheme === 'dark' ? colors.yellow[4] : colors.blue[6]
 }
