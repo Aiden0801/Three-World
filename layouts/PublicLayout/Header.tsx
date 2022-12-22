@@ -1,15 +1,6 @@
-import {
-  Anchor,
-  Burger,
-  createStyles,
-  Group,
-  Header,
-  Paper,
-  Stack,
-  Transition,
-} from '@mantine/core'
+import { Anchor, Burger, createStyles, Group, Header, Paper, Stack, Transition, Image } from '@mantine/core'
 import Link from 'next/link'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../../components/Button'
 
@@ -33,10 +24,7 @@ const useStyles = createStyles((theme) => ({
     },
 
     ...theme.fn.hover({
-      backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[6]
-          : theme.colors.gray[0],
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
     }),
   },
   button: {},
@@ -46,27 +34,19 @@ const useStyles = createStyles((theme) => ({
     borderRadius: theme.radius.md,
 
     ...theme.fn.hover({
-      backgroundColor:
-        theme.colorScheme === 'dark'
-          ? theme.colors.dark[7]
-          : theme.colors.gray[0],
+      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
     }),
 
     '&:active': theme.activeStyles,
   },
 
   dropdownFooter: {
-    backgroundColor:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[7]
-        : theme.colors.gray[0],
+    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
     margin: -theme.spacing.md,
     marginTop: theme.spacing.sm,
     padding: `${theme.spacing.md}px ${theme.spacing.md * 2}px`,
     paddingBottom: theme.spacing.xl,
-    borderTop: `1px solid ${
-      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
-    }`,
+    borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]}`,
   },
   dropdown: {
     position: 'absolute',
@@ -95,48 +75,49 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function HeaderMenu() {
+export interface HeaderMenuProps {
+  /**
+   * If true we add up the (predefined) header menu and "enable" the mobile
+   * layout for the header (burger + dropdown menu). Otherwise we just render
+   * the header with logo and login button
+   */
+  showMenu?: boolean
+}
+
+export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
   const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false)
   const { classes } = useStyles()
   return (
-    <Header height={60}>
+    <Header
+      height={64}
+      // withBorder={false}
+      sx={(theme) => ({
+        borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+      })}>
       <Group position="apart" sx={{ height: '100%' }} px="xl">
-        <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
+        <Image alt="" src="/logo/vpg-logo-square.png" height={50} width="auto" />
 
-        <Group
-          sx={{ height: '100%' }}
-          spacing={0}
-          className={classes.hiddenMobile}
-        >
-          <MenuItems className={classes.link} />
+        <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+          {showMenu && <MenuItems className={classes.link} />}
         </Group>
 
         <>
-          <Group className={classes.hiddenMobile}>
-            <LinkButton href="/login">Log In</LinkButton>
+          <Group className={showMenu && classes.hiddenMobile}>
+            <LinkButton uppercase variant="subtle" href="#">
+              Log In
+            </LinkButton>
           </Group>
         </>
 
-        <Burger
-          opened={drawerOpened}
-          onClick={toggleDrawer}
-          className={classes.hiddenDesktop}
-        />
+        {showMenu && <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />}
 
-        <Transition
-          transition="pop-top-right"
-          duration={200}
-          mounted={drawerOpened}
-        >
+        <Transition transition="pop-top-right" duration={200} mounted={drawerOpened}>
           {(styles) => (
             <Paper className={classes.dropdown} withBorder style={styles}>
               <Stack>
-                <MenuItems className={classes.link} />
-                <LinkButton
-                  variant="default"
-                  className={classes.button}
-                  href="/login"
-                >
+                {showMenu && <MenuItems className={classes.link} />}
+                <LinkButton variant="subtle" className={classes.button} href="#">
                   Log in
                 </LinkButton>
               </Stack>

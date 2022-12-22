@@ -8,7 +8,17 @@ import Footer from './Footer'
  */
 export function PublicLayout({ children }: PropsWithChildren) {
   return (
-    <AppShell padding={0} header={<Header />} footer={<Footer />}>
+    <AppShell
+      padding={0}
+      header={<Header />}
+      footer={<Footer />}
+      styles={(theme) => ({
+        body: {
+          backgroundColor:
+            theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+        },
+      })}
+    >
       {children}
     </AppShell>
   )

@@ -1,6 +1,18 @@
 import { openConfirmModal } from '@mantine/modals'
 
-import { Badge, Box, Button, Card, Container, createStyles, Flex, Modal, Skeleton, Text } from '@mantine/core'
+import {
+  ActionIcon,
+  Badge,
+  Box,
+  Button,
+  Card,
+  Container,
+  createStyles,
+  Flex,
+  Modal,
+  Skeleton,
+  Text,
+} from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons'
 import { useRouter } from 'next/router'
@@ -10,9 +22,9 @@ import { LinkButton } from '@/components/Button'
 import { BASE_URL } from '@/config/constants'
 import { fetcher } from '@/lib/fetcher'
 import FadeIn from '@/utils/spring/FadeIn'
-
-import { FormContextProvider } from '@/lib/landing-pages'
-import {LandingPagesForm }from '@/components/LandingPagesForm'
+import { Fullscreen, FullscreenExit } from 'react-bootstrap-icons'
+import { LandingPagesForm } from '@/components/LandingPagesForm'
+import { GlobalContextProvider } from '@/lib/landing-pages/global-form-context'
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -28,11 +40,11 @@ const useStyles = createStyles((theme) => ({
  * @dev Do we use the parameters? if not remove them.
  */
 const fetchProjects = async (url: string, email: string) => {
-   const data = await fetcher(`${BASE_URL.SERVER}/api/projects`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-   })
-   return data ? data : []
+  const data = await fetcher(`${BASE_URL.SERVER}/api/projects`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+  })
+  return data ? data : []
 }
 const useProjectData = () => {
   const { data, mutate, error, isValidating } = useSWR(['api/projects'], fetchProjects, { revalidateOnFocus: false })
@@ -46,6 +58,7 @@ const useProjectData = () => {
 const Dashboard: React.FC = () => {
   const { data: projectData, isLoading, isError, mutate } = useProjectData()
   const [opened, setOpened] = useState(false)
+  const [fullScreen, setFullScreen] = useState(false)
   const [confirm, setConfirm] = useState(false)
   const { classes, theme } = useStyles()
   const router = useRouter()
@@ -70,7 +83,6 @@ const Dashboard: React.FC = () => {
     }
 
     mutate()
-    console.log(response)
   }
   const handleDeleteProject = useCallback(async (name: string) => {
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/deleteProject`, {
@@ -135,27 +147,38 @@ const Dashboard: React.FC = () => {
         transitionDuration={600}
         size="80%"
         opened={opened}
+        fullScreen={fullScreen}
         title="Create Project"
-        closeOnEscape={false}
         onClose={() => {
-          console.log('onClose')
-          setOpened(false)
+          openConfirmModal({
+            title: 'Please confirm your action',
+            children: (
+              <Text size="sm">
+                Are you going to leave with out saving your configuration data? Please Press Confirm to Process.
+              </Text>
+            ),
+            labels: { confirm: 'Confirm', cancel: 'Cancel' },
+            confirmProps: { color: 'red' },
+            onCancel: () => console.log('Cancel'),
+            onConfirm: () => setOpened(false),
+          })
+          // setOpened(false)
         }}>
         {
-          <FormContextProvider baseUrl={BASE_URL.CLIENT}>
-            <LandingPagesForm handleOnSubmit={handleOnSubmit} />
-          </FormContextProvider>
+          <>
+            <ActionIcon
+              style={{ position: 'absolute', right: '40px', top: '20px' }}
+              onClick={() => setFullScreen((o) => !o)}>
+              {!fullScreen ? <Fullscreen /> : <FullscreenExit />}
+            </ActionIcon>
+            <GlobalContextProvider baseUrl={BASE_URL.CLIENT}>
+              <LandingPagesForm handleOnSubmit={handleOnSubmit} />
+            </GlobalContextProvider>
+          </>
         }
       </Modal>
-      <Box
-        sx={(theme) => ({
-          display: 'flex',
-          justifyContent: 'space-between',
-          align: 'center',
-          alignItems: 'center',
-          marginBottom: '20px',
-        })}>
-        <Text>Projects</Text>
+      <Flex align="flex-end" gap="sm" py="sm" justify="space-evenly" direction={{ xs: 'column', md: 'row' }}>
+        <Text sx={{ flex: 1 }}>Projects</Text>
 
         <Button
           compact
@@ -174,7 +197,7 @@ const Dashboard: React.FC = () => {
           </Text>
           <IconPlus size={20} stroke={1.5} />
         </Button>
-      </Box>
+      </Flex>
 
       <Skeleton height={500} visible={projectData == undefined ? true : false}>
         {projectData &&
@@ -191,7 +214,7 @@ const Dashboard: React.FC = () => {
                       mt="md"
                       size="xs"
                       radius="md"
-                      href={`/dashboard/${item.name}`}>
+                      href={`/dashboard/${item.slug}`}>
                       Edit
                     </LinkButton>
                     <Button

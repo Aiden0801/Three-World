@@ -1,6 +1,7 @@
 import { capitalize } from '@/lib/text-helpers'
 import { Breadcrumbs, Anchor, BreadcrumbsProps } from '@mantine/core'
 import { IconChevronRight, IconHome } from '@tabler/icons'
+import { decode } from 'next-auth/jwt'
 import Link from 'next/link'
 import { NextRouter, useRouter } from 'next/router'
 import { ReactNode } from 'react'
@@ -18,7 +19,6 @@ const items = [
 export function BreadCrumbsNav(props: Omit<BreadcrumbsProps, 'children'>) {
   const router = useRouter()
   const breadcrumbs = generateBreadcrumbs(router)
-  console.log(breadcrumbs)
   return (
     <>
       <Breadcrumbs {...props} separator={<IconChevronRight size={20} stroke={1} />}>
@@ -46,14 +46,10 @@ function flex() {
  * @dev since our `Home` is technically /dashboard, should we refactor this
  * to take that into account?
  */
-function generateBreadcrumbs(
-  router: NextRouter
-): { href: string; text: ReactNode }[] {
+function generateBreadcrumbs(router: NextRouter): { href: string; text: ReactNode }[] {
   // Remove any query parameters, as those aren't included in breadcrumbs
   const path = router.asPath.split('?')[0]
-  const parts = path
-    .split('/')
-    .filter((v) => v.length > 0)
+  const parts = path.split('/').filter((v) => v.length > 0)
 
   // Iterate over the list of nested route parts and build
   // a "crumb" object for each one.
@@ -62,7 +58,9 @@ function generateBreadcrumbs(
     // by joining together the path parts up to this point.
     const href = '/' + parts.slice(0, idx + 1).join('/')
     // The title will just be the route string for now
-    const text = capitalize(subpath)
+    // we decode the URI in case it has any special characters
+    // split on the dash (in case of slugs) and join with a space
+    const text = capitalize(decodeURI(subpath).split('-').join(' '))
     return { href, text }
   })
 

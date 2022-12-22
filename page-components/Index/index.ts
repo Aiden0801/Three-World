@@ -1,1 +1,2 @@
-export { default as Index } from './Component';
+export { Index } from './Page';
+export type { ContactFormData } from './contacts';

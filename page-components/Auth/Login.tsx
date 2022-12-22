@@ -1,14 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
-import {
-  Stack,
-  createStyles,
-  LoadingOverlay,
-  Center,
-  Card,
-  Divider,
-  MantineTheme,
-  Title,
-} from '@mantine/core'
+import { Stack, createStyles, LoadingOverlay, Center, Card, Divider, MantineTheme, Title } from '@mantine/core'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { signIn, useSession } from 'next-auth/react'
@@ -41,11 +32,7 @@ const useStyles = createStyles((theme) => ({
     height: '100vh',
     background: dark(theme)
       ? theme.fn.linearGradient(135, theme.colors.dark[6], theme.colors.dark[9])
-      : theme.fn.linearGradient(
-          135,
-          theme.colors.indigo[0],
-          theme.colors.indigo[1]
-        ),
+      : theme.fn.linearGradient(135, theme.colors.indigo[0], theme.colors.indigo[1]),
   },
   container: {
     width: '400px',
@@ -58,10 +45,8 @@ const useStyles = createStyles((theme) => ({
 export default function Login() {
   const { status } = useSession()
   const { classes } = useStyles()
-  console.log(status)
   const router = useRouter()
   useEffect(() => {
-    console.log(status)
     if (status === 'authenticated') {
       router.push('./dashboard')
     }
@@ -84,13 +69,7 @@ export default function Login() {
     <>
       <LoadingOverlay visible={loading} overlayBlur={2} />
       <Center className={classes.wrapper}>
-        <Card
-          withBorder
-          p="xl"
-          shadow="xl"
-          className={classes.container}
-          radius="lg"
-        >
+        <Card withBorder p="xl" shadow="xl" className={classes.container} radius="lg">
           <Stack align="center">
             <Image alt="" src="/logo/Group_157.png" width={120} height={80} />
             <Title order={3} weight="bold">
@@ -103,8 +82,7 @@ export default function Login() {
                 onClick={() => handleLogIn(provider.id)}
                 compact={false} // avoids removing the compact prop from the buttons
                 radius="sm"
-                fullWidth
-              >
+                fullWidth>
                 Login with {provider.name}
               </provider.button>
             ))}

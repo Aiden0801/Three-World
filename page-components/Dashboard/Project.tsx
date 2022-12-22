@@ -10,51 +10,39 @@ import { LinkButton } from '@/components/Button'
 import { BASE_URL } from '@/config/constants'
 
 import { fetcher } from '@/lib/fetcher'
-import { FormContextProvider } from '@/lib/landing-pages'
-import {LandingPagesForm} from '@/components/LandingPagesForm'
+import { GlobalContextProvider } from '@/lib/landing-pages'
+import { LandingPagesForm } from '@/components/LandingPagesForm'
 
-const fetchProjects = async (url: string, name: string) => {
-  console.log('fetch', name)
-  /** @vlad FIX: I think the url is changed now? no websiteconfig but landing-page? */
-  const data = await fetcher(`${BASE_URL.SERVER}/api/projects/${name}/websiteconfig`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-  })
-  return data ? data : []
-}
-const useProjectData = (projectName) => {
-  console.log('use', projectName)
-  const { data, mutate, error, isValidating } = useSWR(['api/projects', projectName], fetchProjects, {
-    revalidateOnFocus: false,
-  })
-  return {
-    data: data,
-    isLoading: (!error && !data) || isValidating,
-    isError: error,
-    mutate: mutate,
-  }
-}
-const ProjectCofig = ({ projectName }) => {
+// const fetchProjects = async (url: string, name: string) => {
+//   console.log('fetch', name)
+//   /** @vlad FIX: I think the url is changed now? no websiteconfig but landing-page? */
+//   const data = await fetcher(`${BASE_URL.SERVER}/api/projects/${name}/websiteconfig`, {
+//     method: 'POST',
+//     headers: { 'Content-Type': 'application/json' },
+//   })
+//   return data ? data : []
+// }
+// const useProjectData = (projectName) => {
+//   console.log('use', projectName)
+//   const { data, mutate, error, isValidating } = useSWR(['api/projects', projectName], fetchProjects, {
+//     revalidateOnFocus: false,
+//   })
+//   return {
+//     data: data,
+//     isLoading: (!error && !data) || isValidating,
+//     isError: error,
+//     mutate: mutate,
+//   }
+// }
+const ProjectCofig = ({ projectName, configData }) => {
   const { data: session, status } = useSession()
   //    const [refs, setRefs] = useState<$RefParser.$Refs>(null)
 
   //    const [schema, setSchema] = useState<JSONSchema>()
-  const [loaded, setLoaded] = useState(false)
   const router = useRouter()
-  const { data: configData } = useProjectData(projectName)
-
-  useEffect(() => {
-    test()
-  }, [])
-  const test = async () => {
-    //   let test = await $RefParser.dereference(LandingPageSchema)
-    //   setSchema(test)
-    //   console.log(test)
-    setLoaded((o) => true)
-  }
+  // const { data: configData } = useProjectData(projectName)
 
   const handleOnSubmit = async (values) => {
-    console.log('handleOnSubmit', values)
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/updateProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -99,7 +87,7 @@ const ProjectCofig = ({ projectName }) => {
               fontFamily: 'Greycliff CF, sans-serif',
               fontSize: '30px',
             }}>
-            {projectName}
+            {configData.name}
           </Text>
           <LinkButton
             compact
@@ -112,9 +100,9 @@ const ProjectCofig = ({ projectName }) => {
           </LinkButton>
         </Box>
         {configData && (
-          <FormContextProvider baseUrl={BASE_URL.CLIENT} configData={configData}>
+          <GlobalContextProvider baseUrl={BASE_URL.CLIENT} configData={configData}>
             <LandingPagesForm handleOnSubmit={handleOnSubmit} />
-          </FormContextProvider>
+          </GlobalContextProvider>
         )}
         {configData == undefined && <Skeleton visible={true} height={500}></Skeleton>}
       </>

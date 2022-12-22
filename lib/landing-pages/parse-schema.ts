@@ -15,6 +15,19 @@ export function parseSchema(schema_: JSONSchema) {
     if (!schema) {
       return schema
     }
+    if (filter.isArrayOfEnum(schema)) {
+      const data = {
+        component: 'list-enum',
+        data: schema.items['anyOf'].map((value) => value.properties.component.const),
+        fields: schema.items['anyOf'].map((value) => executeParse(value.properties.config)),
+        ...schema,
+      }
+      // we don't need the enum anymore, and it would cause infinite recursion
+      // since we'd always end up here
+      console.log('parsedIsArrayofEnum', data)
+      delete data.items
+      return data
+    }
     // group 1
 
     if (filter.isEnum(schema)) {
@@ -26,10 +39,12 @@ export function parseSchema(schema_: JSONSchema) {
       // objects and call recursively to parse nested schemas.
       const fields = Object.entries(schema.properties).map(([key, value]) => {
         const isRequired = filter.isRequired(key, schema)
-        const placeholder =
-          value?.placeholder || value?.description || undefined
-
+        const placeholder = value?.placeholder || value?.description || undefined
+        const title = key as string
+        const label = key as string
         const data = {
+          title,
+          label,
           key,
           isRequired,
           placeholder,

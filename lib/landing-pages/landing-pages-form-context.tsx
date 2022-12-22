@@ -3,10 +3,13 @@ import { createContext, PropsWithChildren, useContext, useEffect, useState } fro
 import { parseSchema } from './parse-schema'
 import { useConfig } from './use-config'
 import { useMemo } from 'react'
+import { parseGlobalConfig } from './parse-global-config'
+
 interface FormContextValue {
   global: ReturnType<typeof useConfig>
   theme: any
   sections: any
+  fixedSections: any
   formValue: UseFormReturnType<FormValues>
   selectedTemplate: string
   onSelectTemplate: (template: string) => void
@@ -15,8 +18,9 @@ interface FormValues {
   name?: string
   global?: object
   template?: {
-    theme: Array<any>
+    theme: any
     sections: Array<any>
+    fixed: any
   }
 }
 const FormContext = createContext<FormContextValue>(null)
@@ -29,9 +33,13 @@ export function useGlobalConfig() {
 }
 export function useThemeConfig() {
   const { theme } = useFormContext()
+  const vara = 5
   return theme
 }
-
+export function useFixedSectionsConfig() {
+  const { fixedSections } = useFormContext()
+  return fixedSections
+}
 export function useSectionsConfig() {
   const { sections } = useFormContext()
   return sections
@@ -65,7 +73,7 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
   const global = useConfig({
     type: 'global',
     base_url: baseUrl,
-    parser: parseSchema,
+    parser: parseGlobalConfig,
   })
   const [templateName, setTemplateName] = useState<string>(configData?.global?.template ?? '')
   const template = useConfig({
@@ -78,23 +86,32 @@ export function FormContextProvider({ baseUrl, configData, children }: FormConte
     initialValues: {
       name: configData?.name ?? '',
       global: configData?.global ?? global?.[1] ?? {},
-      template: configData?.template ?? { theme: template?.[1]?.theme ?? {}, sections: template?.[1]?.sections ?? [] },
+      template: configData?.template ?? {
+        theme: template?.[1]?.theme ?? {},
+        sections: template?.[1]?.sections ?? [],
+        fixed: template?.[1]?.fixed ?? {},
+      },
     },
   })
   const value: FormContextValue = {
     global,
     theme: [getThemeConfig(template?.[0]) ?? {}, template?.[1]?.theme ?? {}],
-    sections: [getSectionsConfig(template?.[0]) ?? {}, template?.[1]?.sections ?? {}],
+    sections: [getSectionsConfig(template?.[0]) ?? {}, template?.[1]?.sections ?? undefined],
+    fixedSections: [getFixedSectionsConfig(template?.[0]) ?? {}, template?.[1]?.fixed ?? undefined],
     formValue,
     selectedTemplate: templateName,
     onSelectTemplate: setTemplateName,
   }
-  console.log('TEMPLATE', configData?.global, formValue.values)
+
+  // console.log('TEMPLATE', configData?.global, formValue.values)
   return <FormContext.Provider value={value}>{children}</FormContext.Provider>
 }
 function getSectionsConfig(config: any) {
-  return config?.fields?.[0] ?? {}
+  return config?.fields?.[1] ?? {}
 }
 function getThemeConfig(config: any) {
-  return config?.fields?.[1] ?? {}
+  return config?.fields?.[0] ?? {}
+}
+function getFixedSectionsConfig(config: any) {
+  return config?.fields?.[2] ?? {}
 }

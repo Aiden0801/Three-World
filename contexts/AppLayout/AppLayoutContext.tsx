@@ -19,10 +19,18 @@ import { MantineSize, useMantineTheme } from '@mantine/core'
 import { useMediaQuery } from '@mantine/hooks'
 
 export interface AppLayoutContextValue {
+  /** whether the navbar is currently open (mobile).
+   * resets automatically when the layout is resized (both ways)
+   */
   opened: boolean
+  /** open action for the navbar (mobile) */
   setOpened: Dispatch<SetStateAction<boolean>>
+  /** Mantine breakpoint for the layout to be desktop */
   breakpoint: MantineSize
+  /** whether we're currently on a mobile width */
   isMobile: boolean
+  /** static header height */
+  headerHeight: number
 }
 
 export const AppLayoutContext = createContext({} as AppLayoutContextValue)
@@ -35,11 +43,17 @@ export type AppLayoutContextProviderProps = PropsWithChildren<{
    * Property is reachable through hooks.
    */
   mobileBreakpoint: MantineSize
+  /**
+   * Height of the header. Used to calculate the height of the
+   * main content container, header and navbar mobile offset.
+   */
+  headerHeight?: number
 }>
 
 export function AppLayoutContextProvider({
   children,
   mobileBreakpoint,
+  headerHeight = 64,
 }: AppLayoutContextProviderProps) {
   const [opened, setOpened] = useState(false)
   const { breakpoints } = useMantineTheme()
@@ -58,6 +72,7 @@ export function AppLayoutContextProvider({
   const value: AppLayoutContextValue = {
     opened,
     setOpened,
+    headerHeight,
     breakpoint: mobileBreakpoint,
     isMobile: breakpointReached,
   }

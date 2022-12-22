@@ -1,6 +1,6 @@
-import { useUserContext } from "./UserContext";
+import { useUserContext } from './UserContext'
 
 export function useUserData() {
   const { session } = useUserContext()
-  return session.data?.user ?? {}
+  return session.data?.user ?? { email: '', image: '', name: '', address: '' }
 }

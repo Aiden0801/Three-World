@@ -52,9 +52,9 @@ export function SocketContextProvider({ children }: PropsWithChildren) {
     socket.current.emit('signIn', { email: user.email })
   }, [session.status])
 
-  // if we are on the login page or home page, we check if the user is not authenticated
+  // if we are not on the login page or home page, we check if the user is not authenticated
   // or is still loading.
-  if (fn.router.isHomeOrLogin(router)) {
+  if (fn.router.isNotHomeOrLogin(router)) {
     // if we're loading we don't want to show anything
     // TODO: show sometning like a loading screen
     if (fn.session.isLoading(session)) {
@@ -63,7 +63,7 @@ export function SocketContextProvider({ children }: PropsWithChildren) {
     // if we're not authenticated, we redirect to the login page
     // TODO: improve denied page + timed redirect
     if (fn.session.isNotAuth(session)) {
-      router.push('./')
+      router.push('./login')
       return <p>Access Denied</p>
     }
   }
@@ -85,8 +85,16 @@ const fn = {
     },
   },
   router: {
-    isHomeOrLogin(router: NextRouter) {
-      return router.pathname === '/' || router.pathname === '/login'
+    isNotHomeOrLogin(router: NextRouter) {
+      return !(router.pathname === '/' || router.pathname === '/login')
     },
   },
+}
+/**
+ * useContext
+ * @returns
+ */
+export function useSocket() {
+  const { socket } = useSocketContext()
+  return socket
 }

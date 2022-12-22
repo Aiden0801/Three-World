@@ -1,5 +1,18 @@
 import { useCallback, useState } from 'react'
-import { Button, Divider, Flex, Group, Select, Skeleton, Title, Box, Table, Text, ActionIcon } from '@mantine/core'
+import {
+  Button,
+  Divider,
+  Flex,
+  Group,
+  Select,
+  Skeleton,
+  Title,
+  Box,
+  Table,
+  Text,
+  ActionIcon,
+  Center,
+} from '@mantine/core'
 import { useFormValue, useSectionsConfig } from '../../lib/landing-pages'
 import { SchemaViewer } from './SchemaViewer'
 import { ConfigForm } from './types'
@@ -16,7 +29,6 @@ type TcurSelection = {
 }
 export function SectionsForm({ showSchema }: ConfigForm) {
   const [config, initial] = useSectionsConfig()
-
   const formValue = useFormValue()
   const [selected, setSelected] = useState<string>('3')
   const [currentSection, setCurrentSection] = useState<TcurSelection>(undefined)
@@ -24,29 +36,35 @@ export function SectionsForm({ showSchema }: ConfigForm) {
     formValue.insertListItem('template.sections', {
       ...getInitialValue(config.fields[selected]),
       section_type: selected,
+      component: config.data[selected],
     })
   }, [config.fields, selected])
-  const handleRemoveSection = (index) => {
-    formValue.removeListItem('template.sections', index)
-    if (currentSection && currentSection.index == index) setCurrentSection(undefined)
-  }
-  const handleReorderSection = (index, newIndex) => {
-    formValue.reorderListItem('template.sections', { from: index, to: newIndex })
-    if ((currentSection && currentSection.index == index) || currentSection.index == newIndex)
-      setCurrentSection({ section_type: currentSection.section_type, index: newIndex + index - currentSection.index })
-  }
-  const getSectionsName = (): Array<any> => {
-    if (config.fields == null || config.fields == undefined) return []
+  const handleRemoveSection = useCallback(
+    (index) => {
+      formValue.removeListItem('template.sections', index)
+      if (currentSection && currentSection.index == index) setCurrentSection(undefined)
+    },
+    [formValue, currentSection]
+  )
+  const handleReorderSection = useCallback(
+    (index, newIndex) => {
+      formValue.reorderListItem('template.sections', { from: index, to: newIndex })
+      if (currentSection && (currentSection.index == index || currentSection.index == newIndex))
+        setCurrentSection({ section_type: currentSection.section_type, index: newIndex + index - currentSection.index })
+    },
+    [formValue, currentSection]
+  )
+  const getSectionsName = useCallback((): Array<any> => {
+    if (config.data == null || config.data == undefined) return []
     let result = []
-    config.fields.forEach((field, index) => {
-      result = [...result, { label: capitalize(field.key), value: `${index}` }]
+    config.data.forEach((field, index) => {
+      result = [...result, { label: capitalize(field), value: `${index}` }]
     })
-    console.log('get', result)
     return result
-  }
+  }, [config.data])
   return (
     <div>
-      <h1>Sections Config</h1>
+      <h2>Sections Config</h2>
       {config ? (
         <>
           <Box
@@ -56,9 +74,8 @@ export function SectionsForm({ showSchema }: ConfigForm) {
             }}>
             <Flex align="flex-end" gap="sm" py="sm" justify="space-evenly" direction={{ xs: 'column', md: 'row' }}>
               <Select
-                // dropdownPosition="bottom"
                 // maxDropdownHeight={80}
-                zIndex={2}
+                withinPortal
                 label="Pick a section"
                 data={getSectionsName()}
                 onChange={(value) => {
@@ -80,7 +97,7 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                   <th style={{ width: '70px' }}>Edit</th>
                   <th>Section Name</th>
                   <th>Action</th>
-                  <th style={{ width: '30px' }}>Order</th>
+                  <th style={{ width: '70px' }}>Order</th>
                 </tr>
               </thead>
               <tbody>
@@ -92,10 +109,14 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                           variant="subtle"
                           onClick={(e) => {
                             e.preventDefault()
-                            setCurrentSection({
-                              section_type: item.section_type,
-                              index: index,
-                            })
+                            setCurrentSection(
+                              index !== currentSection?.index
+                                ? {
+                                    section_type: item.section_type,
+                                    index: index,
+                                  }
+                                : undefined
+                            )
                           }}
                           color={currentSection?.index == index ? 'red' : 'blue'}>
                           <IconListDetails />
@@ -103,7 +124,7 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                       </td>
                       <td>
                         <Text align="left" color={currentSection?.index == index ? 'red' : 'blue'}>
-                          {config?.fields?.[item.section_type]?.label ?? 'Unknown'}
+                          {config?.data?.[item.section_type] ?? 'Unknown'}
                         </Text>
                       </td>
                       <td>
@@ -133,9 +154,14 @@ export function SectionsForm({ showSchema }: ConfigForm) {
                   ))}
               </tbody>
             </Table>
+            {config?.fields && formValue.values.template.sections.length == 0 && (
+              <Center style={{ height: 50 }}>
+                <div>No SECTIONS</div>
+              </Center>
+            )}
           </Box>
           {config?.fields &&
-            currentSection &&
+            currentSection != undefined &&
             ParseObject(
               config.fields[currentSection.section_type],
               formValue,

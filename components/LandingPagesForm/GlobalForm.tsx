@@ -5,12 +5,12 @@ import { SchemaViewer } from './SchemaViewer'
 import { ConfigForm } from './types'
 
 export function GlobalForm({ showSchema }: ConfigForm) {
-  const [config, initial, loading, schema] = useGlobalConfig()
-  const { selectedTemplate, onSelectTemplate } = useTemplateSelection()
+  const [config, initial, zodObject, loading, schema] = useGlobalConfig()
+  const [templateName, setTemplateName] = useTemplateSelection()
   const formValue = useFormValue()
   return (
     <div>
-      <h3>Global Config</h3>
+      <h2>Global Config</h2>
       <Skeleton visible={loading}>
         <Flex direction={{ xs: 'column', md: 'row' }} gap="sm" py="sm" justify="space-evenly">
           {config?.fields &&
@@ -19,12 +19,13 @@ export function GlobalForm({ showSchema }: ConfigForm) {
               if (field.component === 'select') {
                 return (
                   <Select
+                    withinPortal
                     key={field.key}
                     data={field.data}
                     label={field.label}
-                    value={selectedTemplate}
+                    value={templateName}
                     onChange={(template) => {
-                      onSelectTemplate(template)
+                      setTemplateName(template)
                       formValue.setFieldValue(`global.${field.title}`, template)
                     }}
                     placeholder={field.placeholder}
