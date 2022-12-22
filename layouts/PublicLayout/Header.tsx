@@ -7,9 +7,10 @@ import {
   Paper,
   Stack,
   Transition,
+  Image,
 } from '@mantine/core'
 import Link from 'next/link'
-import Image from 'next/image'
+// import Image from 'next/image'
 import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../../components/Button'
 
@@ -95,33 +96,61 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export default function HeaderMenu() {
+export interface HeaderMenuProps {
+  /**
+   * If true we add up the (predefined) header menu and "enable" the mobile
+   * layout for the header (burger + dropdown menu). Otherwise we just render
+   * the header with logo and login button
+   */
+  showMenu?: boolean
+}
+
+export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
   const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false)
   const { classes } = useStyles()
   return (
-    <Header height={60}>
+    <Header
+      height={64}
+      // withBorder={false}
+      sx={(theme) => ({
+        borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+        backgroundColor:
+          theme.colorScheme === 'dark'
+            ? theme.colors.dark[8]
+            : theme.white,
+      })}
+    >
       <Group position="apart" sx={{ height: '100%' }} px="xl">
-        <Image alt="" src="/logo/Group_157.png" width={70} height={50} />
+        <Image
+          alt=""
+          src="/logo/vpg-logo-square.png"
+          height={50}
+          width="auto"
+        />
 
         <Group
           sx={{ height: '100%' }}
           spacing={0}
           className={classes.hiddenMobile}
         >
-          <MenuItems className={classes.link} />
+          {showMenu && <MenuItems className={classes.link} />}
         </Group>
 
         <>
-          <Group className={classes.hiddenMobile}>
-            <LinkButton href="/login">Log In</LinkButton>
+          <Group className={showMenu && classes.hiddenMobile}>
+            <LinkButton uppercase variant="subtle" href="/login">
+              Log In
+            </LinkButton>
           </Group>
         </>
 
-        <Burger
-          opened={drawerOpened}
-          onClick={toggleDrawer}
-          className={classes.hiddenDesktop}
-        />
+        {showMenu && (
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            className={classes.hiddenDesktop}
+          />
+        )}
 
         <Transition
           transition="pop-top-right"
@@ -131,9 +160,9 @@ export default function HeaderMenu() {
           {(styles) => (
             <Paper className={classes.dropdown} withBorder style={styles}>
               <Stack>
-                <MenuItems className={classes.link} />
+                {showMenu && <MenuItems className={classes.link} />}
                 <LinkButton
-                  variant="default"
+                  variant="subtle"
                   className={classes.button}
                   href="/login"
                 >
