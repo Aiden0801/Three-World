@@ -3,8 +3,8 @@ import nodemailer from 'nodemailer'
 import { transport } from 'pino'
 
 const transporter = nodemailer.createTransport({
-  host: 'smtp.ethereal.email',
-  port: 587,
+  host: process.env.CONTACT_MAIL_HOST || '',
+  port: process.env.CONTACT_MAIL_PORT || 587,
   auth: {
     user: process.env.CONTACT_MAIL_USER || '',
     pass: process.env.CONTACT_MAIL_PASS || '',
