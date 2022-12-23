@@ -28,7 +28,7 @@ const contactReasons = [
   'Other',
 ] as const
 
-const schema = z.object({
+export const schema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters long'),
   email: z.string().email('Email must be a valid email address'),
   message: z.string().min(10, 'Message must be at least 10 characters long'),

@@ -3,16 +3,17 @@ import { PublicLayout } from '@/layouts/PublicLayout'
 import { ContactFormData, Index } from '@/page-components/Index'
 import logger from '@/utils/logger'
 
+
 async function handleContactSubmit(values: ContactFormData) {
-  logger.debug(values)
-  /**
-   * @vlad TODO: put in some call to something that actually sends the email
-   * All the functionality should go in here if possibile. the function is already
-   * hooked up to the component, notifications to the user etc.
-   * Just remove the next 3 lines and put in your code
+  // logger.debug(values)
+   /**
+   * @vlad TODO: Add POST call to /api/contacts with the provided values.
+   * the server will revalidate the data and send an email to the target email.
    */
   await new Promise((resolve) => setTimeout(resolve, 1000))
-  logger.debug('done waiting')
+  // logger.debug('done waiting')
+  // TODO: return the actual value from the api call. this is used to show
+  // a notification to the user if the message was sent or not
   return true
 
 }
