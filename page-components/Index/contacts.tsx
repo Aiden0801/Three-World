@@ -18,6 +18,7 @@ import { showNotification } from '@mantine/notifications'
 import { IconSend } from '@tabler/icons'
 import { useEffect, useState } from 'react'
 import { z } from 'zod'
+import { SectionTitle } from './section-title'
 
 const contactReasons = [
   'Inquiries',
@@ -70,8 +71,7 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
           icon: <IconSend size={16} stroke={1.5} />,
         })
         form.reset()
-      }
-      else throw new Error('Form submission error')
+      } else throw new Error('Form submission error')
     } catch (error) {
       showNotification({
         title: 'Message not sent',
@@ -85,7 +85,7 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
   }
 
   return (
-    <Container size="xl" my="xl">
+    <Container size="lg" my="xl">
       <SimpleGrid
         breakpoints={[
           { maxWidth: 'sm', cols: 1 },
@@ -99,29 +99,30 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
             justifyContent: 'space-around',
             padding: theme.spacing.md,
             [theme.fn.largerThan('sm')]: {
-              backgroundColor:
-                theme.colors[theme.primaryColor][
-                  theme.colorScheme === 'dark' ? 8 : 3
-                ],
-              borderRadius: theme.radius.xl,
+              backgroundColor: theme.colors[theme.primaryColor][8],
+              borderRadius: theme.radius.md,
               margin: theme.spacing.xl,
               height: `calc(100% - ${theme.spacing.xl * 3}px)`,
               padding: theme.spacing.xl,
               transform: 'translateX(25%)',
-              paddingRight: '20%',
+              paddingRight: `${theme.spacing.xl * 1.5}%`,
+              marginLeft: `-${theme.spacing.xl}%`,
+              ['& > h2, > p']: {
+                color: theme.white,
+              },
             },
           })}
         >
-          <Title size="3rem" order={2} align="left">
+          <SectionTitle order={2} align="left">
             Contact us
-          </Title>
-          <Text size="lg" align="left" mb="xl">
+          </SectionTitle>
+          <Text size="lg" align="left" mb="xl" component="p">
             We are always happy to hear from you. Please fill out the form and
             we will get back to you as soon as possible.
           </Text>
         </Box>
 
-        <Card p="xl" radius="md" mb="xl" withBorder shadow="xl">
+        <Card p="xl" radius="md" mb="xl" withBorder={false} shadow="xl">
           <form onSubmit={form.onSubmit(handleSubmit)}>
             <TextInput
               mb="sm"

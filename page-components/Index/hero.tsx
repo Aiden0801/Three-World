@@ -1,4 +1,16 @@
-import { createStyles, Title, Text, Button, Container, Box, Flex, Stack, Mark, Code, Divider } from '@mantine/core'
+import {
+  createStyles,
+  Title,
+  Text,
+  Button,
+  Container,
+  Box,
+  Flex,
+  Stack,
+  Mark,
+  Code,
+  Divider,
+} from '@mantine/core'
 import Link from 'next/link'
 import { Dots } from './dots'
 // TODO: Cleanup classes
@@ -23,7 +35,10 @@ const useStyles = createStyles((theme) => ({
 
   dots: {
     position: 'absolute',
-    color: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1],
+    color:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[5]
+        : theme.colors.gray[1],
 
     [theme.fn.smallerThan('md')]: {
       display: 'none',
@@ -51,7 +66,8 @@ const useStyles = createStyles((theme) => ({
   },
 
   highlight: {
-    color: theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 4 : 6],
+    color:
+      theme.colors[theme.primaryColor][theme.colorScheme === 'dark' ? 4 : 6],
   },
 
   description: {
@@ -113,14 +129,35 @@ export function Hero() {
 
         <Container p={0} size={600}>
           <Text size="sm" color="dimmed" className={classes.description}>
-            A collection of worlds with virtual tools, for Groups, Communities, Businesses, Events, and Opportunities,
-            built using Blockchain Technology, allowing for secure web operations, user-transactions and seamless
-            integration with all Metaverses.
+            A collection of worlds with virtual tools, for Groups, Communities,
+            Businesses, Events, and Opportunities, built using Blockchain
+            Technology, allowing for secure web operations, user-transactions
+            and seamless integration with all Metaverses.
           </Text>
         </Container>
-        <Box className={classes.controls} mt="3rem">
-          <Flex gap="xs" direction={{ xs: 'column', sm: 'row' }} w="100%" justify="center" align="stretch">
-            <Text component={Code} align="left" sx={{ fontFamily: 'monospace', flex: 1, lineHeight: 4 }} pl="xl">
+        <Container size="sm" className={classes.controls} mt="3rem">
+          <Flex
+            gap="xs"
+            // @ts-ignore - base direction says oopsie, but it works.
+            direction={{ base: 'column', sm: 'row' }}
+            w="100%"
+            justify="center"
+            align="stretch"
+          >
+            <Text
+              component={Code}
+              // align=
+              sx={(theme) => ({
+                fontFamily: 'monospace',
+                flex: 1,
+                lineHeight: 4,
+                textAlign: 'center',
+                [theme.fn.largerThan('sm')]: {
+                  textAlign: 'right',
+                },
+              })}
+              px="xl"
+            >
               $ exit-world
               {/* &gt; exit-world */}
             </Text>
@@ -136,12 +173,13 @@ export function Hero() {
                   fontFamily: 'monospace',
                   flex: 2,
                   minHeight: theme.spacing.xl * 3,
-                })}>
+                })}
+              >
                 Enter Galaxy
               </Button>
             </Link>
           </Flex>
-        </Box>
+        </Container>
       </div>
     </Container>
   )
