@@ -3,6 +3,7 @@ import Link from 'next/link'
 // import Image from 'next/image'
 import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../../components/Button'
+import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -104,6 +105,7 @@ export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
 
         <>
           <Group className={showMenu && classes.hiddenMobile}>
+            <ColorSchemeToggle variant="subtle"/>
             <LinkButton uppercase variant="subtle" href="#">
               Log In
             </LinkButton>
