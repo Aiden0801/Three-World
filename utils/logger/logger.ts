@@ -27,7 +27,7 @@ const transport: LoggerOptions['transport'] = {
 const minLevel =
   process.env.NODE_ENV === 'development'
     ? 'debug'
-    : process.env.PINO_LOG_LEVEL || 'notice'
+    : process.env.PINO_LOG_LEVEL || 'info'
 
 /**
  * Logging utility.

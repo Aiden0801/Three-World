@@ -1,10 +1,10 @@
 {
    "apps": [
       {
-         "name": "Project_name",
+         "name": "Virtual Pro Galaxy",
          "script": "./node_modules/next/dist/bin/next",
          "env": {
-            "PORT": "3000"
+            "PORT": "17543"
          }
       }
    ]

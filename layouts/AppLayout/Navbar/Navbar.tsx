@@ -6,6 +6,7 @@ import {
   Navbar as MantineNavbar,
   NavbarProps,
   ScrollArea,
+
 } from '@mantine/core'
 import { NAVIGATION } from '@/config/website'
 import {
@@ -21,6 +22,8 @@ import { UserMenu } from './UserMenu'
 import { UserButton } from './UserButton'
 import { ToggleMenuButton } from '@/components/ToggleMenuButton'
 import { TextLogo } from '../Logo'
+
+import type { SystemProp,  SpacingValue } from '@mantine/core'
 
 const useStyles = createStyles((theme, _params) => {
   return {
@@ -64,6 +67,8 @@ interface INavbarProps extends Omit<NavbarProps, 'children'> {
    */
   showSearch?: boolean
 }
+type Fix = SystemProp<SpacingValue>
+
 const Navbar: React.FC<INavbarProps> = ({
   currentPage,
   showUserMenu = 'top',
@@ -82,7 +87,7 @@ const Navbar: React.FC<INavbarProps> = ({
       // p="xs"
       className={classes.container}
       withBorder={!isMobile}
-      mt={{ base: headerHeight, [breakpoint]: 0 }}
+      mt={{ base: headerHeight, [breakpoint]: 0 } as Fix}
       {...props}
       hidden={!opened}
     >
@@ -120,7 +125,7 @@ const Navbar: React.FC<INavbarProps> = ({
       )}
       {showFooter && (
         <>
-          <Divider my={{ base: 'xs', sm: 'md' }} />
+          <Divider my={{ base: 'xs', sm: 'md' } as Fix} />
           <MantineNavbar.Section px="xs" pb="xs">
             <NavbarFooter />
           </MantineNavbar.Section>

@@ -15,4 +15,5 @@ example.html
 # next-pwa files
 # these get generated when next builds with next-pwa enabled
 public/sw.js
+public/*.js.map
 public/workbox-*.js
