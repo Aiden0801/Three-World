@@ -1,8 +1,16 @@
+import Head from 'next/head'
 import axios from 'axios'
 import { useAuthRedirect } from '@/hooks/use-auth-redirect'
 import { PublicLayout } from '@/layouts/PublicLayout'
 // import mailer from '@/lib/nodemailer'
-import { ContactFormData, Index } from '@/page-components/Index'
+import {
+  ContactFormData,
+  Hero,
+  Services,
+  Worlds,
+  About,
+  ContactSectionWithForm,
+} from '@/page-components/Index'
 // import logger from '@/utils/logger'
 
 async function handleContactSubmit(values: ContactFormData) {
@@ -27,9 +35,20 @@ const Home: React.FC = () => {
   }
 
   return (
-    <PublicLayout>
-      <Index onFormSubmit={handleContactSubmit} />
-    </PublicLayout>
+    <>
+      <Head>
+        <title>Virtual Pro Galaxy</title>
+        <meta name="description" content="Virtual Pro Galaxy" />
+      </Head>
+      <PublicLayout>
+        {/* <Index onFormSubmit={handleContactSubmit} /> */}
+        <Hero />
+        <Worlds />
+        <About />
+        <Services />
+        <ContactSectionWithForm onSubmit={handleContactSubmit} />
+      </PublicLayout>
+    </>
   )
 }
 export default Home
