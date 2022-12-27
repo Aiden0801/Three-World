@@ -38,6 +38,9 @@ ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
 ENV NEXT_TELEMETRY_DISABLED 1
 
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+
 COPY --from=builder /app/public ./public
 
 # Automatically leverage output traces to reduce image size
@@ -53,4 +56,10 @@ ENV PORT 17543
 
 CMD ["node", "server.js"]
 
-# docker run -p 17543:17543 hhhq-dashboard
+# build to named container and run it on dedicated port.
+# recreate existing container if already running
+# @dev -- this is specifically for @dinghino's home server setup
+#         but we can use it wherever we want
+
+# clear;docker build -t hhhq-dashboard .
+# && docker run -d --name vpg-landing -p 17543:17543 hhhq-dashboard
