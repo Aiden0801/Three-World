@@ -130,6 +130,7 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
               withAsterisk
               label="Email"
               placeholder="Your email"
+              disabled={sending}
               {...form.getInputProps('email')}
             />
             <SimpleGrid
@@ -141,6 +142,7 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
             >
               <TextInput
                 // fullWidth
+                disabled={sending}
                 label="Name"
                 withAsterisk
                 placeholder="Your name"
@@ -148,6 +150,7 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
               />
               <Select
                 // fullWidth
+                disabled={sending}
                 withAsterisk
                 label="Reason for contact"
                 placeholder="What would you like to talk us about?"
@@ -157,6 +160,7 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
             </SimpleGrid>
 
             <Textarea
+              disabled={sending}
               autosize
               minRows={6}
               maxRows={10}
@@ -174,7 +178,7 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
                 // fullWidth
                 loading={sending}
                 disabled={sending || !form.isValid()}
-                loaderPosition="right"
+                loaderPosition="center"
                 rightIcon={<IconSend stroke={1.5} size={20} />}
               >
                 Send

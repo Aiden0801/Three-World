@@ -15,10 +15,7 @@ import {
 
 async function handleContactSubmit(values: ContactFormData) {
   const r = await axios.post('/api/contacts', values)
-  // TODO: return boolean based on success. used in the form component
-  // to show a notification to the user
-  // logger.debug(`email call attempted ${r.status} (frontend)`)
-  return r.status === 200
+  return r.statusText === 'OK'
 }
 
 const Home: React.FC = () => {
