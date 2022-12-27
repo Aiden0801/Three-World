@@ -56,11 +56,11 @@ export function VPGContact({ onSubmit }: VPGContactProps) {
 
   const handleSubmit = async (values: ContactFormValues) => {
     if (sending) return
-    setSending(true)
     if (!onSubmit) {
       logger.warn('no submit function was passed to the contact form')
       throw new Error('Form submission not implemented')
     }
+    setSending(true)
     try {
       const sent = await onSubmit(values)
       if (sent) {
