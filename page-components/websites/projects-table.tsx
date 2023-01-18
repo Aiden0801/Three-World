@@ -55,7 +55,7 @@ const useProjectData = () => {
     mutate: mutate,
   }
 }
-const Dashboard: React.FC = () => {
+export const WebsitesTable: React.FC = () => {
   const { data: projectData, isLoading, isError, mutate } = useProjectData()
   const [opened, setOpened] = useState(false)
   const [fullScreen, setFullScreen] = useState(false)
@@ -214,7 +214,7 @@ const Dashboard: React.FC = () => {
                       mt="md"
                       size="xs"
                       radius="md"
-                      href={`/dashboard/${item.slug}`}>
+                      href={`/websites/${item.slug}`}>
                       Edit
                     </LinkButton>
                     <Button
@@ -237,4 +237,4 @@ const Dashboard: React.FC = () => {
   )
 }
 
-export default Dashboard
+// export default WebsitesTable

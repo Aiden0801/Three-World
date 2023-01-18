@@ -54,8 +54,8 @@ const businessesMenu: NavItem[] = [
     label: 'Landing Pages',
     description: 'Your window to the world',
     icon: IconDashboard,
-    href: '/dashboard',
-    match: 'dashboard',
+    href: '/websites',
+    match: 'websites',
   },
   {
     label: 'Virtual Worlds',
@@ -112,7 +112,7 @@ export const navItems: NavItem[] = [
     description: 'Central command',
     icon: IconLayoutDashboard,
     href: '/dashboard',
-    disabled: true,
+    // disabled: true,
   },
   {
     label: 'Projects',

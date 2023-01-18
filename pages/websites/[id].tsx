@@ -3,7 +3,7 @@ import React from 'react'
 
 import { AppLayout } from '@/layouts/AppLayout'
 import { IPropsProjectPgae } from '@/types'
-import { ProjectCofig } from '@/page-components/Dashboard'
+import { ProjectCofig } from '@/page-components/websites'
 import { BASE_URL } from '@/config/constants'
 import { fetcher } from '@/lib/fetcher'
 /**

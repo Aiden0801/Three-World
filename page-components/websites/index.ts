@@ -1,2 +1,2 @@
-export { default as Dashboard } from './Dashboard'
+export { WebsitesTable } from './projects-table'
 export { default as ProjectCofig } from './Project'
