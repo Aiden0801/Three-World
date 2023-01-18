@@ -291,7 +291,7 @@ const SessionControl = () => {
                             description="Detail"
                             color="red"
                             onClick={() => {
-                              router.push(`/sessions/${session._id}`)
+                              router.push(`collaborate/sessions/${session._id}`)
                             }}>
                             <IconListDetails />
                           </ToolTipButton>
