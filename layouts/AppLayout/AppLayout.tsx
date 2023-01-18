@@ -1,9 +1,11 @@
+import Head from 'next/head'
 import { AppShell, MantineSize } from '@mantine/core'
 
 import { UserContextProvider, AppLayoutContextProvider } from '@/contexts'
 
 import Header from './Header/Header'
 import Navbar from './Navbar'
+import { capitalize } from '@/lib/text-helpers'
 // import Footer from './Footer/Footer'
 
 export interface MainLayoutProps {
@@ -17,6 +19,9 @@ const mobileBreakpoint: MantineSize = 'md'
 export function AppLayout({ children, currentPage }: MainLayoutProps) {
   return (
     <UserContextProvider>
+      <Head>
+        <title>VPG | {capitalize(currentPage)}</title>
+      </Head>
       <AppLayoutContextProvider mobileBreakpoint={mobileBreakpoint}>
         <AppShell
           padding={0}
