@@ -286,11 +286,6 @@ const SessionDetail = ({ sessionID }: IPropsSessionData) => {
                           return (
                             <tr key={index}>
                               <td>
-                                <IconPoint
-                                  color={detailData.participants.find((o) => o.email == user.email) ? 'green' : 'red'}
-                                  size={24}
-                                />
-
                                 <Text size="xl" span>
                                   {user.email}
                                 </Text>

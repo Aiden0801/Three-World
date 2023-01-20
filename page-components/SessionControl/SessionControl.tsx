@@ -279,7 +279,7 @@ const SessionControl = () => {
                             justifyContent: 'center',
                           }}>
                           <ToolTipButton
-                            description={session.isActive ? 'Active' : 'Deactive'}
+                            description={session.isActive ? 'Kill' : 'Active'}
                             onClick={() => {
                               session.isActive ? handleKillSession(session._id) : handleActivateSession(session._id)
                             }}
