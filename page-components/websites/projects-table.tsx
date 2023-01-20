@@ -12,6 +12,8 @@ import {
   Modal,
   Skeleton,
   Text,
+  Center,
+  Title,
 } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons'
@@ -25,13 +27,26 @@ import FadeIn from '@/utils/spring/FadeIn'
 import { Fullscreen, FullscreenExit } from 'react-bootstrap-icons'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
 import { GlobalContextProvider } from '@/lib/landing-pages/global-form-context'
-
+import { useUserContext } from '@/contexts'
 const useStyles = createStyles((theme) => ({
   container: {
     position: 'relative',
     margin: '10px,10px,10px,10px',
     display: 'flex',
     flexDirection: 'column',
+  },
+  head: {
+    pointerEvents: 'none',
+    userSelect: 'none',
+    textAlign: 'center',
+    fontWeight: 900,
+    fontSize: 60,
+    lineHeight: 1,
+    color: theme.colorScheme === 'dark' ? theme.colors.gray[4] : theme.colors.dark[2],
+
+    [theme.fn.smallerThan('sm')]: {
+      fontSize: 40,
+    },
   },
 }))
 
@@ -40,14 +55,19 @@ const useStyles = createStyles((theme) => ({
  * @dev Do we use the parameters? if not remove them.
  */
 const fetchProjects = async (url: string, email: string) => {
-  const data = await fetcher(`${BASE_URL.SERVER}/api/projects`, {
+  const data = await fetcher(`${BASE_URL.SERVER}/api/projects/getProjects`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      email: email,
+    }),
   })
   return data ? data : []
 }
-const useProjectData = () => {
-  const { data, mutate, error, isValidating } = useSWR(['api/projects'], fetchProjects, { revalidateOnFocus: false })
+const useProjectData = (email: string) => {
+  const { data, mutate, error, isValidating } = useSWR(['api/projects', email], fetchProjects, {
+    revalidateOnFocus: false,
+  })
   return {
     data: data,
     isLoading: (!error && !data) || isValidating,
@@ -56,18 +76,20 @@ const useProjectData = () => {
   }
 }
 export const WebsitesTable: React.FC = () => {
-  const { data: projectData, isLoading, isError, mutate } = useProjectData()
   const [opened, setOpened] = useState(false)
   const [fullScreen, setFullScreen] = useState(false)
   const [confirm, setConfirm] = useState(false)
   const { classes, theme } = useStyles()
   const router = useRouter()
-
+  const { session } = useUserContext()
+  const { data: projectData, isLoading, isError, mutate } = useProjectData(session?.data?.user?.email)
   const handleOnSubmit = async (values) => {
+    if (!session?.data?.user) return
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/createProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
+        email: session.data.user?.email,
         data: values,
       }),
     })
@@ -82,14 +104,17 @@ export const WebsitesTable: React.FC = () => {
       // setOpened(false)
     }
 
-    mutate()
+    // mutate()
   }
   const handleDeleteProject = useCallback(async (name: string) => {
+    if (!session?.data?.user) return
+
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/deleteProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: name,
+        email: session.data.user.email,
       }),
     })
     if (response == 'Success') {
@@ -160,7 +185,10 @@ export const WebsitesTable: React.FC = () => {
             labels: { confirm: 'Confirm', cancel: 'Cancel' },
             confirmProps: { color: 'red' },
             onCancel: () => console.log('Cancel'),
-            onConfirm: () => setOpened(false),
+            onConfirm: () => {
+              setOpened(false)
+              mutate()
+            },
           })
           // setOpened(false)
         }}>
@@ -231,7 +259,13 @@ export const WebsitesTable: React.FC = () => {
               </Card>
             </FadeIn>
           ))}
-        {projectData && projectData.length == 0 && <Text>No</Text>}
+        {projectData && projectData.length == 0 && (
+          <Card>
+            <Center style={{ height: 400 }}>
+              <Title className={classes.head}>No Configs</Title>
+            </Center>
+          </Card>
+        )}
       </Skeleton>
     </Container>
   )

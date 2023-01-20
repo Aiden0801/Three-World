@@ -12,7 +12,7 @@ import { BASE_URL } from '@/config/constants'
 import { fetcher } from '@/lib/fetcher'
 import { GlobalContextProvider } from '@/lib/landing-pages'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
-
+import { useUserContext } from '@/contexts'
 // const fetchProjects = async (url: string, name: string) => {
 //   console.log('fetch', name)
 //   /** @vlad FIX: I think the url is changed now? no websiteconfig but landing-page? */
@@ -35,7 +35,8 @@ import { LandingPagesForm } from '@/components/LandingPagesForm'
 //   }
 // }
 const ProjectCofig = ({ projectName, configData }) => {
-  const { data: session, status } = useSession()
+  const { session } = useUserContext()
+
   //    const [refs, setRefs] = useState<$RefParser.$Refs>(null)
 
   //    const [schema, setSchema] = useState<JSONSchema>()
@@ -43,11 +44,13 @@ const ProjectCofig = ({ projectName, configData }) => {
   // const { data: configData } = useProjectData(projectName)
 
   const handleOnSubmit = async (values) => {
+    if (!session?.data?.user) return
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/updateProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         data: values,
+        email: session.data.user.email,
       }),
     })
     if (response == 'Success') {
