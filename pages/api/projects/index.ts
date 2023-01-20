@@ -8,7 +8,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   // res.status(200).json({ name: req.body, name: req.name });
   await connectMongo()
   try {
-    let projects = await Config.find({}).select('name slug')
+    let projects = await Config.find().select('name slug')
     res.status(200).send(projects)
   } catch (err) {
     console.error(err.message)

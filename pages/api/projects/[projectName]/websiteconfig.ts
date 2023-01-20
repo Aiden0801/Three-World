@@ -13,7 +13,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   logger.debug(`requesting ${projectName}`)
   try {
     await connectMongo()
-    let project = await Config.findOne({ slug: projectName }).select()
+    let project = await Config.findOne({ slug: projectName }).select('-owner -createdAt')
     logger.debug('project found')
     res.status(200).send(project)
   } catch (err) {
