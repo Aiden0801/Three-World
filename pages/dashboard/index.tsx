@@ -1,8 +1,9 @@
-import { Card, Container, createStyles, Title } from '@mantine/core'
+import { Card, Container, createStyles, TextInput, Title, Button, Textarea } from '@mantine/core'
 import { AppLayout } from '@/layouts/AppLayout'
 import { useUserData } from '@/contexts/User'
 import Head from 'next/head'
-
+import { useState, useEffect } from 'react'
+import ChatBot from '@/components/ChatBot'
 const useStyles = createStyles((theme) => ({
   comingSoon: {
     pointerEvents: 'none',
@@ -11,19 +12,17 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 900,
     fontSize: 200,
     lineHeight: 1,
-    color:
-      theme.colorScheme === 'dark'
-        ? theme.colors.dark[4]
-        : theme.colors.gray[2],
+    color: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2],
 
     [theme.fn.smallerThan('sm')]: {
       fontSize: 120,
     },
   },
 }))
-
 export default function DashboardHome() {
   const { classes } = useStyles()
+  const [message, setMessage] = useState<string>('')
+  const [response, setResponse] = useState<string>('')
   return (
     <AppLayout currentPage="Dashboard">
       <Container size="xl" mt="md">
@@ -33,6 +32,7 @@ export default function DashboardHome() {
         </Card>
         {/* <Card withBorder> */}
         <Title className={classes.comingSoon}>Coming Soon</Title>
+        <ChatBot />
         {/* </Card> */}
       </Container>
     </AppLayout>
