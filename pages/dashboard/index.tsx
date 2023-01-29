@@ -3,7 +3,10 @@ import { AppLayout } from '@/layouts/AppLayout'
 import { useUserData } from '@/contexts/User'
 import Head from 'next/head'
 import { useState, useEffect } from 'react'
-import ChatBot from '@/components/ChatBot'
+import dynamic from 'next/dynamic'
+const ChatBot = dynamic(() => import('@/components/ChatBot'), {
+  ssr: false,
+})
 const useStyles = createStyles((theme) => ({
   comingSoon: {
     pointerEvents: 'none',
