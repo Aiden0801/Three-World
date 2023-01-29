@@ -103,7 +103,7 @@ const useStyles = createStyles((theme) => ({
   },
 }))
 
-export function Hero() {
+export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
   const { classes } = useStyles()
 
   return (
@@ -159,11 +159,11 @@ export function Hero() {
                 $ exit-world
                 {/* &gt; exit-world */}
               </Text>
-              <Link href="#contact-form" passHref>
+              <Link href={onPrimaryClick ? '' : "#contact-form"} passHref>
                 <Button
                   className={classes.control}
                   size="xl"
-                  component="a"
+                  onClick={onPrimaryClick}
                   uppercase
                   variant="filled"
                   radius="sm"
