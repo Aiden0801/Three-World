@@ -1,16 +1,16 @@
 import mailer from '@/lib/nodemailer'
 import { NextApiResponse, NextApiRequest, NextApiHandler } from 'next'
-import { formSchema } from '@/page-components/Index'
+import { schema as formSchema } from '@/components/ContactForm'
 import logger from '@/utils/logger'
 import Cors from 'cors'
 import { z } from 'zod'
 
-const cors = Cors({
+export const cors = Cors({
   methods: ['POST'],
   origin: true,
 })
 
-async function corsMiddleware(
+export async function corsMiddleware(
   req: NextApiRequest,
   res: NextApiResponse,
   fn: ReturnType<typeof Cors>
