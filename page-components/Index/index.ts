@@ -3,7 +3,7 @@ export { Services } from './services'
 export { Worlds } from './world'
 export { About } from './about'
 export {
-  type ContactFormData,
+  // type ContactFormData,
   VPGContact as ContactSectionWithForm,
-  schema as formSchema,
+  // schema as formSchema,
 } from './contacts'

@@ -14,7 +14,6 @@ import { useForm, zodResolver } from '@mantine/form'
 import logger from '@/utils/logger'
 
 const contactReasons = [
-  'Demo request',
   'Inquiries',
   'Partnership',
   'Services',
