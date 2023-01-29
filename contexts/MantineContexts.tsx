@@ -54,7 +54,7 @@ export function MantineContexts({ children }: PropsWithChildren) {
 function useThemeLocalStorage(): [ColorScheme, (value?: ColorScheme) => void] {
   const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
     key: 'mantine-color-scheme',
-    defaultValue: 'light',
+    defaultValue: 'dark',
     getInitialValueInEffect: true,
   })
   const toggleColorScheme = useCallback(
