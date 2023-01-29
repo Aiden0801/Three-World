@@ -6,10 +6,7 @@ import {
   Container,
   Box,
   Flex,
-  Stack,
-  Mark,
   Code,
-  Divider,
 } from '@mantine/core'
 import Link from 'next/link'
 import { Dots } from './dots'
@@ -110,77 +107,80 @@ export function Hero() {
   const { classes } = useStyles()
 
   return (
-    <Container className={classes.wrapper} size="xl">
-      <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
-      <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
-      <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
-      <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
-      <Dots className={classes.dots} style={{ right: 0, top: 180 }} />
-      <Dots className={classes.dots} style={{ right: 60, top: 180 }} />
+    <Box component="section" id="hero-section">
+      <Container className={classes.wrapper} size="xl">
+        <Dots className={classes.dots} style={{ left: 0, top: 0 }} />
+        <Dots className={classes.dots} style={{ left: 60, top: 0 }} />
+        <Dots className={classes.dots} style={{ left: 0, top: 140 }} />
+        <Dots className={classes.dots} style={{ right: 0, top: 60 }} />
+        <Dots className={classes.dots} style={{ right: 0, top: 180 }} />
+        <Dots className={classes.dots} style={{ right: 60, top: 180 }} />
 
-      <div className={classes.inner}>
-        <Title className={classes.title}>
-          Virtual{' '}
-          <Text component="span" className={classes.highlight} inherit>
-            Pro
-          </Text>{' '}
-          Galaxy
-        </Title>
+        <div className={classes.inner}>
+          <Title className={classes.title}>
+            Virtual{' '}
+            <Text component="span" className={classes.highlight} inherit>
+              Pro
+            </Text>{' '}
+            Galaxy
+          </Title>
 
-        <Container p={0} size={600}>
-          <Text size="sm" color="dimmed" className={classes.description}>
-            A collection of worlds with virtual tools, for Groups, Communities,
-            Businesses, Events, and Opportunities, built using Blockchain
-            Technology, allowing for secure web operations, user-transactions
-            and seamless integration with all Metaverses.
-          </Text>
-        </Container>
-        <Container size="sm" className={classes.controls} mt="3rem">
-          <Flex
-            gap="xs"
-            // @ts-ignore - base direction says oopsie, but it works.
-            direction={{ base: 'column', sm: 'row' }}
-            w="100%"
-            justify="center"
-            align="stretch"
-          >
-            <Text
-              component={Code}
-              // align=
-              sx={(theme) => ({
-                fontFamily: 'monospace',
-                flex: 1,
-                lineHeight: 4,
-                textAlign: 'center',
-                [theme.fn.largerThan('sm')]: {
-                  textAlign: 'right',
-                },
-              })}
-              px="xl"
-            >
-              $ exit-world
-              {/* &gt; exit-world */}
+          <Container p={0} size={600}>
+            <Text size="sm" color="dimmed" className={classes.description}>
+              A collection of worlds with virtual tools, for Groups,
+              Communities, Businesses, Events, and Opportunities, built using
+              Blockchain Technology, allowing for secure web operations,
+              user-transactions and seamless integration with all Metaverses.
             </Text>
-            <Link href="#" passHref>
-              <Button
-                className={classes.control}
-                size="xl"
-                uppercase
-                variant="filled"
-                radius="sm"
-                // fullWidth
+          </Container>
+          <Container size="sm" className={classes.controls} mt="3rem">
+            <Flex
+              gap="xs"
+              // @ts-ignore - base direction says oopsie, but it works.
+              direction={{ base: 'column', sm: 'row' }}
+              w="100%"
+              justify="center"
+              align="stretch"
+            >
+              <Text
+                component={Code}
+                // align=
                 sx={(theme) => ({
                   fontFamily: 'monospace',
-                  flex: 2,
-                  minHeight: theme.spacing.xl * 3,
+                  flex: 1,
+                  lineHeight: 4,
+                  textAlign: 'center',
+                  [theme.fn.largerThan('sm')]: {
+                    textAlign: 'right',
+                  },
                 })}
+                px="xl"
               >
-                Enter Galaxy
-              </Button>
-            </Link>
-          </Flex>
-        </Container>
-      </div>
-    </Container>
+                $ exit-world
+                {/* &gt; exit-world */}
+              </Text>
+              <Link href="#contact-form" passHref>
+                <Button
+                  className={classes.control}
+                  size="xl"
+                  component="a"
+                  uppercase
+                  variant="filled"
+                  radius="sm"
+                  // fullWidth
+                  sx={(theme) => ({
+                    fontFamily: 'monospace',
+                    flex: 2,
+                    minHeight: theme.spacing.xl * 3,
+                  })}
+                >
+                  Enter Galaxy
+                </Button>
+              </Link>
+            </Flex>
+          </Container>
+        </div>
+      </Container>
+    </Box>
   )
 }
