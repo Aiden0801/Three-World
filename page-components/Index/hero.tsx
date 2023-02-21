@@ -80,7 +80,9 @@ const useStyles = createStyles((theme) => ({
   controls: {
     marginTop: theme.spacing.lg,
     display: 'flex',
+    flexDirection: 'column',
     justifyContent: 'center',
+    gap: theme.spacing.md,
 
     '@media (max-width: 520px)': {
       flexDirection: 'column',
@@ -160,7 +162,7 @@ export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
                 $ exit-world
                 {/* &gt; exit-world */}
               </Text>
-              <Link href={onPrimaryClick ? '' : "#contact-form"} passHref>
+              <Link href={onPrimaryClick ? '' : '#contact-form'} passHref>
                 <Button
                   className={classes.control}
                   size="xl"
@@ -179,8 +181,11 @@ export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
                 </Button>
               </Link>
             </Flex>
-            {/* TODO: Remove from here and implement properly */}
-            <PwaInstallButton />
+            <Flex direction="row" w="100%">
+              <PwaInstallButton fullWidth uppercase size="xl" variant="white">
+                Install App
+              </PwaInstallButton>
+            </Flex>
           </Container>
         </div>
       </Container>
