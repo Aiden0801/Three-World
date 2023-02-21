@@ -1,3 +1,4 @@
+import { PwaInstallButton } from '@/components/PwaInstallButton'
 import {
   createStyles,
   Title,
@@ -178,6 +179,8 @@ export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
                 </Button>
               </Link>
             </Flex>
+            {/* TODO: Remove from here and implement properly */}
+            <PwaInstallButton />
           </Container>
         </div>
       </Container>
