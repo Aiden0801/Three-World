@@ -105,7 +105,7 @@ export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
 
         <>
           <Group className={showMenu && classes.hiddenMobile}>
-            <ColorSchemeToggle variant="subtle" />
+            <ColorSchemeToggle variant="subtle"/>
             <LinkButton uppercase variant="subtle" href="/login">
               Log In
             </LinkButton>
