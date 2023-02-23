@@ -1,4 +1,5 @@
 import type { TablerIcon } from "@tabler/icons"
+import { HTMLAttributeAnchorTarget } from "react"
 
 /**
  * Base common properties of all NavItems
@@ -17,6 +18,7 @@ export type LinkNavItem = BaseNavItem & {
   href: string
 /** used to match `currentPage` for the active link status */
   match: string | string[]
+  target?: HTMLAttributeAnchorTarget
 }
 
 /**

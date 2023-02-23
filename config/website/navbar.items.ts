@@ -14,6 +14,7 @@ import {
   IconFolders,
   Icon3dCubeSphere,
   IconMessageChatbot,
+  IconMoneybag,
 } from '@tabler/icons'
 import type { NavItem } from '@/types/navbar.item.type'
 export type { NavItem }
@@ -93,6 +94,12 @@ const comingSoonMenu: NavItem[] = [
     description: 'A message center, just for you',
     icon: IconMessage2,
   },
+  {
+    label: 'Pro Book',
+    icon: IconMoneybag,
+    subitems: [],
+    match: 'book',
+  },
   // { // if this is for the logged user management, it is the settings/profile page
   //   label: 'User Management',
   //   icon: IconUserPlus,
@@ -113,6 +120,24 @@ export const navItems: NavItem[] = [
     icon: IconLayoutDashboard,
     href: '/dashboard',
     // disabled: true,
+  },
+  {
+    label: 'Pro Pack',
+    icon: IconBuildingLighthouse,
+    description: 'Tools for the pros',
+    match: 'pro',
+    // disabled: true,
+    subitems: [
+      {
+        label: 'Discord bot',
+        description: 'Configure your bot',
+        icon: IconMessageChatbot,
+        href: 'https://bot.virtualprogalaxy.com',
+        target: '_blank',
+        match: '/bot',
+        // disabled: true,
+      },
+    ],
   },
   {
     label: 'Projects',
