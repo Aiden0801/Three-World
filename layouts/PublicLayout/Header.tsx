@@ -5,6 +5,7 @@ import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../../components/Button'
 import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
 import { VpgLogo } from '@/components/VpgLogo'
+import { PwaInstallBanner } from '@/components/PwaInstall'
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -97,6 +98,8 @@ export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
         borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
       })}>
+      <PwaInstallBanner/>
+
       <Group position="apart" sx={{ height: '100%' }} px="xl">
         <VpgLogo height={50} />
 

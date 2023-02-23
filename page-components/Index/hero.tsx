@@ -181,11 +181,6 @@ export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
                 </Button>
               </Link>
             </Flex>
-            <Flex direction="row" w="100%">
-              <PwaInstallButton fullWidth uppercase size="xl" variant="white">
-                Install App
-              </PwaInstallButton>
-            </Flex>
           </Container>
         </div>
       </Container>
