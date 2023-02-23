@@ -20,7 +20,7 @@ export function PublicLayout({ children }: PropsWithChildren) {
         },
       })}
     >
-      <PwaInstallBanner />
+      <PwaInstallBanner timeout={2_000} />
       {children}
     </AppShell>
   )

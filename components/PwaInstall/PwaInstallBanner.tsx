@@ -16,7 +16,7 @@ export interface PwaInstallBannerProps {
 }
 
 export function PwaInstallBanner({
-  text = 'Install this app on your device',
+  text = 'Add this app to your device',
   timeout = 500,
 }: PwaInstallBannerProps = {}) {
   const [handlePwaInstall, installed, available] = usePwaInstall()
