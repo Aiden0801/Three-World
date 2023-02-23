@@ -7,6 +7,7 @@ import {
   Select,
   Textarea,
   TextInput,
+  Checkbox,
 } from '@mantine/core'
 import { IconSend } from '@tabler/icons'
 import { showNotification } from '@mantine/notifications'
@@ -26,6 +27,7 @@ export const schema = z.object({
   email: z.string().email('Email must be a valid email address'),
   message: z.string().min(10, 'Message must be at least 10 characters long'),
   reason: z.enum(contactReasons),
+  mailingList: z.boolean(),
 })
 
 export type ContactFormValues = z.input<typeof schema>
@@ -48,6 +50,7 @@ export const ContactForm: React.FC<VPGContactProps> = ({
       email: '',
       message: '',
       reason: defaultReason,
+      mailingList: true,
     },
   })
 
@@ -118,6 +121,12 @@ export const ContactForm: React.FC<VPGContactProps> = ({
         placeholder="type your message"
         {...form.getInputProps('message')}
       />
+      <Group mt="sm">
+        <Checkbox
+          label="Subscribe to our mailing list"
+          {...form.getInputProps('mailingList', { type: 'checkbox' })}
+        />
+      </Group>
       <Group my="sm" position="center">
         <Button
           type="submit"

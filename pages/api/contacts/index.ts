@@ -67,7 +67,7 @@ const handler: NextApiHandler = async (req, res) => {
 export default handler
 
 function template(data: z.output<typeof formSchema>) {
-  const { name, email, reason, message } = data
+  const { name, email, reason, message, mailingList } = data
   const paragraphs = message.split('\n')
   return `
   <style>
@@ -102,6 +102,9 @@ function template(data: z.output<typeof formSchema>) {
       </div>
       <div>
         <p>contact email: ${email}</p>
+      </div>
+      <div>
+        <p>Mailing list: ${mailingList ? 'yes' : 'no'}</p>
       </div>
     </div>
     <h2>Message</h2>
