@@ -1,3 +1,4 @@
+import { VpgLogo } from '@/components/VpgLogo'
 import {
   Container,
   Text,
@@ -40,12 +41,7 @@ export function About() {
               <SectionTitle className={classes.title}>
                 Virtual Professionals
               </SectionTitle>
-              <Image
-                alt="Mantine"
-                src="/logo/vpg-logo-square.png"
-                width={70}
-                height="auto"
-              />
+              <VpgLogo width={70}/>
             </Flex>
           </Card.Section>
           <Text my="md">

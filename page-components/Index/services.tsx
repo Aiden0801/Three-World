@@ -107,7 +107,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
 export function Services() {
   const { classes, cx } = useStyles()
   return (
-    <Box my="xl" className={classes.wrapper} data-role="derp">
+    <Box my="xl" className={classes.wrapper}>
       <Container py="xl" size="sm" className={classes.container}>
         <SectionTitle>
           Services
