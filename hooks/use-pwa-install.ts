@@ -12,12 +12,11 @@ export function usePwaInstall(): [prompt: () => Promise<void>, installed: boolea
   const [available, setAvailable] = useState(false)
 
   useWindowEvent('beforeinstallprompt', (event: PWAInstallEvent) => {
-    // FIXME: this doesn't fire always for some reason, so everything breaks.
-    // Tested on Brave only for now, but it should work regardless if the browser supports PWAs
-    // TODO: Alternative event to listen to?
     if (process.env.NODE_ENV === 'development') console.info('beforeinstallprompt event fired', event)
     event.preventDefault()
     installer.current = event
+    setAvailable(event != null)
+
   })
 
   useEffect(() => {
@@ -40,7 +39,7 @@ export function usePwaInstall(): [prompt: () => Promise<void>, installed: boolea
       // user accepted the prompt and installed the app
       installer.current = null
     }
-  }, [installer, available])
+  }, [installer.current, available])
 
   const installed = usePwaStandaloneCheck()
   return [callback, installed, available]
