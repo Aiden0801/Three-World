@@ -1,11 +1,20 @@
-import { Anchor, Burger, createStyles, Group, Header, Paper, Stack, Transition, Image } from '@mantine/core'
+import {
+  Anchor,
+  Burger,
+  createStyles,
+  Group,
+  Header,
+  Paper,
+  Stack,
+  Transition,
+  Image,
+} from '@mantine/core'
 import Link from 'next/link'
 // import Image from 'next/image'
 import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../../components/Button'
 import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
 import { VpgLogo } from '@/components/VpgLogo'
-import { PwaInstallBanner } from '@/components/PwaInstall'
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -27,7 +36,10 @@ const useStyles = createStyles((theme) => ({
     },
 
     ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
+      backgroundColor:
+        theme.colorScheme === 'dark'
+          ? theme.colors.dark[6]
+          : theme.colors.gray[0],
     }),
   },
   button: {},
@@ -37,19 +49,27 @@ const useStyles = createStyles((theme) => ({
     borderRadius: theme.radius.md,
 
     ...theme.fn.hover({
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+      backgroundColor:
+        theme.colorScheme === 'dark'
+          ? theme.colors.dark[7]
+          : theme.colors.gray[0],
     }),
 
     '&:active': theme.activeStyles,
   },
 
   dropdownFooter: {
-    backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+    backgroundColor:
+      theme.colorScheme === 'dark'
+        ? theme.colors.dark[7]
+        : theme.colors.gray[0],
     margin: -theme.spacing.md,
     marginTop: theme.spacing.sm,
     padding: `${theme.spacing.md}px ${theme.spacing.md * 2}px`,
     paddingBottom: theme.spacing.xl,
-    borderTop: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]}`,
+    borderTop: `1px solid ${
+      theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[1]
+    }`,
   },
   dropdown: {
     position: 'absolute',
@@ -95,35 +115,56 @@ export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
       height={64}
       // withBorder={false}
       sx={(theme) => ({
-        borderColor: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
-        backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
-      })}>
-      <PwaInstallBanner/>
-
+        borderColor:
+          theme.colorScheme === 'dark'
+            ? theme.colors.dark[7]
+            : theme.colors.gray[0],
+        backgroundColor:
+          theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
+      })}
+    >
       <Group position="apart" sx={{ height: '100%' }} px="xl">
         <VpgLogo height={50} />
 
-        <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
+        <Group
+          sx={{ height: '100%' }}
+          spacing={0}
+          className={classes.hiddenMobile}
+        >
           {showMenu && <MenuItems className={classes.link} />}
         </Group>
 
         <>
           <Group className={showMenu && classes.hiddenMobile}>
-            <ColorSchemeToggle variant="subtle"/>
+            <ColorSchemeToggle variant="subtle" />
             <LinkButton uppercase variant="subtle" href="/login">
               Log In
             </LinkButton>
           </Group>
         </>
 
-        {showMenu && <Burger opened={drawerOpened} onClick={toggleDrawer} className={classes.hiddenDesktop} />}
+        {showMenu && (
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            className={classes.hiddenDesktop}
+          />
+        )}
 
-        <Transition transition="pop-top-right" duration={200} mounted={drawerOpened}>
+        <Transition
+          transition="pop-top-right"
+          duration={200}
+          mounted={drawerOpened}
+        >
           {(styles) => (
             <Paper className={classes.dropdown} withBorder style={styles}>
               <Stack>
                 {showMenu && <MenuItems className={classes.link} />}
-                <LinkButton variant="subtle" className={classes.button} href="/login">
+                <LinkButton
+                  variant="subtle"
+                  className={classes.button}
+                  href="/login"
+                >
                   Log in
                 </LinkButton>
               </Stack>

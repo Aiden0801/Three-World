@@ -17,7 +17,7 @@ export interface PwaInstallBannerProps {
 
 export function PwaInstallBanner({
   text = 'Install this app on your device',
-  timeout = 2500,
+  timeout = 500,
 }: PwaInstallBannerProps = {}) {
   const [handlePwaInstall, installed, available] = usePwaInstall()
   const [show, setShow] = useState(false)
@@ -35,11 +35,12 @@ export function PwaInstallBanner({
       in={show}
       sx={(theme) => ({
         width: '100%',
+        zIndex: 1001,
         backgroundColor: theme.colors[theme.primaryColor][8],
         color: theme.white,
       })}
     >
-      <Container size="xl" py="xs" id="derp">
+      <Container size="xl" py="xs">
         <Group position="apart">
           <Text>{text}</Text>
           <Group position="apart">

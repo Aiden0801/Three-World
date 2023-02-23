@@ -2,6 +2,7 @@ import type { PropsWithChildren } from 'react'
 import { AppShell } from '@mantine/core'
 import Header from './Header'
 import Footer from './Footer'
+import { PwaInstallBanner } from '@/components/PwaInstall'
 
 /**
  * Layout for the public pages
@@ -19,6 +20,7 @@ export function PublicLayout({ children }: PropsWithChildren) {
         },
       })}
     >
+      <PwaInstallBanner />
       {children}
     </AppShell>
   )
