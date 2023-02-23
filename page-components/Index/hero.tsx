@@ -1,4 +1,4 @@
-import { PwaInstallButton } from '@/components/PwaInstallButton'
+import { PwaInstallButton } from '@/components/PwaInstall'
 import {
   createStyles,
   Title,
