@@ -31,7 +31,7 @@ export function usePwaInstall(): [prompt: () => Promise<void>, installed: boolea
   const callback = useCallback(async () => {
     // prompt not available. either browser doesn't support PWAs or the
     // user has already installed the app
-    if (!installer.current != null) return
+    if (!installer.current) return
 
     installer.current.prompt()
     const { outcome } = await installer.current.userChoice
@@ -42,6 +42,7 @@ export function usePwaInstall(): [prompt: () => Promise<void>, installed: boolea
   }, [installer.current, available])
 
   const installed = usePwaStandaloneCheck()
+
   return [callback, installed, available]
 }
 
