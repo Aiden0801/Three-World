@@ -27,7 +27,7 @@ const handler: NextApiHandler = async (req, res) => {
       from: process.env.CONTACT_MAIL_USER,
       to: process.env.CONTACT_MAIL_TO,
       replyTo: `${name} <${email}>`,
-      subject: `${name} - DEMO REQUEST VirtualProGalaxy`,
+      subject: `${name} - Early access request VirtualProGalaxy`,
       text: `${name} Requested a demo of our products -- ${email}`,
       html: template(zod.data),
     })
@@ -41,9 +41,10 @@ const handler: NextApiHandler = async (req, res) => {
 export default handler
 
 function template(data: z.output<typeof formSchema>) {
-  const { name, email } = data
+  const { name, email, businessName } = data
   return `
     <h1>Virtual Pro Galaxy - Demo Request</h1>
-    <p>${name} (${email}) Requested a demo of our products</p>
+    <p>${name} (${email}) Requested early access to our products</p>
+    <p>Business name: ${businessName}</p>
   `
 }

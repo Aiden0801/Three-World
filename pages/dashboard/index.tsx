@@ -5,13 +5,23 @@ import {
   Title,
   Text,
   Stack,
-  Image,
   Center,
+  Group,
+  Button,
+  Modal,
 } from '@mantine/core'
 import { AppLayout } from '@/layouts/AppLayout'
-import { useUserData } from '@/contexts/User'
-import Head from 'next/head'
 import { VpgLogo } from '@/components/VpgLogo'
+import { DemoFormValues, EarlyAccessForm } from '@/components/EarlyAccessForm'
+import { useCallback, useState } from 'react'
+import axios from 'axios'
+
+
+
+async function requestDemoAPI(values: DemoFormValues) {
+  const r = await axios.post('/api/contacts/request-access', values)
+  return r.statusText === 'OK'
+}
 
 const useStyles = createStyles((theme) => ({
   comingSoon: {
@@ -39,14 +49,26 @@ const useStyles = createStyles((theme) => ({
 }))
 
 export default function DashboardHome() {
+  const [demoDialogOpened, setDemoDialogOpen] = useState(false)
+
+  const handleRequestDemo = useCallback(async (values: DemoFormValues) => {
+    const sent = await requestDemoAPI(values)
+    if (sent) {
+      setDemoDialogOpen(false)
+    }
+    return sent
+  }, [])
+
   const { classes, cx } = useStyles()
   return (
     <AppLayout currentPage="Dashboard">
       <Container size="xl" mt="md">
         <Card my="md">
-        <WelcomeUser />
+          <Group position="apart">
+            <Title>Greetings Virtual Pro!</Title>
+            <Button onClick={() => setDemoDialogOpen((p) => !p)}>Request early access</Button>
+            </Group>
         </Card>
-        {/* <Card withBorder> */}
         <Stack>
           <Title className={classes.comingSoon}>Welcome</Title>
           <Center>
@@ -55,16 +77,40 @@ export default function DashboardHome() {
           <Text className={cx(classes.comingSoon, classes.extra)}>
             Explore the <i>Virtual Pro Galaxy™️</i>
           </Text>
-          {/* </Card> */}
         </Stack>
       </Container>
+      <EarlyAccessDialog
+          open={demoDialogOpened}
+          setOpen={setDemoDialogOpen}
+          onSubmit={handleRequestDemo}
+        />
     </AppLayout>
   )
 }
 
-// This is a separate component because the context for useUserData is
-// only available in the AppLayout, so we can't use it in the page component
-function WelcomeUser() {
-  const user = useUserData()
-  return <Title>Hello, {user.name ?? user.email}</Title>
+type DialogProps = {
+  open: boolean
+  setOpen: (open: boolean) => void
+  onSubmit: (values: DemoFormValues) => Promise<boolean>
 }
+function EarlyAccessDialog({ open, setOpen, onSubmit }: DialogProps) {
+  return (
+    <Modal
+      withCloseButton
+      opened={open}
+      onClose={() => setOpen(false)}
+      size="lg"
+      radius="md"
+      shadow="xl"
+      title="Request early access"
+    >
+      <Text size="sm" mb="xl">
+        We are currently in the process of building the Virtual Pro Galaxy™️.
+        If you would like to be notified when we launch, please fill out the form below.
+      </Text>
+      <EarlyAccessForm onSubmit={onSubmit} />
+    </Modal>
+  )
+}
+
+

@@ -1,30 +1,34 @@
+import { useState } from 'react'
 import { z } from 'zod'
 
 import { showNotification } from '@mantine/notifications'
 import { useForm, zodResolver } from '@mantine/form'
 import { Button, Flex, Input } from '@mantine/core'
+import { useUserData } from '@/contexts/User'
 import logger from '@/utils/logger'
-import { useState } from 'react'
 
 export const schema = z.object({
-  name: z.string().min(3, 'Name must be at least 3 characters long'),
+  name: z.string(),
   email: z.string().email('Email must be a valid email address'),
+  businessName: z.string(),
 })
 
 export type DemoFormValues = z.output<typeof schema>
 
-export interface RequestDemoFormProps {
+export interface EarlyAccessFormProps {
   onSubmit: (values: DemoFormValues) => Promise<boolean>
 }
 
-export function RequestDemoForm({ onSubmit }: RequestDemoFormProps) {
+export function EarlyAccessForm({ onSubmit }: EarlyAccessFormProps) {
   const [sending, setSending] = useState(false)
+  const user = useUserData()
   const form = useForm<DemoFormValues>({
     validateInputOnBlur: true,
     validate: zodResolver(schema),
     initialValues: {
-      name: '',
-      email: '',
+      name: user.name,
+      email: user.email,
+      businessName: '',
     },
   })
 
@@ -62,6 +66,14 @@ export function RequestDemoForm({ onSubmit }: RequestDemoFormProps) {
     <form onSubmit={form.onSubmit(handleSubmit)}>
       <Flex direction="column" align="center" gap="sm" w="100%">
         <Input
+          label="Business name"
+          placeholder="What's your business name"
+          required
+          w="100%"
+          {...form.getInputProps('businessName')}
+          autoFocus
+        />
+        {/* <Input
           label="Name"
           placeholder="Your name"
           required
@@ -75,7 +87,7 @@ export function RequestDemoForm({ onSubmit }: RequestDemoFormProps) {
           required
           w="100%"
           {...form.getInputProps('email')}
-        />
+        /> */}
         <Button
           type="submit"
           color="primary"
@@ -85,7 +97,7 @@ export function RequestDemoForm({ onSubmit }: RequestDemoFormProps) {
           loaderPosition="center"
           disabled={sending || !form.isValid()}
         >
-          Request demo
+          Request
         </Button>
       </Flex>
     </form>
