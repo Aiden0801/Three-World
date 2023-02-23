@@ -1,26 +1,35 @@
-import { Image, MediaQuery, Text, Title, TitleProps } from "@mantine/core";
+import { VpgLogo } from '@/components/VpgLogo'
+import {
+  Box,
+  Group,
+  Image,
+  MediaQuery,
+  Text,
+  Title,
+  TitleProps,
+  useMantineTheme,
+} from '@mantine/core'
 
 export function TextLogo(props: Omit<TitleProps, 'order'>) {
+  const theme = useMantineTheme()
   return (
     <Title {...props} order={2}>
-      <MediaQuery smallerThan="sm" styles={{ display: "none" }}>
-        <Text component="span">HackerHouse</Text>
-      </MediaQuery>
-      <MediaQuery largerThan="sm" styles={{ display: "none" }}>
-        <Text component="span">HH</Text>
-      </MediaQuery>
-
-      <Text span size="xl" color="green" inherit>
-        HQ
-      </Text>
+      <Group>
+        <VpgLogo height={48} />
+        <MediaQuery smallerThan="sm" styles={{ display: 'none' }}>
+          <Text component="span">
+            Virtual
+            <Text
+              span
+              size="xl"
+              color={theme.colors[theme.primaryColor][4]}
+              inherit
+            >
+              Cockpit
+            </Text>
+          </Text>
+        </MediaQuery>
+      </Group>
     </Title>
-  )
-}
-
-
-export function ImageLogo() {
-  return (
-    <Image alt="" src="/logo/Group_157.png" width="auto" height={72} />
-
   )
 }

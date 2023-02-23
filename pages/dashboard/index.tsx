@@ -1,7 +1,17 @@
-import { Card, Container, createStyles, Title } from '@mantine/core'
+import {
+  Card,
+  Container,
+  createStyles,
+  Title,
+  Text,
+  Stack,
+  Image,
+  Center,
+} from '@mantine/core'
 import { AppLayout } from '@/layouts/AppLayout'
 import { useUserData } from '@/contexts/User'
 import Head from 'next/head'
+import { VpgLogo } from '@/components/VpgLogo'
 
 const useStyles = createStyles((theme) => ({
   comingSoon: {
@@ -9,7 +19,7 @@ const useStyles = createStyles((theme) => ({
     userSelect: 'none',
     textAlign: 'center',
     fontWeight: 900,
-    fontSize: 200,
+    fontSize: '10rem',
     lineHeight: 1,
     color:
       theme.colorScheme === 'dark'
@@ -17,23 +27,36 @@ const useStyles = createStyles((theme) => ({
         : theme.colors.gray[2],
 
     [theme.fn.smallerThan('sm')]: {
-      fontSize: 120,
+      fontSize: '6rem',
+    },
+  },
+  extra: {
+    fontSize: '4rem',
+    [theme.fn.smallerThan('sm')]: {
+      fontSize: '2rem',
     },
   },
 }))
 
 export default function DashboardHome() {
-  const { classes } = useStyles()
+  const { classes, cx } = useStyles()
   return (
     <AppLayout currentPage="Dashboard">
       <Container size="xl" mt="md">
         <Card my="md">
-          <WelcomeUser />
-          <p>You can use the sidebar to navigate to sections</p>
+        <WelcomeUser />
         </Card>
         {/* <Card withBorder> */}
-        <Title className={classes.comingSoon}>Coming Soon</Title>
-        {/* </Card> */}
+        <Stack>
+          <Title className={classes.comingSoon}>Welcome</Title>
+          <Center>
+            <VpgLogo height={200} />
+          </Center>
+          <Text className={cx(classes.comingSoon, classes.extra)}>
+            Explore the <i>Virtual Pro Galaxy™️</i>
+          </Text>
+          {/* </Card> */}
+        </Stack>
       </Container>
     </AppLayout>
   )

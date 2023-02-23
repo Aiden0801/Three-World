@@ -5,7 +5,7 @@ export function NavbarFooter() {
   return (
     <Group position="apart">
       <Text size="xs" color="dimmed">
-        ©2022 HHHQ
+        ©2022 Virtual Professionals
       </Text>
       <Group>
         {NAVIGATION.FOOTER.map((item) => (

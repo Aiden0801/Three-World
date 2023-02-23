@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../../components/Button'
 import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
+import { VpgLogo } from '@/components/VpgLogo'
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -97,7 +98,7 @@ export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
         backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.white,
       })}>
       <Group position="apart" sx={{ height: '100%' }} px="xl">
-        <Image alt="" src="/logo/vpg-logo-square.png" height={50} width="auto" />
+        <VpgLogo height={50} />
 
         <Group sx={{ height: '100%' }} spacing={0} className={classes.hiddenMobile}>
           {showMenu && <MenuItems className={classes.link} />}
