@@ -7,3 +7,4 @@ export {
   VPGContact as ContactSectionWithForm,
   // schema as formSchema,
 } from './contacts'
+export { Features } from './features'

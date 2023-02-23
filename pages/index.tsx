@@ -16,6 +16,7 @@ import { PublicLayout } from '@/layouts/PublicLayout'
 import {
   Hero,
   Services,
+  Features,
   Worlds,
   About,
   ContactSectionWithForm,
@@ -69,6 +70,7 @@ const Home: React.FC = () => {
       <PublicLayout>
         {/* <Hero onPrimaryClick={() => setDemoDialogOpen((p) => !p)} /> */}
         <Hero />
+        <Features />
         <Worlds />
         <About />
         <Services />
@@ -115,5 +117,3 @@ function DemoDialog({ open, setOpen, onSubmit }: DialogProps) {
     </Dialog>
   )
 }
-
-
