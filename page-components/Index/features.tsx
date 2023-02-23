@@ -33,6 +33,16 @@ export function Features() {
 
 const features_data = [
   {
+    title: 'Collaborate with other Users',
+    description: 'Collaborate with team members in Virtual Co-Op Spaces',
+    image: 'unreal-hhhq-station.gif',
+  },
+  {
+    title: 'Explore the Virtual Pro Galaxy™',
+    description: 'Explore our Metaverse!',
+    image: 'unreal-hhhq-station-full.gif',
+  },
+  {
     title: 'Create Websites with No Code',
     description: 'Utilize forms and/or AI to build websites',
     image: 'hhhq-cockpit-webpage-builder.gif',
@@ -74,16 +84,6 @@ const features_data = [
     title: 'Design your own Worlds',
     description: 'Design your Worlds with help from our platform Specialists',
     image: 'js-spaceship-old.gif',
-  },
-  {
-    title: 'Collaborate with other Users',
-    description: 'Collaborate with team members in Virtual Co-Op Spaces',
-    image: 'unreal-hhhq-station.gif',
-  },
-  {
-    title: 'Explore the Virtual Pro Galaxy™',
-    description: 'Explore our Metaverse!',
-    image: 'unreal-hhhq-station-full.gif',
   },
   {
     title: 'Create Virtual Pitch Decks',
