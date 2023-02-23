@@ -162,7 +162,8 @@ export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
                 $ exit-world
                 {/* &gt; exit-world */}
               </Text>
-              <Link href={onPrimaryClick ? '' : '#contact-form'} passHref>
+              <Link href={onPrimaryClick ? '' : '/dashboard'} passHref>
+              {/* <Link href={onPrimaryClick ? '' : '#contact-form'} passHref> */}
                 <Button
                   className={classes.control}
                   size="xl"

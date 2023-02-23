@@ -67,7 +67,8 @@ const Home: React.FC = () => {
         <meta name="description" content="Virtual Pro Galaxy" />
       </Head>
       <PublicLayout>
-        <Hero onPrimaryClick={() => setDemoDialogOpen((p) => !p)} />
+        {/* <Hero onPrimaryClick={() => setDemoDialogOpen((p) => !p)} /> */}
+        <Hero />
         <Worlds />
         <About />
         <Services />
