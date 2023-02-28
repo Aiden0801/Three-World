@@ -9,7 +9,7 @@ import {
   useMantineTheme,
 } from '@mantine/core'
 import { LinkNavItem, NavItem, SubNavItem } from '@/types/navbar.item.type'
-import { isActive, isLinkItem, isWithMenu } from '@/utils/navitem.helpers'
+import { isActive, isLinkItem, isWithMenu, getTarget } from '@/utils/navitem.helpers'
 import { ConditionalWrapper } from '@/components/ConditionalWrapper'
 import { useState } from 'react'
 
@@ -75,6 +75,8 @@ export function MenuItem({ item, currentPage, ...rest }: MenuItemProps) {
     isWithMenu(item) ? item.defaultOpened : false
   )
 
+  const linkTarget = getTarget(item)
+
   const { classes, cx } = useStyles({ item, active })
   return (
     <ConditionalWrapper
@@ -88,6 +90,8 @@ export function MenuItem({ item, currentPage, ...rest }: MenuItemProps) {
       <NavLink
         variant="light"
         childrenOffset="xl"
+        component={linkTarget ? 'a' : undefined}
+        target={linkTarget}
         {...rest}
         label={item.label}
         description={item.description}

@@ -21,11 +21,21 @@ export function isActive(
   item: NavItem,
   currentPage: string | undefined
 ): boolean {
-  if (isLinkItem(item)) {
-    if (typeof item.match === 'string') {
-      return currentPage === item.match
-    }
-    return item.match?.includes(currentPage)
+  if (!isLinkItem(item)) {
+    return false
   }
-  return false
+  // if we don't check for matches we'll get a false positive
+  if (!item.match) return false
+
+  if (typeof item.match === 'string') {
+    return currentPage === item.match
+  }
+  return item.match?.includes(currentPage)
+}
+
+export function getTarget(item: NavItem): string | undefined {
+  if (isLinkItem(item)) {
+    return item.target
+  }
+  return undefined
 }
