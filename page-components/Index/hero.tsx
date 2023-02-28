@@ -130,7 +130,7 @@ export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
 
           <Container p={0} size={600}>
             <Text size="sm" color="dimmed" className={classes.description}>
-              A collection of worlds with virtual tools, for Groups,
+              A collection of worlds with virtual tools, for, Groups, Virtual
               Communities, Businesses, Events, and Opportunities, built using
               Blockchain Technology, allowing for secure web operations,
               user-transactions and seamless integration with all Metaverses.
@@ -163,7 +163,7 @@ export function Hero({ onPrimaryClick }: { onPrimaryClick?: () => void }) {
                 {/* &gt; exit-world */}
               </Text>
               <Link href={onPrimaryClick ? '' : '/dashboard'} passHref>
-              {/* <Link href={onPrimaryClick ? '' : '#contact-form'} passHref> */}
+                {/* <Link href={onPrimaryClick ? '' : '#contact-form'} passHref> */}
                 <Button
                   className={classes.control}
                   size="xl"

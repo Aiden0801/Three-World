@@ -48,9 +48,9 @@ const features_data = [
     image: 'hhhq-cockpit-webpage-builder.gif',
   },
   {
-    title: 'Build and Manage Communities',
+    title: 'Build and manage Virtual Communities',
     description:
-      'Build and manage Communities from scratch with your Virtual Pro Bot',
+      'Build and manage Virtual Communities from scratch with your Virtual Pro Bot',
     image: 'hhhq-discord-bot.gif',
   },
   {

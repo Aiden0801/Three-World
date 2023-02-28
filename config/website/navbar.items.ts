@@ -15,6 +15,7 @@ import {
   Icon3dCubeSphere,
   IconMessageChatbot,
   IconMoneybag,
+  IconVideo,
 } from '@tabler/icons'
 import type { NavItem } from '@/types/navbar.item.type'
 export type { NavItem }
@@ -58,12 +59,6 @@ const businessesMenu: NavItem[] = [
     href: '/websites',
     match: 'websites',
   },
-  {
-    label: 'Virtual Worlds',
-    description: 'Virtual experiences',
-    icon: Icon3dCubeSphere,
-    disabled: true,
-  },
 ]
 /**
  * The sub menu items for the "Coming soon" menu.
@@ -80,9 +75,9 @@ const comingSoonMenu: NavItem[] = [
     ],
   },
   {
-    label: 'Discord bot',
-    description: 'Configure your bot',
-    icon: IconMessageChatbot,
+    label: 'Video Chat',
+    // description: 'Video chat with your team',
+    icon: IconVideo,
     disabled: true,
   },
   {
@@ -134,8 +129,6 @@ export const navItems: NavItem[] = [
         icon: IconMessageChatbot,
         href: 'https://bot.virtualprogalaxy.com',
         target: '_blank',
-        match: '/bot',
-        // disabled: true,
       },
     ],
   },
@@ -143,14 +136,29 @@ export const navItems: NavItem[] = [
     label: 'Projects',
     // description: 'Configure your projects',
     icon: IconFolders,
-    defaultOpened: true,
+    // defaultOpened: true,
     subitems: businessesMenu,
   },
   {
     label: 'Collaborate',
     icon: IconUsers,
-    defaultOpened: true,
+    // defaultOpened: true,
     subitems: collaborateMenu,
+  },
+  {
+    label: 'Virtual Worlds',
+    description: 'Virtual experiences',
+    icon: Icon3dCubeSphere,
+    // disabled: true,
+    subitems: [
+      {
+        label: 'Hacke House HQ',
+        description: 'The Moon Station',
+        icon: IconBuildingLighthouse,
+        href: 'http://hackerhousehq.co/',
+        target: '_blank',
+      }
+    ],
   },
   {
     label: 'Coming soon',
