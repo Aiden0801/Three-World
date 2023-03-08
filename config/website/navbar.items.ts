@@ -16,6 +16,7 @@ import {
   IconMessageChatbot,
   IconMoneybag,
   IconVideo,
+  IconPlane,
 } from '@tabler/icons'
 import type { NavItem } from '@/types/navbar.item.type'
 export type { NavItem }
@@ -149,6 +150,7 @@ export const navItems: NavItem[] = [
     label: 'Virtual Worlds',
     description: 'Virtual experiences',
     icon: Icon3dCubeSphere,
+    defaultOpened: true,
     // disabled: true,
     subitems: [
       {
@@ -156,6 +158,13 @@ export const navItems: NavItem[] = [
         description: 'The Moon Station',
         icon: IconBuildingLighthouse,
         href: 'http://hackerhousehq.co/',
+        target: '_blank',
+      },
+      {
+        label: 'Explore',
+        description: 'Fly around',
+        icon: IconPlane,
+        href: 'http://fly.hackerhousehq.com/',
         target: '_blank',
       }
     ],
