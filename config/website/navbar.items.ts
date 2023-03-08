@@ -152,7 +152,7 @@ export const navItems: NavItem[] = [
     // disabled: true,
     subitems: [
       {
-        label: 'Hacke House HQ',
+        label: 'Hacker House HQ',
         description: 'The Moon Station',
         icon: IconBuildingLighthouse,
         href: 'http://hackerhousehq.co/',
