@@ -17,8 +17,8 @@ import {
 } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconCheck, IconPlus } from '@tabler/icons'
-import { useRouter } from 'next/router'
-import React, { useCallback, useState } from 'react'
+// import { useRouter } from 'next/router'
+import React, { useCallback, useMemo, useState } from 'react'
 import useSWR from 'swr'
 import { LinkButton } from '@/components/Button'
 import { BASE_URL } from '@/config/constants'
@@ -27,7 +27,8 @@ import FadeIn from '@/utils/spring/FadeIn'
 import { Fullscreen, FullscreenExit } from 'react-bootstrap-icons'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
 import { GlobalContextProvider } from '@/lib/landing-pages/global-form-context'
-import { useUserContext } from '@/contexts'
+// import { useUserContext } from '@/contexts'
+import { useUser } from '@clerk/nextjs'
 const useStyles = createStyles((theme) => ({
   container: {
     position: 'relative',
@@ -78,18 +79,25 @@ const useProjectData = (email: string) => {
 export const WebsitesTable: React.FC = () => {
   const [opened, setOpened] = useState(false)
   const [fullScreen, setFullScreen] = useState(false)
-  const [confirm, setConfirm] = useState(false)
+  // const [confirm, setConfirm] = useState(false)
   const { classes, theme } = useStyles()
-  const router = useRouter()
-  const { session } = useUserContext()
-  const { data: projectData, isLoading, isError, mutate } = useProjectData(session?.data?.user?.email)
+  // const router = useRouter()
+  // const { session } = useUserContext()
+
+  const { user, isSignedIn } = useUser()
+
+  const email = useMemo(() => {
+    return user?.emailAddresses[0].emailAddress
+  }, [user])
+
+  const { data: projectData, isLoading, isError, mutate } = useProjectData(email)
   const handleOnSubmit = async (values) => {
-    if (!session?.data?.user) return
+    if (!isSignedIn) return
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/createProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        email: session.data.user?.email,
+        email: email,
         data: values,
       }),
     })
@@ -107,14 +115,14 @@ export const WebsitesTable: React.FC = () => {
     // mutate()
   }
   const handleDeleteProject = useCallback(async (name: string) => {
-    if (!session?.data?.user) return
+    if (!isSignedIn) return
 
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/deleteProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: name,
-        email: session.data.user.email,
+        email: email,
       }),
     })
     if (response == 'Success') {

@@ -12,6 +12,8 @@
    "dependencies": {
       "@apidevtools/json-schema-ref-parser": "^9.1.0",
       "@babel/cli": "^7.19.3",
+      "@clerk/nextjs": "^4.16.4",
+      "@clerk/themes": "^1.6.3",
       "@emotion/react": "^11.10.5",
       "@hyperbeam/web": "^0.0.22",
       "@kentico/kontent-webhook-helper": "^1.2.0",

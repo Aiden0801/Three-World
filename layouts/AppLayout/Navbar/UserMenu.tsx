@@ -1,4 +1,4 @@
-import { Code, Menu, Text, useMantineColorScheme } from '@mantine/core'
+import { Code, Menu, Text, useMantineColorScheme, useMantineTheme } from '@mantine/core'
 
 import {
   IconLogout,
@@ -7,11 +7,11 @@ import {
   TablerIconProps,
 } from '@tabler/icons'
 import { ColorSchemeIcon } from '@/components/ColorSchemeToggle'
-import { UserButton } from './UserButton'
-import { useLogout } from '@/contexts/User'
 import { ReactNode } from 'react'
 import { FloatingPosition } from '@mantine/core/lib/Floating'
 import { PopoverWidth } from '@mantine/core/lib/Popover/Popover.types'
+import { OrganizationSwitcher, UserProfile, useAuth, useClerk } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
 
 /** commmon icon props, because lazy */
 const icon: TablerIconProps = {
@@ -28,12 +28,12 @@ export interface UserMenuProps {
   /** preferred menu position relative to the menu */
   position?: FloatingPosition
   /** Width of the popover */
-  width?: PopoverWidth;
+  width?: PopoverWidth
   /**
    * Whether to show the arrow
    * @default false
    */
-  withArrow?: boolean;
+  withArrow?: boolean
 }
 
 /**
@@ -46,9 +46,10 @@ export interface UserMenuProps {
  * using the arrow keys, and close the menu using the escape key.
  */
 export function UserMenu({ children, ...rest }: UserMenuProps) {
-  const logout = useLogout()
+  const { signOut } = useAuth()
   const { colorScheme, toggleColorScheme } = useMantineColorScheme()
-
+  const theme = useMantineTheme()
+  const clerk = useClerk()
   return (
     <Menu
       {...rest}
@@ -76,7 +77,21 @@ export function UserMenu({ children, ...rest }: UserMenuProps) {
         </Menu.Item>
         <Menu.Divider />
         <Menu.Label>Account</Menu.Label>
-        <Menu.Item disabled icon={<IconUserCircle {...icon} />}>
+        <Menu.Item
+          icon={<IconUserCircle {...icon} />}
+          onClick={() =>
+            clerk.openUserProfile({
+              appearance: {
+                baseTheme: colorScheme === 'dark' ? dark : undefined,
+                variables: {
+                  borderRadius: `${theme.radius.xs}px`,
+                  colorBackground: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.white,
+                }
+              },
+
+            })
+          }
+        >
           Profile
         </Menu.Item>
         <Menu.Item disabled icon={<IconSettings2 {...icon} />}>
@@ -84,7 +99,7 @@ export function UserMenu({ children, ...rest }: UserMenuProps) {
         </Menu.Item>
         <Menu.Item
           icon={<IconLogout {...icon} />}
-          onClick={logout}
+          onClick={() => signOut({})}
           color="red.5"
         >
           Logout

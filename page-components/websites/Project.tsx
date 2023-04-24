@@ -1,10 +1,10 @@
 import { Box, Container, Skeleton, Text } from '@mantine/core'
 import { showNotification } from '@mantine/notifications'
 import { IconArrowBack, IconCheck } from '@tabler/icons'
-import { useSession } from 'next-auth/react'
+// import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
-import useSWR from 'swr'
+// import { useEffect, useState } from 'react'
+// import useSWR from 'swr'
 
 import { LinkButton } from '@/components/Button'
 import { BASE_URL } from '@/config/constants'
@@ -12,7 +12,8 @@ import { BASE_URL } from '@/config/constants'
 import { fetcher } from '@/lib/fetcher'
 import { GlobalContextProvider } from '@/lib/landing-pages'
 import { LandingPagesForm } from '@/components/LandingPagesForm'
-import { useUserContext } from '@/contexts'
+// import { useUserContext } from '@/contexts'
+import { useUser } from '@clerk/nextjs'
 // const fetchProjects = async (url: string, name: string) => {
 //   console.log('fetch', name)
 //   /** @vlad FIX: I think the url is changed now? no websiteconfig but landing-page? */
@@ -35,22 +36,27 @@ import { useUserContext } from '@/contexts'
 //   }
 // }
 const ProjectCofig = ({ projectName, configData }) => {
-  const { session } = useUserContext()
+  // const { session } = useUserContext()
+  const { user, isSignedIn } = useUser()
 
   //    const [refs, setRefs] = useState<$RefParser.$Refs>(null)
 
   //    const [schema, setSchema] = useState<JSONSchema>()
-  const router = useRouter()
+  // const router = useRouter()
   // const { data: configData } = useProjectData(projectName)
 
   const handleOnSubmit = async (values) => {
-    if (!session?.data?.user) return
+    if (!isSignedIn) return
+    // if (!session?.data?.user) return
+
     const response = await fetcher(`${BASE_URL.SERVER}/api/projects/updateProject`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         data: values,
-        email: session.data.user.email,
+        // TODO: Can we use the user ID instead of the email here?
+        email: user.emailAddresses[0].emailAddress,
+        // email: session.data.user.email,
       }),
     })
     if (response == 'Success') {

@@ -1,9 +1,17 @@
-import { forwardRef } from 'react'
-import { Group, UnstyledButton, Avatar, Text, UnstyledButtonProps } from '@mantine/core'
+import React, { forwardRef } from 'react'
+import { Group, UnstyledButton, Avatar, Text, UnstyledButtonProps, useMantineColorScheme } from '@mantine/core'
 import { IconChevronRight } from '@tabler/icons'
-import { useUserData } from '@/contexts/User'
+
+import { UserButton as ClerkUserButton, useUser } from '@clerk/nextjs'
+import { dark } from '@clerk/themes'
 
 interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'>, UnstyledButtonProps {}
+
+// export const UserButton = React.cloneElement(UserButton, {
+//   appearance: {
+//     theme: dark
+//   }
+// })
 
 /**
  * Navbar user button
@@ -12,7 +20,13 @@ interface UserButtonProps extends React.ComponentPropsWithoutRef<'button'>, Unst
  */
 export const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
   ({ ...props }: UserButtonProps, ref) => {
-    const user = useUserData()
+    const { user } = useUser()
+    const { colorScheme } = useMantineColorScheme()
+    // console.info(user)
+    // return <ClerkUserButton {...props} appearance={{
+    //   baseTheme: colorScheme === 'dark' ? dark : undefined
+    // }} />
+
     return (
       <UnstyledButton
         ref={ref}
@@ -34,13 +48,13 @@ export const UserButton = forwardRef<HTMLButtonElement, UserButtonProps>(
         {...props}
       >
         <Group>
-          <Avatar src={user.image} radius="md" size="md" />
+          <Avatar src={user.profileImageUrl} radius="md" size="md" />
           <div style={{ flex: 1 }}>
             <Text size="sm" weight={500}>
-              {user.name}
+              {user.username}
             </Text>
             <Text color="dimmed" size="xs">
-              {user.email}
+              {user.primaryEmailAddress.toString()}
             </Text>
           </div>
           <IconChevronRight size={16} />

@@ -8,6 +8,7 @@ import {
   Stack,
   Transition,
   Image,
+  Button,
 } from '@mantine/core'
 import Link from 'next/link'
 // import Image from 'next/image'
@@ -15,6 +16,14 @@ import { useDisclosure } from '@mantine/hooks'
 import { LinkButton } from '../../components/Button'
 import { ColorSchemeToggle } from '@/components/ColorSchemeToggle'
 import { VpgLogo } from '@/components/VpgLogo'
+import {
+  // RedirectToSignIn,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  useClerk,
+} from '@clerk/nextjs'
+import { dark as clerkDark } from '@clerk/themes'
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -110,6 +119,7 @@ export interface HeaderMenuProps {
 export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
   const [drawerOpened, { toggle: toggleDrawer }] = useDisclosure(false)
   const { classes } = useStyles()
+  const clerk = useClerk()
   return (
     <Header
       height={64}
@@ -137,9 +147,19 @@ export default function HeaderMenu({ showMenu }: HeaderMenuProps) {
         <>
           <Group className={showMenu && classes.hiddenMobile}>
             <ColorSchemeToggle variant="subtle" />
-            <LinkButton uppercase variant="subtle" href="/login">
-              Log In
-            </LinkButton>
+            <SignedIn>
+              <UserButton appearance={{ baseTheme: clerkDark }} />
+            </SignedIn>
+            <SignedOut>
+              {/* <RedirectToSignIn/> */}
+              <Button
+                uppercase
+                variant="subtle"
+                onClick={() => clerk.openSignIn({})}
+              >
+                Log In
+              </Button>
+            </SignedOut>
           </Group>
         </>
 

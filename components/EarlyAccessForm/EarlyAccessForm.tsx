@@ -4,8 +4,8 @@ import { z } from 'zod'
 import { showNotification } from '@mantine/notifications'
 import { useForm, zodResolver } from '@mantine/form'
 import { Button, Flex, Input } from '@mantine/core'
-import { useUserData } from '@/contexts/User'
 import logger from '@/utils/logger'
+import { useUser } from '@clerk/nextjs'
 
 export const schema = z.object({
   name: z.string(),
@@ -21,13 +21,13 @@ export interface EarlyAccessFormProps {
 
 export function EarlyAccessForm({ onSubmit }: EarlyAccessFormProps) {
   const [sending, setSending] = useState(false)
-  const user = useUserData()
+  const {user} = useUser()
   const form = useForm<DemoFormValues>({
     validateInputOnBlur: true,
     validate: zodResolver(schema),
     initialValues: {
-      name: user.name,
-      email: user.email,
+      name: user.firstName,
+      email: user.primaryEmailAddress.toString(),
       businessName: '',
     },
   })

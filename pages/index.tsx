@@ -21,17 +21,20 @@ async function handleContactSubmit(values: ContactFormData) {
 
 
 const Home: React.FC = () => {
-  const loading = useAuthRedirect({
-    redirects: {
-      // @dev this should be active. just disabled to work with the landing page
-      // authenticated: '/dashboard',
-    },
-  })
+  // fixme: this is the old auth redirects for next-auth. we won't need this anymore
+  // using clerk now, since we'll be using middleware.ts properly for secure routes
+ 
+  // const loading = useAuthRedirect({
+  //   redirects: {
+  //     // @dev this should be active. just disabled to work with the landing page
+  //     // authenticated: '/dashboard',
+  //   },
+  // })
 
-  if (loading) {
-    // TODO: Add loading component
-    return <></>
-  }
+  // if (loading) {
+  //   // TODO: Add loading component
+  //   return <></>
+  // }
 
   return (
     <>
