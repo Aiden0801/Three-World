@@ -1,25 +1,25 @@
-import { Session } from 'next-auth'
-import { Router } from 'next/router'
 import { Provider } from 'react-redux'
-// import { SessionProvider } from 'next-auth/react'
-import type { AppProps as NextAppProps } from 'next/app'
+import type { AppProps } from 'next/app'
 
 import { SocketContextProvider } from '../contexts/socket'
 import { RecoilRoot } from 'recoil'
 import { wrapper } from '@/store/store'
 import AppWithContexts from './_app.internal'
 import { ClerkProvider } from '@clerk/nextjs'
+import Head from 'next/head'
 
-type AppProps = NextAppProps<{
-  session: Session
-  router?: Router
-}>
-
-function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+function MyApp({ Component, pageProps }: AppProps) {
   return (
-    <ReduxProvider {...pageProps}>
-      <ClerkProvider {...pageProps}>
-        {/* <SessionProvider session={session} refetchInterval={5 * 60}> */}
+    <>
+      <Head>
+        {/* was in _document but was getting a warning from next */}
+        <meta
+          name="viewport"
+          content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover"
+        />
+      </Head>
+      <ReduxProvider {...pageProps}>
+        <ClerkProvider {...pageProps}>
           <RecoilRoot>
             <SocketContextProvider>
               <AppWithContexts
@@ -28,9 +28,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
               />
             </SocketContextProvider>
           </RecoilRoot>
-        {/* </SessionProvider> */}
-      </ClerkProvider>
-    </ReduxProvider>
+        </ClerkProvider>
+      </ReduxProvider>
+    </>
   )
 }
 // export default wrapper.withRedux(MyApp)

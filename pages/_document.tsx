@@ -43,10 +43,7 @@ export default function Document() {
          * @dev we might want to move this to the _app
          * @see {@link https://github.com/shadowwalker/next-pwa}
          */}
-        <meta
-          name='viewport'
-          content='minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no, user-scalable=no, viewport-fit=cover'
-        />
+        {/* <mw */}
       </Head>
       <body>
         <Main />
