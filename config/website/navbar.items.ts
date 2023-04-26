@@ -145,6 +145,7 @@ export const navItems: NavItem[] = [
     icon: IconUsers,
     // defaultOpened: true,
     subitems: collaborateMenu,
+    disabled: true,
   },
   {
     label: 'Virtual Worlds',
